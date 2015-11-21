@@ -50,8 +50,8 @@ aaOcean::aaOcean() :
     m_waveSpeed(1.0f),
     m_time(1.0f),
     m_loopTime(10000.0f),
-    m_foamBoundmin(FLT_MAX),
-    m_foamBoundmax(-FLT_MAX),
+    m_foamBoundmax(1000.0f),
+    m_foamBoundrange(1000.0f),
 
     // working arrays
     m_xCoord(0),
@@ -453,10 +453,10 @@ void aaOcean::clearArrays()
 unsigned int aaOcean::generateUID(const float xCoord, const float zCoord) const
 {
     // a very simple hash function. should probably do a better one at some point
-    register float angle;
-    register float length;
-    register float coordSq;
-    register float id_out;
+    float angle;
+    float length;
+    float coordSq;
+    float id_out;
     unsigned int returnVal = 1;
 
     if (zCoord != 0.0f && xCoord != 0.0f)
@@ -579,12 +579,12 @@ void aaOcean::setupGrid()
  void aaOcean::evaluateHieghtField()
 {
     int  i,j,index, index_rev;
-    register float hokReal, hokImag, hokRealOpp, hokImagOpp, sinwt, coswt;
+    float hokReal, hokImag, hokRealOpp, hokImagOpp, sinwt, coswt;
 
     const float wt  = m_waveSpeed * m_time;
     const int n = m_resolution;
     const int nn = n * n;
-    register const int n_sq = n * n - 1;
+    const int n_sq = n * n - 1;
     const float signs[2] = { 1.0f, -1.0f };
 
     #pragma omp parallel for private(index, index_rev, hokReal, hokImag, hokRealOpp, hokImagOpp, sinwt, coswt)  
@@ -622,7 +622,7 @@ void aaOcean::setupGrid()
  void aaOcean::evaluateChopField()
 {
     int  i, j, index;
-    register float  kX, kZ, kMag;
+    float  kX, kZ, kMag;
     int n = m_resolution * m_resolution;
     const float signs[2] = { 1.0f, -1.0f };
     float multiplier;
@@ -661,7 +661,7 @@ void aaOcean::setupGrid()
 void aaOcean::evaluateJacobians()
 {
     int  i, j, index;
-    register float kX, kZ, kMag, kXZ, multiplier;
+    float kX, kZ, kMag, kXZ, multiplier;
     const float signs[2] = { 1.0f, -1.0f };
     int n = m_resolution * m_resolution;
 
@@ -701,7 +701,7 @@ void aaOcean::evaluateJacobians()
         }
     }
 
-    register float jPlus, jMinus, qPlus, qMinus, Jxx, Jzz, Jxz, temp;
+    float jPlus, jMinus, qPlus, qMinus, Jxx, Jzz, Jxz, temp;
     #pragma omp parallel for private(index, jPlus, jMinus, qPlus, qMinus, Jxx, Jzz, Jxz, temp)  
     for(index = 0; index < n*n; ++index)
     {
@@ -936,7 +936,37 @@ float aaOcean::getOceanData(float uCoord, float vCoord, aaOcean::arrayType type)
                             arrayPointer[xPlus1     + yPlus2],
                             arrayPointer[xPlus2     + yPlus2]);
 
-    return catmullRom(dv, a1, b1, c1, d1);
+    float returnValue = catmullRom(dv, a1, b1, c1, d1);
+    
+    if (type == eFOAM)
+    {
+        float maxValue = m_foamBoundmax;
+        float minValue = maxValue - m_foamBoundrange;
+        
+        float range = m_foamBoundrange;
+        if (range == 0)
+        {
+            range = 1.0f;
+        }
+        
+        // Clamp.
+        if (returnValue < minValue)
+        {
+            returnValue = minValue;
+        }
+        if (returnValue > maxValue)
+        {
+            returnValue = maxValue;
+        }
+        
+        // Find our delta in the range.
+        
+        float delta = std::abs(returnValue - minValue);
+        
+        returnValue = std::abs(delta / range);
+    }
+    
+    return returnValue;
 }
 
 inline float aaOcean::catmullRom(const float t, const float a, const float b, const float c, const float d) const

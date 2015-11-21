@@ -74,7 +74,7 @@ class CChanState : public CLxObject
 		double			 gain;
 		LXtMatrix		 xfrm;
 		bool			 enabled;
-
+        bool             tone;
         int				 resolution; // default is 4
 		float oceanSize; // default is 100.0
 		float waveHeight; // default is 2.0
@@ -91,6 +91,7 @@ class CChanState : public CLxObject
 		float time;
         float repeatTime; // default is 1000.0
         bool doFoam; // default is FALSE for now.
+        bool doNormals; // default is FALSE
 
         aaOcean *m_pOcean;
 
@@ -126,6 +127,7 @@ class CModifierElement : public CLxItemModifierElement
     public:
 		unsigned	 index;
         aaOcean *pOcean;
+        bool tone;
         int				 resolution; // default is 4
         float oceanSize; // default is 100.0
         float waveHeight; // default is 2.0
@@ -141,10 +143,12 @@ class CModifierElement : public CLxItemModifierElement
         float seed; // default is 1.0
         float repeatTime; // default is 1000.0
         bool doFoam;
+        bool doNormals;
 
 		CModifierElement()
 		{
 			pOcean = new aaOcean();
+            tone = true;
             resolution = 4;
             oceanSize =  100.0;
             waveHeight  = 2.0;
@@ -160,6 +164,7 @@ class CModifierElement : public CLxItemModifierElement
             seed = 1.0; // default is 1.0
             repeatTime = 1000.0; // default is 1000.0
             doFoam = bool(0);
+            doNormals = bool(1);
 		}
 
 		~CModifierElement()

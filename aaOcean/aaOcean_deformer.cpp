@@ -72,6 +72,9 @@ LxResult CPackage::pkg_SetupChannels(ILxUnknownID addChan)
 
 	ac.NewChannel  (Cs_MORPH_MAPNAME,	LXsTYPE_VERTMAPNAME);
 
+    ac.NewChannel  ("tone",		LXsTYPE_BOOLEAN);
+    ac.SetDefault  (0.0, 1);
+
     ac.NewChannel  ("resolution",	LXsTYPE_INTEGER);
 	ac.SetDefault  (0.0, 4);
     ac.SetHint(hint_resolution);
@@ -118,6 +121,9 @@ LxResult CPackage::pkg_SetupChannels(ILxUnknownID addChan)
 	ac.NewChannel  ("doFoam",	LXsTYPE_INTEGER);
 	ac.SetDefault  (0.0, 0);
     
+    ac.NewChannel  ("doNormals",	LXsTYPE_INTEGER);
+	ac.SetDefault  (0.0, 0);
+
 	return LXe_OK;
 }
 
@@ -159,8 +165,7 @@ void CChanState::buildOcean()
                     waveChop,
                     time,
                     repeatTime,
-                    doFoam
-                    );
+                    doFoam);
 }
 
 void CChanState::setUpOceanPtrs(aaOcean *ocean)
@@ -172,6 +177,7 @@ void CChanState::Attach (CLxUser_Evaluation	&eval, ILxUnknownID item)
 {
     eval.AddChan (item, "enable");
     eval.AddChan (item, Cs_MORPH_MAPNAME);
+    eval.AddChan (item, "tone");
     eval.AddChan (item, "resolution");
 	eval.AddChan (item, "oceanSize");
 	eval.AddChan (item, "waveHeight");
@@ -187,6 +193,7 @@ void CChanState::Attach (CLxUser_Evaluation	&eval, ILxUnknownID item)
 	eval.AddChan (item, "seed");
 	eval.AddChan (item, "repeatTime");
 	eval.AddChan (item, "doFoam");
+	eval.AddChan (item, "doNormals");
 
 	eval.AddTime ();
 
@@ -202,7 +209,9 @@ void CChanState::Read (CLxUser_Attributes &attr, unsigned index)
 	{
         attr.String (index++, name);
 		
-		resolution  = attr.Int  (index++);
+        tone = attr.Bool (index++);
+
+        resolution  = attr.Int  (index++);
 		if(resolution > 12)
         {
             resolution = 12;
@@ -230,6 +239,7 @@ void CChanState::Read (CLxUser_Attributes &attr, unsigned index)
 		seed = attr.Float (index++);
 		repeatTime = attr.Float (index++);
 		doFoam  = attr.Bool(index++);
+		doNormals  = attr.Bool  (index++);
 		
 		time = attr.Float (index++);
 
@@ -271,7 +281,9 @@ void CInfluence::Offset (CLxUser_Point &point, float weight, LXtFVector	offset)
     float result[3];
     float p[2];
     p[0] = (float)posF[0];
-    p[1] = (float)posF[2];
+    // Note the flip of V sign as aaOcean modifies the sign again internally due to SI/Maya coordinate system.
+    // This approach appears to result in a better ocean characteristic.
+    p[1] = -(float)posF[2];
 
     // Maya code for reference :
 	// get height field
@@ -311,12 +323,13 @@ void CInfluence::Offset (CLxUser_Point &point, float weight, LXtFVector	offset)
     
     // We need to scale our coordinates by the ocean size since aaOcean expects 0-1 ranges incoming (it was built as a texture)
     // Let's get the Y displacement first
+
     result[0] = result[1] = result[2] = 0.0;
     result[1] = cur.m_pOcean->getOceanData(p[0]/cur.m_pOcean->m_oceanScale,p[1]/cur.m_pOcean->m_oceanScale, aaOcean::eHEIGHTFIELD);
     if(cur.m_pOcean->isChoppy())
     {
-        result[0] = cur.m_pOcean->getOceanData(p[0]/cur.m_pOcean->m_oceanScale,p[1]/cur.m_pOcean->m_oceanScale, aaOcean::eCHOPX);
-        result[2] = cur.m_pOcean->getOceanData(p[0]/cur.m_pOcean->m_oceanScale,p[1]/cur.m_pOcean->m_oceanScale, aaOcean::eCHOPZ);
+        result[0] = cur.m_pOcean->getOceanData(p[0]/cur.m_pOcean->m_oceanScale, p[1]/cur.m_pOcean->m_oceanScale, aaOcean::eCHOPX);
+        result[2] = cur.m_pOcean->getOceanData(p[0]/cur.m_pOcean->m_oceanScale, p[1]/cur.m_pOcean->m_oceanScale, aaOcean::eCHOPZ);
     } else {
         result[0] = 0.0;
         result[2] = 0.0;
@@ -324,6 +337,10 @@ void CInfluence::Offset (CLxUser_Point &point, float weight, LXtFVector	offset)
     LXtFVector	 tmp;
 
     lx::MatrixMultiply (tmp, cur.xfrm, result);
+    if (cur.tone)
+    {
+        LXx_VSCL(tmp, -1);
+    }
     LXx_VSCL3 (offset, tmp, weight);
 }
 
@@ -350,6 +367,7 @@ LxResult CModifierElement::EvalCache (CLxUser_Evaluation &eval, CLxUser_Attribut
 	//early out
 	if(!infl->cur.enabled)
         return LXe_OK;
+    tone = infl->cur.tone;
     resolution = infl->cur.resolution;
     oceanSize = infl->cur.oceanSize;
     waveHeight = infl->cur.waveHeight;
@@ -364,6 +382,7 @@ LxResult CModifierElement::EvalCache (CLxUser_Evaluation &eval, CLxUser_Attribut
     oceanDepth = infl->cur.oceanDepth;
     repeatTime = infl->cur.repeatTime;
     doFoam = infl->cur.doFoam;
+    doNormals = infl->cur.doNormals;
     seed = infl->cur.seed;
 
     pOcean->input(	resolution,

@@ -73,8 +73,8 @@ public:
     float   m_waveSpeed;
     float   m_time;
     float   m_loopTime;
-    float   m_foamBoundmin; //for holding min/max foam
     float   m_foamBoundmax; //for holding min/max foam
+    float   m_foamBoundrange; //for holding min/max foam
     
     //ocean array pointers
     int     *m_xCoord;

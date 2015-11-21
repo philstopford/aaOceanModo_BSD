@@ -7,29 +7,19 @@
 		<key>aaOceanMODO.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
-		<key>aaocean.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>0</integer>
 		</dict>
 		<key>common.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
-		<key>dsfmt.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
-		<key>kissfft.xcscheme</key>
+		<key>dsFMT.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>libDSM.xcscheme</key>
+		<key>kiss.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
@@ -42,27 +32,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4A8220E11A75E217005F00DC</key>
+		<key>4ADD82D31BFB74F10098FEA7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4A8220F11A75E267005F00DC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4A8221111A75EA3A005F00DC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4AEA32F21A606D0D000CD040</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4AEA33061A606D79000CD040</key>
+		<key>4ADD82ED1BFB75510098FEA7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -13,9 +13,65 @@
 #include <string>
 #include <math.h>
 #include <float.h>
+#include <memory>
+#include <mutex>
+
 #include "aaOceanClass.h"
 
 namespace aaOceanTextureNamespace {	// disambiguate everything with a namespace
+
+class OceanData {
+    
+    public:
+        int m_outputType; // default is 0
+        int     m_resolution; // default is 2
+        float m_oceanSize; // default is 100.0
+        float m_waveHeight; // default is 2.0
+        float m_waveSize; // default is 4.0
+        float m_surfaceTension; // default is 0.0
+        int m_waveAlign; // default is 1
+        float m_waveSmooth; // default is 0.0
+        float m_waveDirection; // default is 45.0
+        float m_waveReflection; // default is 0.0
+        float m_waveSpeed; // default is 1.0
+        float m_waveChop; // default is 2.0
+        float m_oceanDepth; // default is 10000
+        float m_seed; // default is 1.0
+        float m_repeatTime; // default is 1000.0
+        bool m_doFoam; // default is FALSE for now.
+        bool m_doNormals; // default is FALSE
+        float m_time;
+        float foamMax;
+        float foamRange;
+		//float m_div;
+
+        bool operator == (const OceanData &oceanData) const {
+            return (this->m_resolution == oceanData.m_resolution &&
+                    this->m_oceanSize == oceanData.m_oceanSize &&
+                    this->m_waveHeight == oceanData.m_waveHeight &&
+                    this->m_waveSize == oceanData.m_waveSize &&
+                    this->m_surfaceTension == oceanData.m_surfaceTension &&
+                    this->m_waveAlign == oceanData.m_waveAlign &&
+                    this->m_waveSmooth == oceanData.m_waveSmooth &&
+                    this->m_waveDirection == oceanData.m_waveDirection &&
+                    this->m_waveReflection == oceanData.m_waveReflection &&
+                    this->m_waveSpeed == oceanData.m_waveSpeed &&
+                    this->m_waveChop == oceanData.m_waveChop &&
+                    this->m_oceanDepth == oceanData.m_oceanDepth &&
+                    this->m_seed == oceanData.m_seed &&
+                    this->m_doFoam == oceanData.m_doFoam &&
+                    this->m_doNormals == oceanData.m_doNormals &&
+                    this->m_time == oceanData.m_time &&
+                    this->foamMax == oceanData.foamMax &&
+                    this->foamRange == oceanData.foamRange
+					//this->m_div == oceanData.m_div
+                    ); // Check all the other values.
+        }
+        
+        bool operator != (const OceanData &oceanData) const {
+            return !(*this == oceanData);
+        }
+};
 
 /*
  * ----------------------------------------------------------------
@@ -28,6 +84,22 @@ namespace aaOceanTextureNamespace {	// disambiguate everything with a namespace
  */
 class aaOceanTexture : public CLxImpl_ValueTexture
 {
+
+    private:
+        // This will reinitialize the ocean data and aaOcean object if the values have changed, or
+        // they haven't been initialized at all yet.
+        void maybeResetOceanData(std::unique_ptr<OceanData> newOceanData);
+        
+        // A single oceanData for this object.
+        // We use a unique pointer because it guarantees that an uninitialized object will crash,
+        // and makes it easy to check for initialization without another variable.
+        // And we don't ever need to copy OceanData values, even when we've set them all.
+        std::unique_ptr<OceanData> oceanData_;
+        // A single aaOcean for this object.
+        aaOcean mOcean_;
+        // One Mutex per object.
+        std::mutex myMutex_;
+
     public:
         static LXtTagInfoDesc		 descInfo[];
 
@@ -37,21 +109,18 @@ class aaOceanTexture : public CLxImpl_ValueTexture
         LxResult		vtx_SetupChannels (ILxUnknownID addChan) LXx_OVERRIDE;
         LxResult		vtx_LinkChannels  (ILxUnknownID eval, ILxUnknownID item) LXx_OVERRIDE;
         LxResult		vtx_ReadChannels  (ILxUnknownID attr, void **ppvData) LXx_OVERRIDE;
-#ifdef MODO701
-        void			vtx_Evaluate      (ILxUnknownID vector, LXpTextureOutput *tOut, void *data) LXx_OVERRIDE;
-#else
         void			vtx_Evaluate      (ILxUnknownID etor, int *idx, ILxUnknownID vector, LXpTextureOutput *tOut, void *data) LXx_OVERRIDE;
-#endif
+
         void			vtx_Cleanup       (void *data) LXx_OVERRIDE;
+        LxResult		vtx_Customize(ILxUnknownID custom, void **ppvData) override;
 
 		LXtItemType		MyType ();
         CLxUser_PacketService	pkt_service;
-        unsigned		tin_offset,tinDsp_offset;
+        unsigned		tin_offset,tinDsp_offset,nrm_offset,pos_offset;
         LXtItemType		my_type;
 
-#ifndef TEXRENDDATA
-        aaOcean *m_ocean;
-#endif
+        bool tone;
+        unsigned m_idx_tone;
         unsigned m_idx_outputType;
 		unsigned m_idx_resolution;
 		unsigned m_idx_oceanSize;
@@ -68,7 +137,11 @@ class aaOceanTexture : public CLxImpl_ValueTexture
         unsigned m_idx_seed;
         unsigned m_idx_repeatTime;
         unsigned m_idx_doFoam;
+        unsigned m_idx_foamRange;
+        unsigned m_idx_foamMax;
+        unsigned m_idx_doNormals;
 		unsigned m_idx_time;
+		//unsigned m_idx_div;
 
         int m_outputTypeCache;
         int		m_resolutionCache;
@@ -84,34 +157,15 @@ class aaOceanTexture : public CLxImpl_ValueTexture
         float m_waveChopCache;
         float m_oceanDepthCache;
         float m_seedCache;
+        float m_foamMaxCache;
+        float m_foamRangeCache;
         float m_repeatTimeCache;
         bool m_doFoamCache;
+        bool m_doNormalsCache;
         float m_timeCache;
+    
+        float dispAmplitude;
 
-        class RendData {
-			
-            public:
-#ifdef TEXRENDDATA
-                aaOcean *m_ocean;
-#endif
-                int m_outputType; // default is 0
-                int		m_resolution; // default is 2
-                float m_oceanSize; // default is 100.0
-                float m_waveHeight; // default is 2.0
-                float m_waveSize; // default is 4.0
-                float m_surfaceTension; // default is 0.0
-                int m_waveAlign; // default is 1
-                float m_waveSmooth; // default is 0.0
-                float m_waveDirection; // default is 45.0
-                float m_waveReflection; // default is 0.0
-                float m_waveSpeed; // default is 1.0
-                float m_waveChop; // default is 2.0
-                float m_oceanDepth; // default is 10000
-                float m_seed; // default is 1.0
-                float m_repeatTime; // default is 1000.0
-                bool m_doFoam; // default is FALSE for now.
-				float m_time;
-        };
 };
     void initialize ()
     {

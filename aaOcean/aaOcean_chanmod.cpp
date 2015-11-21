@@ -79,6 +79,12 @@ aaOceanChanMod::cmod_Allocate (
         cm_idx_z = index;
         index++;
     
+        // Lookup the index of the 'tone' channel and add as an input.
+        modItem.ChannelLookup ("tone", &m_idx_tone);
+        chanMod.AddInput (item, m_idx_tone);
+        cm_idx_tone = index;
+        index++;
+
         // Lookup the index of the 'resolution' channel and add as an input.
         modItem.ChannelLookup ("resolution", &m_idx_resolution);
         chanMod.AddInput (item, m_idx_resolution);
@@ -169,6 +175,18 @@ aaOceanChanMod::cmod_Allocate (
         cm_idx_doFoam = index;
         index++;
 
+        // Lookup the index of the 'foamMax' channel and add as an input.
+        modItem.ChannelLookup ("foamMax", &m_idx_foamMax);
+        chanMod.AddInput (item, m_idx_foamMax);
+        cm_idx_foamMax = index;
+        index++;
+
+        // Lookup the index of the 'foamRange' channel and add as an input.
+        modItem.ChannelLookup ("foamRange", &m_idx_foamRange);
+        chanMod.AddInput (item, m_idx_foamRange);
+        cm_idx_foamRange = index;
+        index++;
+
         chanMod.AddTime ();
         cm_idx_time = index;
 
@@ -250,6 +268,11 @@ aaOceanChanMod::cmod_Flags (
                 return LXfCHMOD_INPUT;
         }
     
+        if (LXx_OK (modItem.ChannelLookup ("tone", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+
         if (LXx_OK (modItem.ChannelLookup ("resolution", &chanIdx))) {
             if (index == chanIdx)
                 return LXfCHMOD_INPUT;
@@ -316,6 +339,16 @@ aaOceanChanMod::cmod_Flags (
         }
 
         if (LXx_OK (modItem.ChannelLookup ("doFoam", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+
+        if (LXx_OK (modItem.ChannelLookup ("foamMax", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+
+        if (LXx_OK (modItem.ChannelLookup ("foamRange", &chanIdx))) {
             if (index == chanIdx)
                 return LXfCHMOD_INPUT;
         }
@@ -405,6 +438,9 @@ aaOceanChanMod::cmod_Evaluate (
     chanMod.ReadInputFloat (attr, cm_idx_z, &dTemp);
     float m_z = (float) dTemp;
 
+    chanMod.ReadInputInt (attr, cm_idx_tone, &iTemp);
+    tone = (bool) iTemp;
+
     chanMod.ReadInputInt (attr, cm_idx_resolution, &iTemp);
     newOceanData->m_resolution = iTemp;
 	if(newOceanData->m_resolution > 14)
@@ -425,7 +461,9 @@ aaOceanChanMod::cmod_Evaluate (
 
     // Let's scale our values - experiment.
     m_x = m_x/newOceanData->m_oceanSize;
-    m_z = m_z/newOceanData->m_oceanSize;
+    // Note the flip of V sign as aaOcean modifies the sign again internally due to SI/Maya coordinate system.
+    // This approach appears to result in a better ocean characteristic.
+    m_z = -m_z/newOceanData->m_oceanSize;
     
     chanMod.ReadInputFloat (attr, cm_idx_waveHeight, &dTemp);
     newOceanData->m_waveHeight = (float) dTemp;
@@ -470,6 +508,17 @@ aaOceanChanMod::cmod_Evaluate (
     chanMod.ReadInputInt (attr, cm_idx_doFoam, &iTemp);
     newOceanData->m_doFoam = (bool) iTemp;
 
+    chanMod.ReadInputFloat (attr, cm_idx_foamMax, &dTemp);
+    newOceanData->foamMax = (float) dTemp;
+
+    chanMod.ReadInputFloat (attr, cm_idx_foamRange, &dTemp);
+    newOceanData->foamRange = (float) dTemp;
+
+    chanMod.ReadInputFloat (attr, cm_idx_repeatTime, &dTemp);
+    newOceanData->m_repeatTime = (float) dTemp;
+
+    newOceanData->m_doNormals = false;
+
     chanMod.ReadInputFloat (attr, cm_idx_time, &dTemp);
     newOceanData->m_time = (float) dTemp;
 
@@ -479,11 +528,11 @@ aaOceanChanMod::cmod_Evaluate (
     float foam, eigenminus[3], eigenplus[3];
     bool foamy = false;
     
-    result[1] = ((mOcean_.getOceanData(m_x, m_z, aaOcean::eHEIGHTFIELD)) + 1.0f)/2.0f;
+    result[1] = mOcean_.getOceanData(m_x, m_z, aaOcean::eHEIGHTFIELD);
     if (mOcean_.isChoppy())
     {
-        result[0] = ((mOcean_.getOceanData(m_x, m_z, aaOcean::eCHOPX)) + 1.0f)/2.0f;
-        result[2] = ((mOcean_.getOceanData(m_x, m_z, aaOcean::eCHOPZ)) + 1.0f)/2.0f;
+        result[0] = mOcean_.getOceanData(m_x, m_z, aaOcean::eCHOPX);
+        result[2] = mOcean_.getOceanData(m_x, m_z, aaOcean::eCHOPZ);
         if(oceanData_->m_doFoam)
         {
             foamy = true;
@@ -504,7 +553,10 @@ aaOceanChanMod::cmod_Evaluate (
         eigenplus[0] = eigenplus[1] = eigenplus[2] = 0.0f;
     }
     
-    // mwnormalize(result);
+    if (tone)
+    {
+        LXx_VSCL(result, -1.0f);
+    }
 
     chanMod.WriteOutputFloat (attr, cm_idx_displacementX, result[0]); // vector, normalize to 0-1, 0.5 is no displacement
     chanMod.WriteOutputFloat (attr, cm_idx_displacementY, result[1]); // vector, normalize to 0-1, 0.5 is no displacement
@@ -543,6 +595,8 @@ void aaOceanChanMod::maybeResetOceanData(std::unique_ptr<OceanData> newOceanData
                            oceanData_->m_time,
                            oceanData_->m_repeatTime,
                            oceanData_->m_doFoam);
+            mOcean_.m_foamBoundrange = oceanData_->foamRange;
+            mOcean_.m_foamBoundmax = oceanData_->foamMax;
         }
     }
 }
@@ -594,6 +648,9 @@ aaOceanChanModPackage::pkg_SetupChannels (
         ac.NewChannel ("inputZ", LXsTYPE_FLOAT);
         ac.SetDefault (0.0, 0);
     
+        ac.NewChannel ("tone", LXsTYPE_BOOLEAN);
+        ac.SetDefault (0.0, 1);
+
         ac.NewChannel  ("resolution",	LXsTYPE_INTEGER);
         ac.SetDefault  (0.0, 4);
         ac.SetHint(hint_resolution);
@@ -640,6 +697,12 @@ aaOceanChanModPackage::pkg_SetupChannels (
         ac.NewChannel  ("doFoam",	LXsTYPE_INTEGER);
         ac.SetDefault  (0.0, 0);
     
+        ac.NewChannel  ("foamMax",	LXsTYPE_FLOAT);
+        ac.SetDefault  (1000.0f, 0);
+
+        ac.NewChannel  ("foamRange",	LXsTYPE_FLOAT);
+        ac.SetDefault  (1000.0f, 0);
+
         // Output channels below, this being defined in Flags and Allocate.
 
         // Note that these vectors end up having three channels (.X, .Y, .Z) elsewhere, leading to checks for displacement.X, etc. Don't get confused.

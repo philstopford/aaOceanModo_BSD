@@ -42,7 +42,10 @@ class OceanData {
         int m_seed; // default is 1.0
         float m_repeatTime; // default is 1000.0
         bool m_doFoam; // default is FALSE for now.
+        bool m_doNormals; // default is FALSE
         float m_time;
+        float foamMax;
+        float foamRange;
     
         bool operator == (const OceanData &oceanData) const {
             return (this->m_resolution == oceanData.m_resolution &&
@@ -59,7 +62,10 @@ class OceanData {
                     this->m_oceanDepth == oceanData.m_oceanDepth &&
                     this->m_seed == oceanData.m_seed &&
                     this->m_doFoam == oceanData.m_doFoam &&
-                    this->m_time == oceanData.m_time
+                    this->m_doNormals == oceanData.m_doNormals &&
+                    this->m_time == oceanData.m_time &&
+                    this->foamMax == oceanData.foamMax &&
+                    this->foamRange == oceanData.foamRange
                     ); // Check all the other values.
         }
         
@@ -112,9 +118,11 @@ class aaOceanChanMod
         void			 cmod_Cleanup (void *data) LXx_OVERRIDE;
         LxResult		 cmod_Evaluate (ILxUnknownID cmod, ILxUnknownID attr, void *data) LXx_OVERRIDE;
 
+        bool tone;
         // Indices for ChannelLookup, Flags, etc.
         unsigned m_idx_x;
         unsigned m_idx_z;
+        unsigned m_idx_tone;
         unsigned m_idx_resolution;
         unsigned m_idx_oceanSize;
         unsigned m_idx_waveHeight;
@@ -129,6 +137,8 @@ class aaOceanChanMod
         unsigned m_idx_oceanDepth;
         unsigned m_idx_repeatTime;
         unsigned m_idx_doFoam;
+        unsigned m_idx_foamRange;
+        unsigned m_idx_foamMax;
 
         unsigned m_idx_seed;
         unsigned m_idx_time;
@@ -147,6 +157,7 @@ class aaOceanChanMod
         // Indices for ChanMod
         unsigned cm_idx_x;
         unsigned cm_idx_z;
+        unsigned cm_idx_tone;
         unsigned cm_idx_resolution;
         unsigned cm_idx_oceanSize;
         unsigned cm_idx_waveHeight;
@@ -161,6 +172,8 @@ class aaOceanChanMod
         unsigned cm_idx_oceanDepth;
         unsigned cm_idx_repeatTime;
         unsigned cm_idx_doFoam;
+        unsigned cm_idx_foamRange;
+        unsigned cm_idx_foamMax;
 
         unsigned cm_idx_seed;
         unsigned cm_idx_time;
