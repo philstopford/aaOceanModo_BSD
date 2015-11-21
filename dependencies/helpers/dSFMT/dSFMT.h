@@ -32,9 +32,11 @@
  * unsigned int and 64-bit unsigned int in hexadecimal format.
  */
 
+#ifndef NDEBUG
 #define NDEBUG
-#define DSFMT_DO_NOT_USE_OLD_NAMES
-#define HAVE_SSE2
+#endif
+#define DSFMT_DO_NOT_USE_OLD_NAMES 1
+#define HAVE_SSE2 1
 #define SFMT_MEXP 19937
 
 #ifndef DSFMT_H
@@ -194,9 +196,8 @@ void dsfmt_chk_init_by_array(dsfmt_t *dsfmt, uint32_t init_key[],
                              int key_length, int mexp);
 const char *dsfmt_get_idstring(void);
 int dsfmt_get_min_array_size(void);
-
-// double gaussian(dsfmt_t dsfmt, const double mean, const double variance);
-double uniform(dsfmt_t dsfmt);
+    double uniform(dsfmt_t &dsfmt);
+    double gaussian(dsfmt_t &dsfmt, const double& mean = 0.0, const double& variance = 1.0, bool boxMuller=0);
 
 #if defined(__GNUC__)
 #  define DSFMT_PRE_INLINE inline static

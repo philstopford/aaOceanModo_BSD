@@ -1,16 +1,9 @@
-// aaOcean
+// aaOcean v2.5
 // Author: Amaan Akram 
 // www.amaanakram.com
-//
-// LICENSE: 
 // aaOcean is free software and can be redistributed and modified under the terms of the 
 // GNU General Public License (Version 3) as provided by the Free Software Foundation.
 // GNU General Public License http://www.gnu.org/licenses/gpl.html
-//
-// A "New BSD" License for aaOcean can be obtained by contacting the author
-// For more details on aaOcean and associated 3rd Party licenses, please see
-// license.txt file that is part of the aaOcean repository:
-// https://bitbucket.org/amaanakram/aaocean
 
 #ifndef AAOCEANCLASS_CPP
 #define AAOCEANCLASS_CPP
@@ -26,14 +19,18 @@
 #endif
 
 #include <cmath>
+#ifdef _OPENMP
 #include <omp.h>
+#else
+#define omp_get_num_procs() 1 // arbitrary - seems to make little practical difference.
+#endif
 #include <climits>
 #include <float.h>
-#include <string>
+#include <string.h>
 #include "dSFMT/dSFMT.h"
 #include "constants.h"
 #include "functionLib.h"
-
+#include <random>
 #include "aaOceanClass.h"
 
 aaOcean::aaOcean() :
@@ -55,7 +52,6 @@ aaOcean::aaOcean() :
     m_loopTime(10000.0f),
     m_foamBoundmax(1000.0f),
     m_foamBoundrange(1000.0f),
-    m_randWeight(0.f),
 
     // working arrays
     m_xCoord(0),
@@ -146,15 +142,11 @@ int aaOcean::getResolution()
 
 void aaOcean::input(int resolution, unsigned int seed, float oceanScale, float oceanDepth, float surfaceTension, 
                     float velocity, float cutoff, float windDir, int windAlign, float damp, float waveSpeed, 
-                    float waveHeight, float chopAmount, float time, float loopTime, bool doFoam, float randWeight)
+                    float waveHeight, float chopAmount, float time, float loopTime, bool doFoam)
 {
     // forcing to be power of two, setting minimum resolution of 2^4
     resolution  = (int)pow(2.0f, (4 + abs(resolution))); 
-    if(m_resolution != resolution)
-    {
-        m_resolution = resolution;
-        allocateBaseArrays();
-    }
+    reInit(resolution, seed);
 
     // scaled for better UI control
     m_waveHeight    = waveHeight * 0.01f;
@@ -211,18 +203,25 @@ void aaOcean::input(int resolution, unsigned int seed, float oceanScale, float o
         m_doHoK = 1;
     }
 
-    if(m_seed != seed || m_randWeight != randWeight)
-    {
-        m_seed = seed;
-        m_randWeight = randWeight;
-        m_doSetup = m_doHoK = 1;
-    }
-
     if(!m_doHoK || !m_doSetup)
         sprintf(m_state,"[aaOcean Core] Ocean base state unchanged. Re-evaluating ocean with cached data");
     
     // we have our inputs. start preparing ocean arrays
     prepareOcean();
+}
+
+void aaOcean::reInit(int resolution, int seed)
+{
+    // If ocean resolution has changed, or if we are creating an ocean from scratch
+    // Flush any existing arrays and allocate them with the new array size (resolution)
+    if(m_resolution != resolution || m_seed != seed)
+    {
+        m_seed = seed; // should be handled separately -- does not need mem reallocation
+        m_resolution = resolution;
+        allocateBaseArrays();           
+        m_doHoK  = 1;
+        m_doSetup = 1;
+    }
 }
 
 void aaOcean::prepareOcean()
@@ -287,13 +286,7 @@ void aaOcean::allocateBaseArrays()
     m_planChopX         = kiss_fftnd_alloc(dims, 2, 1, 0, 0);
     m_planChopZ         = kiss_fftnd_alloc(dims, 2, 1, 0, 0);
 
-    m_arrayPointer[eHEIGHTFIELD] = m_out_fft_htField;
-    m_arrayPointer[eCHOPX]       = m_out_fft_chopX;
-    m_arrayPointer[eCHOPZ]       = m_out_fft_chopZ;
-
-    m_doHoK         = 1;
-    m_doSetup       = 1;
-    m_isAllocated   = 1;
+    m_isAllocated       = 1;
 }
 
 void aaOcean::allocateFoamArrays()
@@ -315,13 +308,6 @@ void aaOcean::allocateFoamArrays()
     m_planJxx = kiss_fftnd_alloc(dims, 2, 1, 0, 0);
     m_planJxz = kiss_fftnd_alloc(dims, 2, 1, 0, 0);
     m_planJzz = kiss_fftnd_alloc(dims, 2, 1, 0, 0);
-
-    m_arrayPointer[eFOAM]        = m_out_fft_jxz;
-    m_arrayPointer[eEIGENPLUSX]  = m_out_fft_jxxX;
-    m_arrayPointer[eEIGENPLUSZ]  = m_out_fft_jxxZ;
-    m_arrayPointer[eEIGENMINUSX] = m_out_fft_jzzX;
-    m_arrayPointer[eEIGENMINUSZ] = m_out_fft_jzzZ;
-
     m_isFoamAllocated = 1;
 }
 
@@ -511,24 +497,22 @@ void aaOcean::setupGrid()
 
             m_xCoord[index] = half_n + i * 2 ;
             m_zCoord[index] = half_n + j * 2 ;
-            float x = (float)m_xCoord[index];
-            float z = (float)m_zCoord[index];
+            float x = m_xCoord[index];
+            float z = m_zCoord[index];
             uID = (unsigned int)generateUID(x, z);
 
             // generate random numbers
             dsfmt_t dsfmt;
-            // TODO: slowest in aaocean -- seeding a random number generator
-            // need to find a faster generator with good period
-            dsfmt_init_gen_rand(&dsfmt, uID + m_seed);
+            dsfmt_init_gen_rand(&dsfmt, uID + (unsigned int)m_seed);
             
-            float g1 = (float)gaussian(dsfmt);
-            float g2 = (float)gaussian(dsfmt);
+            //m_rand1[index] = (float)logNormal(dsfmt);
+            //m_rand2[index] = (float)logNormal(dsfmt);
+            
+            //m_rand1[index] = (float)gaussian(dsfmt);
+            //m_rand2[index] = (float)gaussian(dsfmt);
 
-            float u1 = (float)uniform(dsfmt);
-            float u2 = (float)uniform(dsfmt);
-
-            m_rand1[index] = lerp(m_randWeight, g1, u1);
-            m_rand2[index] = lerp(m_randWeight, g2, u2);
+            m_rand1[index] = (float)uniform(dsfmt);
+            m_rand2[index] = (float)uniform(dsfmt);
         }
     }
     m_doSetup = 0;
@@ -588,7 +572,7 @@ void aaOcean::setupGrid()
         m_hokImag[index] = (aa_INV_SQRTTWO) * (m_rand2[index]) * philips;
     }
 
-    sprintf(m_state,"\n[aaOcean Core] Finished initializing all ocean data");
+    sprintf(m_state,"%s\n[aaOcean Core] Finished initializing all ocean data", m_state);
     m_doHoK = 0;
 }
 
@@ -744,7 +728,121 @@ void aaOcean::evaluateJacobians()
     }
 }
 
-void aaOcean::getFoamBounds(float& outBoundsMin, float& outBoundsMax) const
+// removed until vector class is gcc-4.2.x compliant
+/*
+void aaOcean::evaluateNormal()
+{
+    int index;
+    int n = m_resolution;
+
+    const int halfRes = n/2;    
+
+    #pragma omp parallel for private(index)
+    for(int i = 0; i < n; ++i)
+    {
+        // position vectors to surrounding points
+        vector3 vCurrent, vNorth, vSouth, vEast, vWest, norm1, norm2, norm3, norm4;
+        int ii, jj, xCoord, zCoord;
+        float cX, cZ;
+        for(int j = 0; j < n; ++j)
+        {
+            xCoord = i - n;
+            zCoord = n - (n - j) + 1;
+
+            if(isChoppy())
+            {
+                ii = wrap(i+1);
+                index = (ii * n) + j;;
+                cX = m_fft_chopX[index].r;
+                cZ = m_fft_chopZ[index].r;
+            }
+            else
+                cX = cZ = 0.0f;
+
+            ii = wrap(i+1);
+            index = (ii * n) + j;
+            vNorth.x = xCoord + cX;
+            vNorth.y = m_fft_htField[index].r;
+            vNorth.z = zCoord + 1 + cZ;
+
+            if(isChoppy())
+            {
+                ii = wrap(i-1);
+                index = (ii * n) + j;
+                cX = m_fft_chopX[index].r;
+                cZ = m_fft_chopZ[index].r;
+            }
+            else
+                cX = cZ = 0.0f;
+
+            vSouth.x = xCoord + cX;
+            vSouth.y = m_fft_htField[index].r;
+            vSouth.z = zCoord - 1 + cZ;
+
+            if(isChoppy())
+            {
+                jj = wrap(j-1);
+                index = (i * n) + jj;
+                cX = m_fft_chopX[index].r;
+                cZ = m_fft_chopZ[index].r;
+            }
+            else
+                cX = cZ = 0.0f;
+            
+            vEast.x = xCoord - 1 + cX;
+            vEast.y = m_fft_htField[index].r;
+            vEast.z = zCoord + cZ;
+
+            if(isChoppy())
+            {
+                jj = wrap(j+1);
+                index = (i * n) + jj;
+                cX = m_fft_chopX[index].r;
+                cZ = m_fft_chopZ[index].r;
+            }
+            else
+                cX = cZ = 0.0f;
+            
+            vWest.x = xCoord + cX;
+            vWest.y = m_fft_htField[index].r;
+            vWest.z = zCoord + 1 + cZ;
+
+            index = (j * n) + i;
+            
+            if(isChoppy())
+            {
+                cX = m_fft_chopX[index].r;
+                cZ = m_fft_chopZ[index].r;
+            }
+            vCurrent.x = xCoord - cX;
+            vCurrent.y = m_fft_htField[index].r;
+            vCurrent.z = zCoord - cZ;
+
+            vNorth  = vNorth - vCurrent;
+            vSouth  = vSouth - vCurrent;
+            vEast   = vEast - vCurrent; 
+            vWest   = vWest - vCurrent;
+
+            norm1 = vEast.cross(vNorth);
+            norm2 = vWest.cross(vSouth);
+            norm3 = vSouth.cross(vEast);
+            norm4 = vNorth.cross(vWest);
+
+            vector3 normal = (norm1.normalize() + norm2.normalize() + norm3.normalize() + norm4.normalize()) * 0.25f;
+            if(vCurrent.length()==0.0f)
+                norm1.x = norm1.y = norm1.z = 0.f;
+            else
+                norm1 = norm1.normalize();
+
+            m_normalsXY[index].r = norm1.x;
+            m_normalsXY[index].i = norm1.y;
+            m_normalsZ[index].r  = norm1.z;
+        }
+    }
+}
+*/
+
+void aaOcean::getFoamBounds(float& outBoundsMin, float& outBoundsMax)
 {
     outBoundsMax = -FLT_MAX;
     outBoundsMin =  FLT_MAX;
@@ -761,11 +859,10 @@ void aaOcean::getFoamBounds(float& outBoundsMin, float& outBoundsMax) const
     }
 }
 
-void aaOcean::getOceanArray(float *&outArray, aaOcean::arrayType type) const
+void aaOcean::getOceanArray(float *&outArray, aaOcean::arrayType type)
 {
-    // get the pointer to the aaOcean array that we want to pull data from
-    float *arrayPointer = m_arrayPointer[type];
-
+    float *arrayPointer;
+    getArrayType(type, arrayPointer);
     const int arraySize = m_resolution * m_resolution;
 
     #pragma omp parallel for 
@@ -777,9 +874,8 @@ float aaOcean::getOceanData(float uCoord, float vCoord, aaOcean::arrayType type)
 {
     float u, v, du, dv = 0;
     int xMinus1, yMinus1, x, y, xPlus1, yPlus1, xPlus2, yPlus2;
-
-    // get the pointer to the aaOcean array that we want to pull data from
-    float *arrayPointer = m_arrayPointer[type];
+    float *arrayPointer;
+    int arrayIndex;
 
     // maya and softimage V axis runs along negative z axis
     // aaOcean uses convention of V axis along positive z axis
@@ -812,6 +908,9 @@ float aaOcean::getOceanData(float uCoord, float vCoord, aaOcean::arrayType type)
     yPlus1  = wrap(y + 1);
     yPlus2  = wrap(y + 2);
     
+    // get the pointer to the aaOcean array that we want to pull data from
+    getArrayType(type, arrayPointer);
+
     // prepare for catmul-rom interpolation
     const float a1 = catmullRom(du, 
                             arrayPointer[xMinus1    + yMinus1],
@@ -836,7 +935,7 @@ float aaOcean::getOceanData(float uCoord, float vCoord, aaOcean::arrayType type)
                             arrayPointer[x          + yPlus2],
                             arrayPointer[xPlus1     + yPlus2],
                             arrayPointer[xPlus2     + yPlus2]);
-    
+
     float returnValue = catmullRom(dv, a1, b1, c1, d1);
     
     if (type == eFOAM)
@@ -884,4 +983,24 @@ inline int aaOcean::wrap(int x) const
     return x;
 }
 
+void aaOcean::getArrayType(aaOcean::arrayType type, float*& outArray) const
+{
+    // set pointer to the array that we need to interpolate data from
+    if(type == eHEIGHTFIELD)
+        outArray = m_out_fft_htField;
+    else if(type == eCHOPX)
+        outArray = m_out_fft_chopX;
+    else if(type == eCHOPZ)
+        outArray = m_out_fft_chopZ;
+    else if(type == eFOAM)
+        outArray = m_out_fft_jxz;
+    else if(type == eEIGENPLUSX)
+        outArray = m_out_fft_jxxX;
+    else if(type == eEIGENPLUSZ)
+        outArray = m_out_fft_jxxZ;
+    else if(type == eEIGENMINUSX)
+        outArray = m_out_fft_jzzX;
+    else if(type == eEIGENMINUSZ)
+        outArray = m_out_fft_jzzZ;
+}
 #endif  /* AAOCEANCLASS_CPP */

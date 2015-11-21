@@ -10,7 +10,7 @@
 		4A08EA1D1964D33800C15AE7 /* aaOceanClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A1AD52C1964751200693F00 /* aaOceanClass.cpp */; };
 		4A1AD52719646D2800693F00 /* aaOcean_deformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AFBD3BD191E6B5F00181ED4 /* aaOcean_deformer.h */; };
 		4A30ED101B16BEF5004FD98B /* libiomp5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A30ED0F1B16BEF5004FD98B /* libiomp5.dylib */; };
-		4A3660631C01006700E9E15A /* kiss_fftnd.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A36605F1C01006100E9E15A /* kiss_fftnd.c */; };
+		4A3660631C01006700E9E15A /* kiss_fftnd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A36605F1C01006100E9E15A /* kiss_fftnd.cpp */; };
 		4A3660641C01006700E9E15A /* kiss_fftnd.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A3660601C01006100E9E15A /* kiss_fftnd.h */; };
 		4A7B51601618018B0091E644 /* libcommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A7B5132161801040091E644 /* libcommon.a */; };
 		4A89A8061964A38600CE3A3C /* aaOceanClass.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1AD52519645A1500693F00 /* aaOceanClass.h */; };
@@ -43,14 +43,14 @@
 		4AC23C1F1BA208570094083D /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23C091BA208570094083D /* util.cpp */; };
 		4AD9E0DF198D9AB30013A4C6 /* aaOcean_chanmod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9E0DB198D1E5B0013A4C6 /* aaOcean_chanmod.cpp */; };
 		4AD9E0E0198D9AB70013A4C6 /* aaOcean_chanmod.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AD9E0DC198D1E5B0013A4C6 /* aaOcean_chanmod.h */; };
-		4ADD82E21BFB75050098FEA7 /* dSFMT.c in Sources */ = {isa = PBXBuildFile; fileRef = 4ADD82D81BFB74FF0098FEA7 /* dSFMT.c */; };
+		4ADD82E21BFB75050098FEA7 /* dSFMT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4ADD82D81BFB74FF0098FEA7 /* dSFMT.cpp */; };
 		4ADD82E31BFB75050098FEA7 /* dSFMT.h in Headers */ = {isa = PBXBuildFile; fileRef = 4ADD82D91BFB74FF0098FEA7 /* dSFMT.h */; };
 		4ADD82E41BFB75050098FEA7 /* dSFMT-common.h in Headers */ = {isa = PBXBuildFile; fileRef = 4ADD82DA1BFB74FF0098FEA7 /* dSFMT-common.h */; };
 		4ADD82E51BFB75050098FEA7 /* dSFMT-params.h in Headers */ = {isa = PBXBuildFile; fileRef = 4ADD82DB1BFB74FF0098FEA7 /* dSFMT-params.h */; };
 		4ADD82E61BFB75050098FEA7 /* dSFMT-params19937.h in Headers */ = {isa = PBXBuildFile; fileRef = 4ADD82DC1BFB74FF0098FEA7 /* dSFMT-params19937.h */; };
 		4ADD82E91BFB75270098FEA7 /* libdsFMT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ADD82D41BFB74F10098FEA7 /* libdsFMT.a */; };
 		4ADD82F91BFB75710098FEA7 /* _kiss_fft_guts.h in Headers */ = {isa = PBXBuildFile; fileRef = 4ADD82F31BFB756C0098FEA7 /* _kiss_fft_guts.h */; };
-		4ADD82FA1BFB75710098FEA7 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 4ADD82F41BFB756C0098FEA7 /* kiss_fft.c */; };
+		4ADD82FA1BFB75710098FEA7 /* kiss_fft.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4ADD82F41BFB756C0098FEA7 /* kiss_fft.cpp */; };
 		4ADD82FB1BFB75710098FEA7 /* kiss_fft.h in Headers */ = {isa = PBXBuildFile; fileRef = 4ADD82F51BFB756C0098FEA7 /* kiss_fft.h */; };
 		4ADD82FE1BFB75960098FEA7 /* libkiss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ADD82EE1BFB75510098FEA7 /* libkiss.a */; };
 		4AFBD3C4191E6B5F00181ED4 /* aaOcean_command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBD3BA191E6B5F00181ED4 /* aaOcean_command.cpp */; };
@@ -97,8 +97,8 @@
 		4A1AD52519645A1500693F00 /* aaOceanClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aaOceanClass.h; path = dependencies/aaOcean/aaOceanClass.h; sourceTree = SOURCE_ROOT; };
 		4A1AD52C1964751200693F00 /* aaOceanClass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = aaOceanClass.cpp; path = dependencies/aaOcean/aaOceanClass.cpp; sourceTree = SOURCE_ROOT; };
 		4A30ED0F1B16BEF5004FD98B /* libiomp5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiomp5.dylib; path = ../../../../../../usr/local/Cellar/libiomp/20150701/lib/libiomp5.dylib; sourceTree = "<group>"; };
-		4A36605F1C01006100E9E15A /* kiss_fftnd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fftnd.c; path = dependencies/helpers/kissfft/tools/kiss_fftnd.c; sourceTree = "<group>"; };
-		4A3660601C01006100E9E15A /* kiss_fftnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kiss_fftnd.h; path = dependencies/helpers/kissfft/tools/kiss_fftnd.h; sourceTree = "<group>"; };
+		4A36605F1C01006100E9E15A /* kiss_fftnd.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = kiss_fftnd.cpp; path = dependencies/helpers/kissfft/tools/kiss_fftnd.cpp; sourceTree = "<group>"; };
+		4A3660601C01006100E9E15A /* kiss_fftnd.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = kiss_fftnd.h; path = dependencies/helpers/kissfft/tools/kiss_fftnd.h; sourceTree = "<group>"; };
 		4A7B5132161801040091E644 /* libcommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcommon.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AA1DDE6198C5193008C6D2E /* aaOcean_init.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = aaOcean_init.cpp; sourceTree = "<group>"; };
 		4AA1DDE7198C5193008C6D2E /* aaOcean_init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aaOcean_init.h; sourceTree = "<group>"; };
@@ -129,15 +129,15 @@
 		4AD9E0DB198D1E5B0013A4C6 /* aaOcean_chanmod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = aaOcean_chanmod.cpp; sourceTree = "<group>"; };
 		4AD9E0DC198D1E5B0013A4C6 /* aaOcean_chanmod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aaOcean_chanmod.h; sourceTree = "<group>"; };
 		4ADD82D41BFB74F10098FEA7 /* libdsFMT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libdsFMT.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4ADD82D81BFB74FF0098FEA7 /* dSFMT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dSFMT.c; path = dependencies/helpers/dSFMT/dSFMT.c; sourceTree = "<group>"; };
-		4ADD82D91BFB74FF0098FEA7 /* dSFMT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dSFMT.h; path = dependencies/helpers/dSFMT/dSFMT.h; sourceTree = "<group>"; };
-		4ADD82DA1BFB74FF0098FEA7 /* dSFMT-common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "dSFMT-common.h"; path = "dependencies/helpers/dSFMT/dSFMT-common.h"; sourceTree = "<group>"; };
-		4ADD82DB1BFB74FF0098FEA7 /* dSFMT-params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "dSFMT-params.h"; path = "dependencies/helpers/dSFMT/dSFMT-params.h"; sourceTree = "<group>"; };
-		4ADD82DC1BFB74FF0098FEA7 /* dSFMT-params19937.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "dSFMT-params19937.h"; path = "dependencies/helpers/dSFMT/dSFMT-params19937.h"; sourceTree = "<group>"; };
+		4ADD82D81BFB74FF0098FEA7 /* dSFMT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dSFMT.cpp; path = dependencies/helpers/dSFMT/dSFMT.cpp; sourceTree = "<group>"; };
+		4ADD82D91BFB74FF0098FEA7 /* dSFMT.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = dSFMT.h; path = dependencies/helpers/dSFMT/dSFMT.h; sourceTree = "<group>"; };
+		4ADD82DA1BFB74FF0098FEA7 /* dSFMT-common.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "dSFMT-common.h"; path = "dependencies/helpers/dSFMT/dSFMT-common.h"; sourceTree = "<group>"; };
+		4ADD82DB1BFB74FF0098FEA7 /* dSFMT-params.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "dSFMT-params.h"; path = "dependencies/helpers/dSFMT/dSFMT-params.h"; sourceTree = "<group>"; };
+		4ADD82DC1BFB74FF0098FEA7 /* dSFMT-params19937.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "dSFMT-params19937.h"; path = "dependencies/helpers/dSFMT/dSFMT-params19937.h"; sourceTree = "<group>"; };
 		4ADD82EE1BFB75510098FEA7 /* libkiss.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libkiss.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4ADD82F31BFB756C0098FEA7 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = dependencies/helpers/kissfft/_kiss_fft_guts.h; sourceTree = "<group>"; };
-		4ADD82F41BFB756C0098FEA7 /* kiss_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fft.c; path = dependencies/helpers/kissfft/kiss_fft.c; sourceTree = "<group>"; };
-		4ADD82F51BFB756C0098FEA7 /* kiss_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kiss_fft.h; path = dependencies/helpers/kissfft/kiss_fft.h; sourceTree = "<group>"; };
+		4ADD82F31BFB756C0098FEA7 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = _kiss_fft_guts.h; path = dependencies/helpers/kissfft/_kiss_fft_guts.h; sourceTree = "<group>"; };
+		4ADD82F41BFB756C0098FEA7 /* kiss_fft.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = kiss_fft.cpp; path = dependencies/helpers/kissfft/kiss_fft.cpp; sourceTree = "<group>"; };
+		4ADD82F51BFB756C0098FEA7 /* kiss_fft.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = kiss_fft.h; path = dependencies/helpers/kissfft/kiss_fft.h; sourceTree = "<group>"; };
 		4AED76B6161800A400588EB3 /* libaaOceanModo.lx */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libaaOceanModo.lx; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AFBD3BA191E6B5F00181ED4 /* aaOcean_command.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = aaOcean_command.cpp; sourceTree = "<group>"; };
 		4AFBD3BB191E6B5F00181ED4 /* aaOcean_command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aaOcean_command.h; sourceTree = "<group>"; };
@@ -184,7 +184,7 @@
 		4ADD82CF1BFB74DC0098FEA7 /* dsFMT */ = {
 			isa = PBXGroup;
 			children = (
-				4ADD82D81BFB74FF0098FEA7 /* dSFMT.c */,
+				4ADD82D81BFB74FF0098FEA7 /* dSFMT.cpp */,
 				4ADD82D91BFB74FF0098FEA7 /* dSFMT.h */,
 				4ADD82DA1BFB74FF0098FEA7 /* dSFMT-common.h */,
 				4ADD82DB1BFB74FF0098FEA7 /* dSFMT-params.h */,
@@ -196,10 +196,10 @@
 		4ADD82F21BFB75570098FEA7 /* kiss */ = {
 			isa = PBXGroup;
 			children = (
-				4A36605F1C01006100E9E15A /* kiss_fftnd.c */,
+				4A36605F1C01006100E9E15A /* kiss_fftnd.cpp */,
 				4A3660601C01006100E9E15A /* kiss_fftnd.h */,
 				4ADD82F31BFB756C0098FEA7 /* _kiss_fft_guts.h */,
-				4ADD82F41BFB756C0098FEA7 /* kiss_fft.c */,
+				4ADD82F41BFB756C0098FEA7 /* kiss_fft.cpp */,
 				4ADD82F51BFB756C0098FEA7 /* kiss_fft.h */,
 			);
 			name = kiss;
@@ -474,7 +474,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4ADD82E21BFB75050098FEA7 /* dSFMT.c in Sources */,
+				4ADD82E21BFB75050098FEA7 /* dSFMT.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,8 +482,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A3660631C01006700E9E15A /* kiss_fftnd.c in Sources */,
-				4ADD82FA1BFB75710098FEA7 /* kiss_fft.c in Sources */,
+				4A3660631C01006700E9E15A /* kiss_fftnd.cpp in Sources */,
+				4ADD82FA1BFB75710098FEA7 /* kiss_fft.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

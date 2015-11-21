@@ -5,6 +5,7 @@
  *
  * @author Mutsuo Saito (Hiroshima University)
  * @author Makoto Matsumoto (Hiroshima University)
+ // Copyright (C) 2000 - 2009, Richard J. Wagner (for gaussian distribution)
  *
  * Copyright (C) 2007,2008 Mutsuo Saito, Makoto Matsumoto and Hiroshima
  * University. All rights reserved.
@@ -16,6 +17,7 @@
 #include <stdlib.h>
 #include "dSFMT-params.h"
 #include "dSFMT-common.h"
+#include <math.h>
 
 #if defined(__cplusplus)
 extern "C" {
@@ -551,7 +553,6 @@ void dsfmt_chk_init_gen_rand(dsfmt_t *dsfmt, uint32_t seed, int mexp) {
  * @param key_length the length of init_key.
  * @param mexp caller's mersenne expornent
  */
-
 void dsfmt_chk_init_by_array(dsfmt_t *dsfmt, uint32_t init_key[],
 			     int key_length, int mexp) {
     int i, j, count;
@@ -626,23 +627,49 @@ void dsfmt_chk_init_by_array(dsfmt_t *dsfmt, uint32_t init_key[],
     dsfmt->idx = DSFMT_N64;
 }
 
-    /*
 // custom additions for aaocean
 // convets uniformly distributed rands to gaussian distribution
-double gaussian(dsfmt_t dsfmt, const double mean, const double variance)// = 0.0, const double variance = 1.0)
+// Copyright (C) 2000 - 2009, Richard J. Wagner
+double gaussian(dsfmt_t &dsfmt, const double& mean, const double& variance, bool boxMuller)
 {
-    double rand1 = dsfmt_genrand_open_open(&dsfmt);
-    double rand2 = dsfmt_genrand_close_open(&dsfmt);
-    double r = sqrt( -2.0 * log( 1.0 - rand1) ) * variance; 
-    double phi = 2.0 * 3.14159265358979323846 * rand2;
-    return mean + r * cos(phi);
+    if(!boxMuller)
+    {
+        double rand1 = dsfmt_genrand_open_open(&dsfmt);
+        double rand2 = dsfmt_genrand_close_open(&dsfmt);
+        double r = sqrt( -2.0 * log( 1.0 - rand1) ) * variance; 
+        double phi = 2.0 * 3.14159265358979323846 * rand2;
+        return mean + r * cos(phi);
+    }
+    else
+    {
+        double x1, x2, w, y1;
+    {
+        do {
+            x1 = 2.0 * dsfmt_genrand_open_open(&dsfmt) - 1.0;
+            x2 = 2.0 * dsfmt_genrand_open_open(&dsfmt) - 1.0;
+            w = x1 * x1 + x2 * x2;
+        } while ( w >= 1.0 );
+
+        w = sqrt( (-2.0 * log( w ) ) / w );
+        y1 = x1 * w;
+    }
+
+    return( mean + y1 * variance );
+    }
 }
-*/
+
 // uniformly distributed rands with remapped interval
-double uniform(dsfmt_t dsfmt)
+double uniform(dsfmt_t &dsfmt)
 {
+    // generate [0,1] uniform rands
     double rand = dsfmt_genrand_open_open(&dsfmt);
-    rand = (rand * 2.0) - 1.0;
+
+    // shift to [-1,1] range
+    rand = ((rand * 2.0) - 1.0);
+
+    //shift to [-2,2] to match gaussian heights
+    rand *= 2.0;
+
     return rand;
 }
 
@@ -653,3 +680,4 @@ double uniform(dsfmt_t dsfmt)
 #if defined(__cplusplus)
 }
 #endif
+
