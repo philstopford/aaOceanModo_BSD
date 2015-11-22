@@ -124,7 +124,10 @@ LxResult CPackage::pkg_SetupChannels(ILxUnknownID addChan)
     ac.NewChannel  ("doNormals",	LXsTYPE_INTEGER);
 	ac.SetDefault  (0.0, 0);
 
-	return LXe_OK;
+    ac.NewChannel  ("randWeight",	LXsTYPE_FLOAT);
+    ac.SetDefault  (0.0f, 0);
+
+    return LXe_OK;
 }
 
 /*
@@ -165,7 +168,9 @@ void CChanState::buildOcean()
                     waveChop,
                     time,
                     repeatTime,
-                    doFoam);
+                    doFoam,
+                    randWeight);
+    m_pOcean->clearResidualArrays();
 }
 
 void CChanState::setUpOceanPtrs(aaOcean *ocean)
@@ -194,6 +199,7 @@ void CChanState::Attach (CLxUser_Evaluation	&eval, ILxUnknownID item)
 	eval.AddChan (item, "repeatTime");
 	eval.AddChan (item, "doFoam");
 	eval.AddChan (item, "doNormals");
+    eval.AddChan (item, "randWeight");
 
 	eval.AddTime ();
 
@@ -212,9 +218,9 @@ void CChanState::Read (CLxUser_Attributes &attr, unsigned index)
         tone = attr.Bool (index++);
 
         resolution  = attr.Int  (index++);
-		if(resolution > 12)
+		if(resolution > 14)
         {
-            resolution = 12;
+            resolution = 14;
         }
         if(resolution < 4)
         {
@@ -240,6 +246,15 @@ void CChanState::Read (CLxUser_Attributes &attr, unsigned index)
 		repeatTime = attr.Float (index++);
 		doFoam  = attr.Bool(index++);
 		doNormals  = attr.Bool  (index++);
+        randWeight  = attr.Float  (index++);
+        if(randWeight > 1.0f)
+        {
+            randWeight = 1;
+        }
+        if(randWeight < 0)
+        {
+            randWeight = 0.0f;
+        }
 		
 		time = attr.Float (index++);
 
@@ -266,7 +281,6 @@ bool CInfluence::SelectMap (CLxUser_Mesh &mesh, CLxUser_MeshMap &map)
         gotUvs = true;
     }
 
-
     return false;
 }
 
@@ -285,42 +299,6 @@ void CInfluence::Offset (CLxUser_Point &point, float weight, LXtFVector	offset)
     // This approach appears to result in a better ocean characteristic.
     p[1] = -(float)posF[2];
 
-    // Maya code for reference :
-	// get height field
-    /*
-	worldSpaceVec[1] = pOcean->getOceanData(u[i], v[i], aaOcean::eHEIGHTFIELD);
-	if(pOcean->isChoppy())
-	{
-		// get x and z displacement
-		worldSpaceVec[0] = pOcean->getOceanData(u[i], v[i], aaOcean::eCHOPX);
-		worldSpaceVec[2] = pOcean->getOceanData(u[i], v[i], aaOcean::eCHOPZ);
-        
-		if(foam)
-		{
-			if(foundEigenVector)
-			{
-				r = pOcean->getOceanData(u[i], v[i], aaOcean::eEIGENMINUSX);
-				g = pOcean->getOceanData(u[i], v[i], aaOcean::eEIGENMINUSZ);
-				b = pOcean->getOceanData(u[i], v[i], aaOcean::eEIGENPLUSX);
-				a = pOcean->getOceanData(u[i], v[i], aaOcean::eEIGENPLUSZ);
-				colArrayEigenVector.set(i, r, g, b, a);
-			}
-			if(foundEigenValue)
-			{
-				if(invert)
-					r = 1.0f - pOcean->getOceanData(u[i], v[i], aaOcean::eFOAM);
-				else
-					r = pOcean->getOceanData(u[i], v[i], aaOcean::eFOAM);
-                
-				colArrayEigenValue.set(i, r, r, r);
-			}
-		}
-	}
-    
-	localSpaceVec = worldSpaceVec * transform;
-	verts[i] += localSpaceVec;
-    */
-    
     // We need to scale our coordinates by the ocean size since aaOcean expects 0-1 ranges incoming (it was built as a texture)
     // Let's get the Y displacement first
 
@@ -384,6 +362,7 @@ LxResult CModifierElement::EvalCache (CLxUser_Evaluation &eval, CLxUser_Attribut
     doFoam = infl->cur.doFoam;
     doNormals = infl->cur.doNormals;
     seed = infl->cur.seed;
+    randWeight = infl->cur.randWeight;
 
     pOcean->input(	resolution,
                     (unsigned long)seed,
@@ -400,7 +379,8 @@ LxResult CModifierElement::EvalCache (CLxUser_Evaluation &eval, CLxUser_Attribut
                     waveChop,
                     infl->cur.time,
                     repeatTime,
-                    doFoam);
+                    doFoam,
+                    randWeight);
     infl->cur.setUpOceanPtrs(pOcean);
 
     if (prev)

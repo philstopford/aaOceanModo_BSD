@@ -187,6 +187,12 @@ aaOceanChanMod::cmod_Allocate (
         cm_idx_foamRange = index;
         index++;
 
+        // Lookup the index of the 'randWeight' channel and add as an input.
+        modItem.ChannelLookup ("randWeight", &m_idx_randWeight);
+        chanMod.AddInput (item, m_idx_randWeight);
+        cm_idx_randWeight = index;
+        index++;
+
         chanMod.AddTime ();
         cm_idx_time = index;
 
@@ -349,6 +355,11 @@ aaOceanChanMod::cmod_Flags (
         }
 
         if (LXx_OK (modItem.ChannelLookup ("foamRange", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+
+        if (LXx_OK (modItem.ChannelLookup ("randWeight", &chanIdx))) {
             if (index == chanIdx)
                 return LXfCHMOD_INPUT;
         }
@@ -517,6 +528,17 @@ aaOceanChanMod::cmod_Evaluate (
     chanMod.ReadInputFloat (attr, cm_idx_repeatTime, &dTemp);
     newOceanData->m_repeatTime = (float) dTemp;
 
+    chanMod.ReadInputFloat (attr, cm_idx_randWeight, &dTemp);
+    newOceanData->m_randWeight = (float) dTemp;
+    if(newOceanData->m_randWeight > 1)
+    {
+        newOceanData->m_randWeight = 1.0f;
+    }
+    if(newOceanData->m_randWeight < 0.0f)
+    {
+        newOceanData->m_randWeight = 0.0f;
+    }
+
     newOceanData->m_doNormals = false;
 
     chanMod.ReadInputFloat (attr, cm_idx_time, &dTemp);
@@ -594,9 +616,12 @@ void aaOceanChanMod::maybeResetOceanData(std::unique_ptr<OceanData> newOceanData
                            oceanData_->m_waveChop,
                            oceanData_->m_time,
                            oceanData_->m_repeatTime,
-                           oceanData_->m_doFoam);
+                           oceanData_->m_doFoam,
+                           oceanData_->m_randWeight);
             mOcean_.m_foamBoundrange = oceanData_->foamRange;
             mOcean_.m_foamBoundmax = oceanData_->foamMax;
+            // clear arrays that are not required during shader evaluation
+            mOcean_.clearResidualArrays();
         }
     }
 }
@@ -702,6 +727,9 @@ aaOceanChanModPackage::pkg_SetupChannels (
 
         ac.NewChannel  ("foamRange",	LXsTYPE_FLOAT);
         ac.SetDefault  (1000.0f, 0);
+
+        ac.NewChannel  ("randWeight",	LXsTYPE_FLOAT);
+        ac.SetDefault  (0.0f, 0);
 
         // Output channels below, this being defined in Flags and Allocate.
 

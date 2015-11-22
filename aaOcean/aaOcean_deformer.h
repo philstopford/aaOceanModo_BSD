@@ -92,6 +92,7 @@ class CChanState : public CLxObject
         float repeatTime; // default is 1000.0
         bool doFoam; // default is FALSE for now.
         bool doNormals; // default is FALSE
+        float randWeight; // default is 0.0f and limited to 0-1
 
         aaOcean *m_pOcean;
 
@@ -144,6 +145,7 @@ class CModifierElement : public CLxItemModifierElement
         float repeatTime; // default is 1000.0
         bool doFoam;
         bool doNormals;
+        float randWeight; // default is 0.0f and limited to 0-1
 
 		CModifierElement()
 		{
@@ -165,6 +167,7 @@ class CModifierElement : public CLxItemModifierElement
             repeatTime = 1000.0; // default is 1000.0
             doFoam = bool(0);
             doNormals = bool(1);
+            randWeight = 0.0f;
 		}
 
 		~CModifierElement()

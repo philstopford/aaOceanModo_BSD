@@ -141,6 +141,9 @@ LxResult aaOceanTexture::vtx_SetupChannels (ILxUnknownID addChan)
     ac.NewChannel  ("foamMax",	LXsTYPE_FLOAT);
     ac.SetDefault  (1000.0f, 0);
     
+    ac.NewChannel  ("randWeight",	LXsTYPE_FLOAT);
+    ac.SetDefault  (0.0f, 0);
+
     //ac.NewChannel("div", LXsTYPE_FLOAT);
     //ac.SetDefault(50.0f, 0);
     
@@ -174,6 +177,7 @@ LxResult aaOceanTexture::vtx_LinkChannels (ILxUnknownID eval, ILxUnknownID	item)
     m_idx_doFoam = ev.AddChan(item, "doFoam");
     m_idx_foamRange = ev.AddChan(item, "foamRange");
     m_idx_foamMax = ev.AddChan(item, "foamMax");
+    m_idx_randWeight = ev.AddChan(item, "randWeight");
     //m_idx_div = ev.AddChan(item, "div");
     
     // m_idx_time = ev.AddChan (item, "time");
@@ -245,6 +249,15 @@ LxResult aaOceanTexture::vtx_ReadChannels(ILxUnknownID attr, void  **ppvData)
     newOceanData->foamRange = at.Float(m_idx_foamRange);
     newOceanData->foamMax = at.Float(m_idx_foamMax);
     newOceanData->m_doNormals = false; // disabled due to Vector issues (bool) at.Int(m_idx_doNormals);
+    newOceanData->m_randWeight = at.Float(m_idx_randWeight);
+    if(newOceanData->m_randWeight > 1)
+    {
+        newOceanData->m_randWeight = 1.0f;
+    }
+    if(newOceanData->m_randWeight < 0)
+    {
+        newOceanData->m_randWeight = 0.0f;
+    }
     
     newOceanData->m_time = at.Float(m_idx_time);
     
@@ -277,9 +290,12 @@ void aaOceanTexture::maybeResetOceanData(std::unique_ptr<OceanData> newOceanData
                           oceanData_->m_waveChop * 200,
                           oceanData_->m_time,
                           oceanData_->m_repeatTime,
-                          oceanData_->m_doFoam);
+                          oceanData_->m_doFoam,
+                          oceanData_->m_randWeight);
             mOcean_.m_foamBoundrange = oceanData_->foamRange;
             mOcean_.m_foamBoundmax = oceanData_->foamMax;
+            // clear arrays that are not required during shader evaluation
+            mOcean_.clearResidualArrays();
         }
     }
 }

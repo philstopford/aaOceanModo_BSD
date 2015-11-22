@@ -43,6 +43,7 @@ class OceanData {
         float m_time;
         float foamMax;
         float foamRange;
+        float m_randWeight; // default is 0.0f and limited to 0-1
 		//float m_div;
 
         bool operator == (const OceanData &oceanData) const {
@@ -63,7 +64,8 @@ class OceanData {
                     this->m_doNormals == oceanData.m_doNormals &&
                     this->m_time == oceanData.m_time &&
                     this->foamMax == oceanData.foamMax &&
-                    this->foamRange == oceanData.foamRange
+                    this->foamRange == oceanData.foamRange &&
+                    this->m_randWeight == oceanData.m_randWeight
 					//this->m_div == oceanData.m_div
                     ); // Check all the other values.
         }
@@ -141,28 +143,8 @@ class aaOceanTexture : public CLxImpl_ValueTexture
         unsigned m_idx_foamMax;
         unsigned m_idx_doNormals;
 		unsigned m_idx_time;
+        unsigned m_idx_randWeight;
 		//unsigned m_idx_div;
-
-        int m_outputTypeCache;
-        int		m_resolutionCache;
-        float m_oceanSizeCache;
-        float m_waveHeightCache;
-        float m_waveSizeCache;
-        float m_surfaceTensionCache;
-        int m_waveAlignCache;
-        float m_waveSmoothCache;
-        float m_waveDirectionCache;
-        float m_waveReflectionCache;
-        float m_waveSpeedCache;
-        float m_waveChopCache;
-        float m_oceanDepthCache;
-        float m_seedCache;
-        float m_foamMaxCache;
-        float m_foamRangeCache;
-        float m_repeatTimeCache;
-        bool m_doFoamCache;
-        bool m_doNormalsCache;
-        float m_timeCache;
     
         float dispAmplitude;
 
