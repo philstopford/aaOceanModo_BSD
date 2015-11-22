@@ -15,42 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aaOcean\aaOcean_chanmod.h">
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\dependencies\helpers\kissfft\_kiss_fft_guts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="aaOcean\aaOcean_command.h">
+    <ClInclude Include="..\dependencies\helpers\kissfft\kiss_fft.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="aaOcean\aaOcean_deformer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="aaOcean\aaOcean_init.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="aaOcean\aaOcean_texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\aaOcean\aaOceanClass.h">
+    <ClInclude Include="..\dependencies\helpers\kissfft\tools\kiss_fftnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="aaOcean\aaOcean_chanmod.cpp">
+    <ClCompile Include="..\dependencies\helpers\kissfft\tools\kiss_fftnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="aaOcean\aaOcean_command.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="aaOcean\aaOcean_deformer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="aaOcean\aaOcean_init.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="aaOcean\aaOcean_texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\aaOcean\aaOceanClass.cpp">
+    <ClCompile Include="..\dependencies\helpers\kissfft\kiss_fft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

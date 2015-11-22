@@ -1,14 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aaOcean", "aaOcean.vcxproj", "{8CCF5321-661C-4792-A40D-664F3EB0391A}"
 	ProjectSection(ProjectDependencies) = postProject
+		{3045EC54-BFD9-40E3-89F0-B24104CE28FF} = {3045EC54-BFD9-40E3-89F0-B24104CE28FF}
 		{20CD56C9-C65F-437D-82B6-D9F69B03453A} = {20CD56C9-C65F-437D-82B6-D9F69B03453A}
+		{0933B6EB-63D2-4F85-887A-100C4BBBD9BD} = {0933B6EB-63D2-4F85-887A-100C4BBBD9BD}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commonLib", "commonLib\commonLib.vcxproj", "{20CD56C9-C65F-437D-82B6-D9F69B03453A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dsFMT", "dsFMT\dsFMT.vcxproj", "{0933B6EB-63D2-4F85-887A-100C4BBBD9BD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kiss", "kiss\kiss.vcxproj", "{3045EC54-BFD9-40E3-89F0-B24104CE28FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +40,22 @@ Global
 		{20CD56C9-C65F-437D-82B6-D9F69B03453A}.Release|Win32.Build.0 = Release|Win32
 		{20CD56C9-C65F-437D-82B6-D9F69B03453A}.Release|x64.ActiveCfg = Release|x64
 		{20CD56C9-C65F-437D-82B6-D9F69B03453A}.Release|x64.Build.0 = Release|x64
+		{0933B6EB-63D2-4F85-887A-100C4BBBD9BD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0933B6EB-63D2-4F85-887A-100C4BBBD9BD}.Debug|Win32.Build.0 = Debug|Win32
+		{0933B6EB-63D2-4F85-887A-100C4BBBD9BD}.Debug|x64.ActiveCfg = Debug|x64
+		{0933B6EB-63D2-4F85-887A-100C4BBBD9BD}.Debug|x64.Build.0 = Debug|x64
+		{0933B6EB-63D2-4F85-887A-100C4BBBD9BD}.Release|Win32.ActiveCfg = Release|Win32
+		{0933B6EB-63D2-4F85-887A-100C4BBBD9BD}.Release|Win32.Build.0 = Release|Win32
+		{0933B6EB-63D2-4F85-887A-100C4BBBD9BD}.Release|x64.ActiveCfg = Release|x64
+		{0933B6EB-63D2-4F85-887A-100C4BBBD9BD}.Release|x64.Build.0 = Release|x64
+		{3045EC54-BFD9-40E3-89F0-B24104CE28FF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3045EC54-BFD9-40E3-89F0-B24104CE28FF}.Debug|Win32.Build.0 = Debug|Win32
+		{3045EC54-BFD9-40E3-89F0-B24104CE28FF}.Debug|x64.ActiveCfg = Debug|x64
+		{3045EC54-BFD9-40E3-89F0-B24104CE28FF}.Debug|x64.Build.0 = Debug|x64
+		{3045EC54-BFD9-40E3-89F0-B24104CE28FF}.Release|Win32.ActiveCfg = Release|Win32
+		{3045EC54-BFD9-40E3-89F0-B24104CE28FF}.Release|Win32.Build.0 = Release|Win32
+		{3045EC54-BFD9-40E3-89F0-B24104CE28FF}.Release|x64.ActiveCfg = Release|x64
+		{3045EC54-BFD9-40E3-89F0-B24104CE28FF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

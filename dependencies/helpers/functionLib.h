@@ -65,6 +65,7 @@ inline long int_sqrt(long r) // paul bourke
    return(c);
 }
 
+/*
 inline int round(float x)
 {
    return  (int)(x > 0.0f ? x + 0.5f : x - 0.5f);
@@ -77,6 +78,7 @@ inline bool isInt(float a)
     else
         return false;
 }
+*/
 
 inline float rescale(const float& value, const float& oldMin, const float& oldMax, const float& newMin, const float& newMax)
 {
