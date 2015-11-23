@@ -170,7 +170,8 @@ void CChanState::buildOcean()
                     repeatTime,
                     doFoam,
                     randWeight);
-    m_pOcean->clearResidualArrays();
+	// Disabled as this crashes the library - yay.
+	// m_pOcean->clearResidualArrays();
 }
 
 void CChanState::setUpOceanPtrs(aaOcean *ocean)

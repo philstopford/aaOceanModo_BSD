@@ -621,7 +621,8 @@ void aaOceanChanMod::maybeResetOceanData(std::unique_ptr<OceanData> newOceanData
             mOcean_.m_foamBoundrange = oceanData_->foamRange;
             mOcean_.m_foamBoundmax = oceanData_->foamMax;
             // clear arrays that are not required during shader evaluation
-            mOcean_.clearResidualArrays();
+			// Disabled as this crashes the library - yay.
+			// mOcean_.clearResidualArrays();
         }
     }
 }
