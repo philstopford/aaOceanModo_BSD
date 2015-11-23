@@ -19,9 +19,9 @@ namespace aaOceanDeformer {	// disambiguate everything with a namespace
 
 // std::mutex myMutex; // global variable
 
-#define SRVNAME_ITEMTYPE		"aaOceanDeform"
-#define SRVNAME_MODIFIER		"aaOceanDeform"
-#define SPWNAME_INSTANCE		"aaOcean.inst"
+#define SRVNAME_ITEMTYPE		"aaOceanBSDDeform"
+#define SRVNAME_MODIFIER		"aaOceanBSDDeform"
+#define SPWNAME_INSTANCE		"aaOceanBSD.inst"
 #define Cs_MORPH_MAPNAME		LXsICHAN_MORPHDEFORM_MAPNAME
 #define Cs_WEIGHT_MAPNAME       LXsICHAN_WEIGHTCONTAINER_WEIGHTMAP
     

@@ -41,7 +41,7 @@ LXtTagInfoDesc CPackage::descInfo[] = {
         { LXsPKG_SUPERTYPE,		LXsITYPE_LOCDEFORM	},
         { LXsPKG_DEFORMER_CHANNEL,	LXsICHAN_MORPHDEFORM_MESHINF },
         { LXsPKG_DEFORMER_FLAGS,	"+WX"			},	// no weight, no xfrm
-        { LXsPKG_DEFORMER_CREATECMD,	"aaOcean.create"	},
+        { LXsPKG_DEFORMER_CREATECMD,	"aaOceanBSD.create"	},
         { 0 }
 };
 

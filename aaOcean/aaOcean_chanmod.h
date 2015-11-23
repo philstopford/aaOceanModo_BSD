@@ -17,7 +17,7 @@ namespace aaOceanChanModNameSpace {
 class aaOceanChanModLog : public CLxLuxologyLogMessage
 {
     public:
-        aaOceanChanModLog () : CLxLuxologyLogMessage ("aaOceanChanMod") { }
+        aaOceanChanModLog () : CLxLuxologyLogMessage ("aaOceanBSDChanMod") { }
 
         const char *	 GetFormat  () { return "aaOcean for Modo Channel modifier"; }
 };
@@ -217,7 +217,7 @@ class aaOceanChanModPackage : public CLxImpl_Package
         srv = new CLxPolymorph<aaOceanChanModPackage>;
         srv->AddInterface (new CLxIfc_Package          <aaOceanChanModPackage>);
         srv->AddInterface (new CLxIfc_StaticDesc       <aaOceanChanModPackage>);
-        lx::AddServer ("aaOceanChanMod", srv);
+        lx::AddServer ("aaOceanBSDChanMod", srv);
     }
 
 }

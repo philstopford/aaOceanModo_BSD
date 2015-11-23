@@ -41,7 +41,7 @@ aaOceanChanMod::pins_SynthName (
         char			*buf,
         unsigned		 len)
 {
-        std::string name ("aaOceanChanMod");
+        std::string name ("aaOceanBSDChanMod");
         size_t count = name.size () + 1;
         if (count > len) {
                 count = len;
@@ -630,7 +630,7 @@ void aaOceanChanMod::maybeResetOceanData(std::unique_ptr<OceanData> newOceanData
 
 LXtTagInfoDesc	 aaOceanChanModPackage::descInfo[] = {
         { LXsPKG_SUPERTYPE,	"chanModify"	},
-        { LXsSRV_LOGSUBSYSTEM,	"aaOceanChanMod"	},
+        { LXsSRV_LOGSUBSYSTEM,	"aaOceanBSDChanMod"	},
         { 0 }
 };
 

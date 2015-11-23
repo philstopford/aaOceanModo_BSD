@@ -157,7 +157,7 @@ class aaOceanTexture : public CLxImpl_ValueTexture
         srv->AddInterface (new CLxIfc_ValueTexture<aaOceanTexture>);
         //srv->AddInterface (new CLxIfc_ChannelUI   <aaOceanTexture>);
         srv->AddInterface (new CLxIfc_StaticDesc  <aaOceanTexture>);
-        lx::AddServer ("aaOcean.texture", srv);
+        lx::AddServer ("aaOceanBSD.texture", srv);
     }
 
 }

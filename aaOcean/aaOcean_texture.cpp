@@ -9,12 +9,12 @@
 using namespace aaOceanTextureNamespace;
 
 LXtTagInfoDesc	 aaOceanTexture::descInfo[] = {
-    { LXsSRV_USERNAME,	"aaOcean Texture" },
+    { LXsSRV_USERNAME,	"aaOceanBSD Texture" },
     { LXsSRV_LOGSUBSYSTEM,	"val-texture"	},
     { 0 }
 };
 
-#define SRVs_TEXTURE		"aaOcean.texture"
+#define SRVs_TEXTURE		"aaOceanBSD.texture"
 #define SRVs_ITEMTYPE		SRVs_TEXTURE
 // OS X defines this. MSVC doesn't.
 #ifndef M_PI
@@ -357,62 +357,65 @@ void aaOceanTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID vec
     // The intent of tInpDsp->enable isn't entirely clear. The docs, such as they are, indicate that the texture should set this when outputting displacement.
     tInpDsp->enable = true;
     
+    result[1] = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eHEIGHTFIELD);/* +w_oPos;*/
+    if (mOcean_.isChoppy())
+    {
+        result[0] = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eCHOPX);
+        result[2] = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eCHOPZ);
+    } else {
+        result[0] = 0.0;
+        result[2] = 0.0;
+    }
+        
+    // This is the new position we want to apply in world space
+    CLxVector destPosition(result[0], result[1], result[2]);
+    double len = CLxVector(destPosition - CLxVector(sPosition->oPos)).length();
+    //CLxVector destPosition(0, 0.1, 0);
+    
+    CLxMatrix4 positionMatrix = CLxMatrix4();
+    
+    // This is to avoid clipping. Not sure if this is the correct parameter to use for the purpose.
+    // I eyeballed the scaling value of 141, it seems to match the deformer. Not sure where the difference comes from
+    // This effectively ignores the "Displacement Distance" value and removes the clipping if big enough.
+    
+    // object position used here as the ocean wraps to the ocean tile size, so the remainder is the object coordinate.
+    
+    positionMatrix.setTranslation((destPosition - CLxVector(sPosition->oPos)) / (dispAmplitude * 141.0f) );
+    
+    CLxMatrix4 matResult = positionMatrix * tangentMatrix.inverse();
+    
+    CLxVector outVector = matResult.getTranslation();
+    
     if(oceanData_->m_outputType == 0) // normal displacement texture configuration
     {
-        result[1] = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eHEIGHTFIELD);/* +w_oPos;*/
-        if (mOcean_.isChoppy())
-        {
-            result[0] = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eCHOPX);
-            result[2] = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eCHOPZ);
-        } else {
-            result[0] = 0.0;
-            result[2] = 0.0;
-        }
-        
         // Note that modo expects textures to output the right kind of data based on the context. This is the reason for checking against
         // LXi_TFX_COLOR in the context below. If we aren't driving a color, we output a value instead.
         if (LXi_TFX_COLOR == tInp->context)
         {
-            // This is the new position we want to apply in world space
-            CLxVector destPosition(result[0], result[1], result[2]);
-            double len = CLxVector(destPosition - CLxVector(sPosition->oPos)).length();
-            //CLxVector destPosition(0, 0.1, 0);
-            
-            CLxMatrix4 positionMatrix = CLxMatrix4();
-            
-            // This is to avoid clipping. Not sure if this is the correct parameter to use for the purpose.
-            // I eyeballed the scaling value of 141, it seems to match the deformer. Not sure where the difference comes from
-            // This effectively ignores the "Displacement Distance" value and removes the clipping if big enough.
-            
-            // object position used here as the ocean wraps to the ocean tile size, so the remainder is the object coordinate.
-            
-            positionMatrix.setTranslation((destPosition - CLxVector(sPosition->oPos)) / (dispAmplitude * 141.0f) );
-            
-            CLxMatrix4 matResult = positionMatrix * tangentMatrix.inverse();
-            
-            CLxVector outVector = matResult.getTranslation();
-            
             if (tone)
             {
                 LXx_VSCL(outVector, -1.0f);
             }
-            
             LXx_VCPY (tOut->color[0], outVector);
         }
         
         value = result[1];// * rd->m_waveHeight; // in case displacement is used rather than vector displacement.
     }
+    
     if(oceanData_->m_outputType == 1) // foam map requested
     {
         if(oceanData_->m_doFoam == true)
         {
-            value = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
+            // Wondering whether I should be feeding in the displaced positions here or not.
+            // value = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
+            value = mOcean_.getOceanData(outVector[0], outVector[2], aaOcean::eFOAM);
             if (tone)
             {
                 value = 1.0f - value;
             }
         }
     }
+    
     if(oceanData_->m_outputType == 2) // Eigenvalues - minus
     {
         if(oceanData_->m_doFoam == true)
@@ -451,7 +454,7 @@ LxResult aaOceanTexture::vtx_Customize(ILxUnknownID customId, void **ppvData)
 {
     CLxLoc_ValueTextureCustom	cust(customId);
     cust.AddFeature(LXiTBLX_BASEFEATURE, LXsTBLX_FEATURE_NORMAL );
-    cust.AddFeature(LXiTBLX_BASEFEATURE, LXsTBLX_FEATURE_OBJPOS );
+    cust.AddFeature(LXiTBLX_BASEFEATURE, LXsTBLX_FEATURE_POS );
     cust.AddFeature(LXiTBLX_BASEFEATURE, LXsTBLX_FEATURE_POS );
     
     return LXe_OK;
