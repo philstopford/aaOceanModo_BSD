@@ -84,6 +84,9 @@ LxResult aaOceanTexture::vtx_SetupChannels (ILxUnknownID addChan)
     ac.NewChannel("tone", LXsTYPE_BOOLEAN);
     ac.SetDefault(0.0, 1);
     
+    ac.NewChannel("debug", LXsTYPE_INTEGER);
+    ac.SetDefault(0.0, 0);
+
     ac.NewChannel  ("outputType",	LXsTYPE_INTEGER);
     ac.SetDefault  (0.0, 0);
     ac.SetHint(hint_outputType);
@@ -159,6 +162,7 @@ LxResult aaOceanTexture::vtx_LinkChannels (ILxUnknownID eval, ILxUnknownID	item)
     CLxUser_Evaluation	 ev (eval);
     
     m_idx_tone = ev.AddChan (item, "tone");
+    m_idx_debug = ev.AddChan (item, "debug");
     m_idx_outputType = ev.AddChan (item, "outputType");
     m_idx_resolution = ev.AddChan (item, "resolution");
     m_idx_oceanSize = ev.AddChan (item, "oceanSize");
@@ -203,6 +207,7 @@ LxResult aaOceanTexture::vtx_ReadChannels(ILxUnknownID attr, void  **ppvData)
     std::unique_ptr<OceanData> newOceanData(new OceanData());
     
     tone = at.Bool(m_idx_tone);
+    debug = at.Int(m_idx_debug);
     
     newOceanData->m_outputType = at.Int(m_idx_outputType);
     if(newOceanData->m_outputType > 6)
@@ -344,15 +349,12 @@ void aaOceanTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID vec
     float value = 0.0; // value output
     float alpha = 1.0; // alpha output
     
-    // Feeding the world (not object) position instead of UV values into aaOcean in order to get the same results as the deformer
-    // World is used to handle transforms of the base mesh. Needs more testing, though.
-    // Ultimately I think using the UVs would be better
-    float u_oPos = sPosition->wPos[0] / oceanData_->m_oceanSize;
-    
-    // Flip the V sign as aaOcean modifies the sign again internally due to SI/Maya coordinate system.
-    // This approach appears to result in a better ocean characteristic.
-    float v_oPos = -sPosition->wPos[2] / oceanData_->m_oceanSize;
-    
+
+	// Using UVs instead of object space here now
+    float u_oPos = tInp->uvw0[0]; //sPosition->wPos[0] / mOcean_.m_oceanScale;
+    float v_oPos = tInp->uvw0[1];// sPosition->wPos[2] / mOcean_.m_oceanScale;
+
+
     tOut->direct   = 1;
     // The intent of tInpDsp->enable isn't entirely clear. The docs, such as they are, indicate that the texture should set this when outputting displacement.
     tInpDsp->enable = true;
@@ -369,7 +371,7 @@ void aaOceanTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID vec
         
     // This is the new position we want to apply in world space
     CLxVector destPosition(result[0], result[1], result[2]);
-    double len = CLxVector(destPosition - CLxVector(sPosition->oPos)).length();
+    //double len = CLxVector(destPosition - CLxVector(sPosition->oPos)).length();
     //CLxVector destPosition(0, 0.1, 0);
     
     CLxMatrix4 positionMatrix = CLxMatrix4();
@@ -402,18 +404,53 @@ void aaOceanTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID vec
         value = result[1];// * rd->m_waveHeight; // in case displacement is used rather than vector displacement.
     }
     
-    if(oceanData_->m_outputType == 1) // foam map requested
+    if(oceanData_->m_doFoam == true)
     {
-        if(oceanData_->m_doFoam == true)
-        {
-            // Wondering whether I should be feeding in the displaced positions here or not.
-            // value = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
-            value = mOcean_.getOceanData(outVector[0], outVector[2], aaOcean::eFOAM);
-            if (tone)
-            {
-                value = 1.0f - value;
-            }
+        float foamResult = 0.0f;
+        
+        // Wondering whether I should be feeding in the displaced positions here or not.
+        switch (debug) {
+            case 0:
+                foamResult = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
+                break;
+                
+            case 1:
+                positionMatrix.setTranslation(destPosition - CLxVector(sPosition->uPos));
+                // matResult = positionMatrix * tangentMatrix.inverse();
+                
+                outVector = positionMatrix.getTranslation();
+                foamResult = mOcean_.getOceanData(outVector[0], outVector[2], aaOcean::eFOAM);
+                break;
+                
+            case 2:
+                foamResult = mOcean_.getOceanData(outVector[0] - u_oPos, outVector[2] - v_oPos, aaOcean::eFOAM);
+                break;
+
+            case 3:
+                foamResult = mOcean_.getOceanData(outVector[0], outVector[2], aaOcean::eFOAM);
+                break;
+
+            default:
+                foamResult = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
+                break;
         }
+
+        // Creates some stripes, making it easier to check if the output value of the subsequent foam mask is actually displaced
+        //value = fmod(float( u_oPos * 20.0f), 1.0f);
+
+        if (tone)
+        {
+            foamResult = 1.0f - foamResult;
+        }
+        if(oceanData_->m_outputType == 1) // foam map requested
+        {
+            value = foamResult;
+        }
+        if(oceanData_->m_outputType == 0) // normal displacement texture configuration
+        {
+            value = foamResult;
+        }
+        
     }
     
     if(oceanData_->m_outputType == 2) // Eigenvalues - minus
