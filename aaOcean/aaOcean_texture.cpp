@@ -351,8 +351,8 @@ void aaOceanTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID vec
     
 
 	// Using UVs instead of object space here now
-    float u_oPos = tInp->uvw0[0]; //sPosition->wPos[0] / mOcean_.m_oceanScale;
-    float v_oPos = tInp->uvw0[1];// sPosition->wPos[2] / mOcean_.m_oceanScale;
+    float u_oPos = sPosition->wPos[0] / mOcean_.m_oceanScale;
+    float v_oPos = -sPosition->wPos[2] / mOcean_.m_oceanScale; // aaOcean has a hardcoded sign inversion for the 'V'
 
 
     tOut->direct   = 1;
@@ -376,13 +376,18 @@ void aaOceanTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID vec
     
     CLxMatrix4 positionMatrix = CLxMatrix4();
     
+    CLxVector origin;
+    LXx_VCPY(origin, sPosition->uPos);
+    
+    LXx_VSCL(origin, mOcean_.m_oceanScale);
+    
     // This is to avoid clipping. Not sure if this is the correct parameter to use for the purpose.
     // I eyeballed the scaling value of 141, it seems to match the deformer. Not sure where the difference comes from
     // This effectively ignores the "Displacement Distance" value and removes the clipping if big enough.
     
     // object position used here as the ocean wraps to the ocean tile size, so the remainder is the object coordinate.
     
-    positionMatrix.setTranslation((destPosition - CLxVector(sPosition->oPos)) / (dispAmplitude * 141.0f) );
+    positionMatrix.setTranslation((destPosition - origin) / (dispAmplitude * 141.0f) );
     
     CLxMatrix4 matResult = positionMatrix * tangentMatrix.inverse();
     
@@ -406,16 +411,17 @@ void aaOceanTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID vec
     
     if(oceanData_->m_doFoam == true)
     {
+        // Foam is always output in world space, so can be mapped straight to surface UVs without taking vector displacement into account. (per Amaan)
+        
         float foamResult = 0.0f;
         
-        // Wondering whether I should be feeding in the displaced positions here or not.
         switch (debug) {
             case 0:
-                foamResult = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
+                foamResult = mOcean_.getOceanData(sPosition->uPos[0]/mOcean_.m_oceanScale, -sPosition->uPos[2]/mOcean_.m_oceanScale, aaOcean::eFOAM);
                 break;
                 
             case 1:
-                positionMatrix.setTranslation(destPosition - CLxVector(sPosition->uPos));
+                //positionMatrix.setTranslation((destPosition - origin) / (dispAmplitude * 141.0f) );//(destPosition - origin);
                 // matResult = positionMatrix * tangentMatrix.inverse();
                 
                 outVector = positionMatrix.getTranslation();

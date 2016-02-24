@@ -20,7 +20,7 @@
 namespace aaOceanCommand {	// disambiguate everything with a namespace
 
 
-#define MORPHDEF_ITEMTYPE		"aaOceanDeform"
+#define MORPHDEF_ITEMTYPE		"aaOceanBSDDeform"
 #define Cs_MORPH_MAPNAME		LXsICHAN_MORPHDEFORM_MAPNAME
 #define ARGi_MAP		 0
 static CLxItemType	morphDeformType (MORPHDEF_ITEMTYPE);
@@ -316,13 +316,13 @@ void initialize ()
         srv->AddInterface (new CLxIfc_Command     <CMorphDefCommand>);
         srv->AddInterface (new CLxIfc_Attributes  <CMorphDefCommand>);
         srv->AddInterface (new CLxIfc_AttributesUI<CMorphDefCommand>);
-        lx::AddServer ("aaOcean.mapName", srv);
+        lx::AddServer ("aaOceanBSD.mapName", srv);
 
         srv = new CLxPolymorph<CCreateCommand>;
         srv->AddInterface (new CLxIfc_Command     <CCreateCommand>);
         srv->AddInterface (new CLxIfc_Attributes  <CCreateCommand>);
         srv->AddInterface (new CLxIfc_AttributesUI<CCreateCommand>);
-        lx::AddServer ("aaOcean.create", srv);
+        lx::AddServer ("aaOceanBSD.create", srv);
 }
 
 
