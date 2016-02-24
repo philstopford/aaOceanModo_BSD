@@ -13,7 +13,7 @@ TARGET_DIR=Linux/build
 MYCXX = g++
 LINK = g++
 CXXFLAGS = -std=c++11 -D_OPENMP -fopenmp -g -c -I$(LXSDK_INC) -I$(AAO_INC) -I$(HELPERS_INC) -I$(KISSFFT_HELPERS_INC) -I$(DSFMT_HELPERS_INC) -fPIC -m64 -msse
-LDFLAGS = -L$(LXSDK_BUILD) -L/usr/lib -L$(DSFMT_HELPERS_INC) -L$(KISSFFT_HELPERS_INC) -lcommon -lpthread -shared
+LDFLAGS = -L$(LXSDK_BUILD) -L/usr/lib -L$(DSFMT_HELPERS_INC) -L$(KISSFFT_HELPERS_INC) -lcommon -lpthread -shared -lgomp
 
 OBJS = $(KISSFFT_HELPERS_INC)/kiss_fft.o $(KISSFFT_HELPERS_INC)/tools/kiss_fftnd.o $(DSFMT_HELPERS_INC)/dSFMT.o $(AAO_INC)/aaOceanClass.o $(OBJ_DIR)/aaOcean_init.o $(OBJ_DIR)/aaOcean_texture.o $(OBJ_DIR)/aaOcean_chanmod.o $(OBJ_DIR)/aaOcean_deformer.o $(OBJ_DIR)/aaOcean_command.o
 TARGET = $(TARGET_DIR)/aaocean.lx
