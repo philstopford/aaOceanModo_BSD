@@ -18,7 +18,7 @@
 
 #include "aaOceanClass.h"
 
-namespace aaOceanTextureNamespace {	// disambiguate everything with a namespace
+namespace aaOceanBSDTextureNamespace {	// disambiguate everything with a namespace
 
 class OceanData {
     
@@ -84,7 +84,7 @@ class OceanData {
  * RendData struct is used for storing values used for a specific texture
  * evaluation.
  */
-class aaOceanTexture : public CLxImpl_ValueTexture
+class aaOceanBSDTexture : public CLxImpl_ValueTexture
 {
 
     private:
@@ -105,8 +105,8 @@ class aaOceanTexture : public CLxImpl_ValueTexture
     public:
         static LXtTagInfoDesc		 descInfo[];
 
-		aaOceanTexture ();
-		~aaOceanTexture ();
+		aaOceanBSDTexture ();
+		~aaOceanBSDTexture ();
 
         LxResult		vtx_SetupChannels (ILxUnknownID addChan) LXx_OVERRIDE;
         LxResult		vtx_LinkChannels  (ILxUnknownID eval, ILxUnknownID item) LXx_OVERRIDE;
@@ -155,10 +155,10 @@ class aaOceanTexture : public CLxImpl_ValueTexture
     {
         CLxGenericPolymorph		*srv;
         
-        srv = new CLxPolymorph<aaOceanTexture>;
-        srv->AddInterface (new CLxIfc_ValueTexture<aaOceanTexture>);
-        //srv->AddInterface (new CLxIfc_ChannelUI   <aaOceanTexture>);
-        srv->AddInterface (new CLxIfc_StaticDesc  <aaOceanTexture>);
+        srv = new CLxPolymorph<aaOceanBSDTexture>;
+        srv->AddInterface (new CLxIfc_ValueTexture<aaOceanBSDTexture>);
+        //srv->AddInterface (new CLxIfc_ChannelUI   <aaOceanBSDTexture>);
+        srv->AddInterface (new CLxIfc_StaticDesc  <aaOceanBSDTexture>);
         lx::AddServer ("aaOceanBSD.texture", srv);
     }
 

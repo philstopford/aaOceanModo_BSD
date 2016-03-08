@@ -1,6 +1,6 @@
 
 #include "aaOcean_command.h"
-using namespace aaOceanCommand;
+using namespace aaOceanBSDCommand;
 
 /*
  * We only need one selection tracker for however many instances of commands, so

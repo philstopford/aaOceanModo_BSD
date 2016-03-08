@@ -17,7 +17,7 @@
 // not used, but included to make it part of the SDK
 #include <lx_undo.hpp>
 
-namespace aaOceanCommand {	// disambiguate everything with a namespace
+namespace aaOceanBSDCommand {	// disambiguate everything with a namespace
 
 
 #define MORPHDEF_ITEMTYPE		"aaOceanBSDDeform"

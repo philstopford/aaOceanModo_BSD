@@ -7,19 +7,19 @@
 
 std::mutex myMutex;
 
-using namespace aaOceanChanModNameSpace;
+using namespace aaOceanBSDChanModNameSpace;
 
-aaOceanChanMod::aaOceanChanMod ()
+aaOceanBSDChanMod::aaOceanBSDChanMod ()
 {
 }
 
-aaOceanChanMod::~aaOceanChanMod ()
+aaOceanBSDChanMod::~aaOceanBSDChanMod ()
 {
 }
 
 
 LxResult
-aaOceanChanMod::pins_Initialize (
+aaOceanBSDChanMod::pins_Initialize (
         ILxUnknownID		 item,
         ILxUnknownID		 super)
 {
@@ -31,13 +31,13 @@ aaOceanChanMod::pins_Initialize (
 }
 
         void
-aaOceanChanMod::pins_Cleanup (void)
+aaOceanBSDChanMod::pins_Cleanup (void)
 {
         m_item.clear ();
 }
 
         LxResult
-aaOceanChanMod::pins_SynthName (
+aaOceanBSDChanMod::pins_SynthName (
         char			*buf,
         unsigned		 len)
 {
@@ -54,7 +54,7 @@ aaOceanChanMod::pins_SynthName (
 
 // Allocate is called prior to evaluation. We can't use the indices here to, for example, 'optimize' the Flags method.
         LxResult
-aaOceanChanMod::cmod_Allocate (
+aaOceanBSDChanMod::cmod_Allocate (
         ILxUnknownID		 cmod,		// ILxChannelModifierID
         ILxUnknownID		 eval,		// ILxEvaluationID
         ILxUnknownID		 item,
@@ -248,7 +248,7 @@ aaOceanChanMod::cmod_Allocate (
 }
 
         void
-aaOceanChanMod::cmod_Cleanup (
+aaOceanBSDChanMod::cmod_Cleanup (
         void			*data)
 {
 }
@@ -256,7 +256,7 @@ aaOceanChanMod::cmod_Cleanup (
 // Flags defines schematic rules for the channels. This applies when the modifier is added to the schematic.
 // Note that you can't simplify this to use the indices from Allocate because Allocate is used only prior to evaluation.
         unsigned int
-aaOceanChanMod::cmod_Flags (
+aaOceanBSDChanMod::cmod_Flags (
         ILxUnknownID		 item,
         unsigned int		 index)
 {
@@ -428,7 +428,7 @@ inline void mwnormalize(float *vec)
 	}
 }
         LxResult
-aaOceanChanMod::cmod_Evaluate (
+aaOceanBSDChanMod::cmod_Evaluate (
         ILxUnknownID		 cmod,		// ILxChannelModifierID
         ILxUnknownID		 attr,		// ILxAttributesID
         void			*data)
@@ -594,7 +594,7 @@ aaOceanChanMod::cmod_Evaluate (
     return LXe_OK;
 }
 
-void aaOceanChanMod::maybeResetOceanData(std::unique_ptr<OceanData> newOceanData) {
+void aaOceanBSDChanMod::maybeResetOceanData(std::unique_ptr<OceanData> newOceanData) {
     if (oceanData_.get() == nullptr || *newOceanData != *oceanData_) {
         // Automatically unlocks the mutex when it goes out of scope.
         std::lock_guard<std::mutex> lock(myMutex_);
@@ -638,8 +638,8 @@ LXtTagInfoDesc	 aaOceanChanModPackage::descInfo[] = {
 
 aaOceanChanModPackage::aaOceanChanModPackage ()
 {
-        chanmod_factory.AddInterface (new CLxIfc_PackageInstance<aaOceanChanMod>);
-        chanmod_factory.AddInterface (new CLxIfc_ChannelModItem<aaOceanChanMod>);
+        chanmod_factory.AddInterface (new CLxIfc_PackageInstance<aaOceanBSDChanMod>);
+        chanmod_factory.AddInterface (new CLxIfc_ChannelModItem<aaOceanBSDChanMod>);
 }
 
 static LXtTextValueHint hint_resolution[] = {
@@ -768,7 +768,7 @@ aaOceanChanModPackage::pkg_TestInterface (
 aaOceanChanModPackage::pkg_Attach (
         void		       **ppvObj)
 {
-        aaOceanChanMod	*chanmod = chanmod_factory.Alloc (ppvObj);
+        aaOceanBSDChanMod	*chanmod = chanmod_factory.Alloc (ppvObj);
 
         chanmod->src_pkg  = this;
         chanmod->inst_ifc = (ILxUnknownID) ppvObj[0];

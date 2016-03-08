@@ -2,7 +2,7 @@
 #include "aaOcean_deformer.h"
 
 
-using namespace aaOceanDeformer;
+using namespace aaOceanBSDDeformer;
 
 
 /*

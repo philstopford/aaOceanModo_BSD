@@ -15,7 +15,7 @@
 
 #include "aaOceanClass.h"
 
-namespace aaOceanDeformer {	// disambiguate everything with a namespace
+namespace aaOceanBSDDeformer {	// disambiguate everything with a namespace
 
 // std::mutex myMutex; // global variable
 

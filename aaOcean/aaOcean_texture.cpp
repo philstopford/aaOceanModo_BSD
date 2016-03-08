@@ -6,9 +6,9 @@
 #include <lx_vector.hpp>
 #include <lxu_matrix.hpp>
 
-using namespace aaOceanTextureNamespace;
+using namespace aaOceanBSDTextureNamespace;
 
-LXtTagInfoDesc	 aaOceanTexture::descInfo[] = {
+LXtTagInfoDesc	 aaOceanBSDTexture::descInfo[] = {
     { LXsSRV_USERNAME,	"aaOceanBSD Texture" },
     { LXsSRV_LOGSUBSYSTEM,	"val-texture"	},
     { 0 }
@@ -21,17 +21,17 @@ LXtTagInfoDesc	 aaOceanTexture::descInfo[] = {
 #define M_PI        3.14159265358979323846264338327950288   /* pi             */
 #endif
 
-aaOceanTexture::aaOceanTexture ()
+aaOceanBSDTexture::aaOceanBSDTexture ()
 {
     my_type = LXiTYPE_NONE;
     dispAmplitude = 0.0;
 }
 
-aaOceanTexture::~aaOceanTexture ()
+aaOceanBSDTexture::~aaOceanBSDTexture ()
 {
 }
 
-LXtItemType aaOceanTexture::MyType ()
+LXtItemType aaOceanBSDTexture::MyType ()
 {
     if (my_type != LXiTYPE_NONE)
         return my_type;
@@ -77,7 +77,7 @@ static LXtTextValueHint hint_boolLimit[] = {
 /*
  * Setup channels for the item type.
  */
-LxResult aaOceanTexture::vtx_SetupChannels (ILxUnknownID addChan)
+LxResult aaOceanBSDTexture::vtx_SetupChannels (ILxUnknownID addChan)
 {
     CLxUser_AddChannel	 ac (addChan);
     
@@ -157,7 +157,7 @@ LxResult aaOceanTexture::vtx_SetupChannels (ILxUnknownID addChan)
  * Attach to channel evaluations. This gets the indicies for the channels in
  * in attributes.
  */
-LxResult aaOceanTexture::vtx_LinkChannels (ILxUnknownID eval, ILxUnknownID	item)
+LxResult aaOceanBSDTexture::vtx_LinkChannels (ILxUnknownID eval, ILxUnknownID	item)
 {
     CLxUser_Evaluation	 ev (eval);
     
@@ -200,7 +200,7 @@ LxResult aaOceanTexture::vtx_LinkChannels (ILxUnknownID eval, ILxUnknownID	item)
  * Read channel values which may have changed. These are stored in the allocated
  * data for later evaluation.
  */
-LxResult aaOceanTexture::vtx_ReadChannels(ILxUnknownID attr, void  **ppvData)
+LxResult aaOceanBSDTexture::vtx_ReadChannels(ILxUnknownID attr, void  **ppvData)
 {
     CLxUser_Attributes	 at (attr);
     
@@ -273,7 +273,7 @@ LxResult aaOceanTexture::vtx_ReadChannels(ILxUnknownID attr, void  **ppvData)
     return LXe_OK;
 }
 
-void aaOceanTexture::maybeResetOceanData(std::unique_ptr<OceanData> newOceanData) {
+void aaOceanBSDTexture::maybeResetOceanData(std::unique_ptr<OceanData> newOceanData) {
     if (oceanData_.get() == nullptr || *newOceanData != *oceanData_) {
         // Automatically unlocks the mutex when it goes out of scope.
         std::lock_guard<std::mutex> lock(myMutex_);
@@ -307,7 +307,7 @@ void aaOceanTexture::maybeResetOceanData(std::unique_ptr<OceanData> newOceanData
 }
 
 
-void aaOceanTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID vector, LXpTextureOutput *tOut, void *data)
+void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID vector, LXpTextureOutput *tOut, void *data)
 {
     LXpTextureInput		*tInp;
     LXpDisplace *tInpDsp;
@@ -493,7 +493,7 @@ void aaOceanTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID vec
     }
 }
 
-LxResult aaOceanTexture::vtx_Customize(ILxUnknownID customId, void **ppvData)
+LxResult aaOceanBSDTexture::vtx_Customize(ILxUnknownID customId, void **ppvData)
 {
     CLxLoc_ValueTextureCustom	cust(customId);
     cust.AddFeature(LXiTBLX_BASEFEATURE, LXsTBLX_FEATURE_NORMAL );
@@ -506,6 +506,6 @@ LxResult aaOceanTexture::vtx_Customize(ILxUnknownID customId, void **ppvData)
 /*
  * Release the cached state after rendering is complete.
  */
-void aaOceanTexture::vtx_Cleanup (void	*data)
+void aaOceanBSDTexture::vtx_Cleanup (void	*data)
 {
 }

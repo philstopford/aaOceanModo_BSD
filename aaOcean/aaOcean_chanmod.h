@@ -12,7 +12,7 @@
 #include <mutex>
 #include "aaOceanClass.h"
 
-namespace aaOceanChanModNameSpace {
+namespace aaOceanBSDChanModNameSpace {
 
 class aaOceanChanModLog : public CLxLuxologyLogMessage
 {
@@ -77,7 +77,7 @@ class OceanData {
         
 };
     
-class aaOceanChanMod
+class aaOceanBSDChanMod
         :
         public CLxImpl_PackageInstance,
         public CLxImpl_ChannelModItem
@@ -104,8 +104,8 @@ class aaOceanChanMod
         CLxUser_Item		 m_item;
         ILxUnknownID		 inst_ifc;
         
-        aaOceanChanMod ();
-        ~aaOceanChanMod ();
+        aaOceanBSDChanMod ();
+        ~aaOceanBSDChanMod ();
 
         LxResult		 pins_Initialize (ILxUnknownID item, ILxUnknownID super) LXx_OVERRIDE;
         void			 pins_Cleanup (void) LXx_OVERRIDE;
@@ -199,7 +199,7 @@ class aaOceanChanModPackage : public CLxImpl_Package
 {
     public:
         static LXtTagInfoDesc			descInfo[];
-        CLxPolymorph<aaOceanChanMod>	chanmod_factory;
+        CLxPolymorph<aaOceanBSDChanMod>	chanmod_factory;
         
         aaOceanChanModPackage ();
 

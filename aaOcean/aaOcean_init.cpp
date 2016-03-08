@@ -1,14 +1,14 @@
 #include "aaOcean_init.h"
 
-namespace aaOceanCommand		{	extern void	initialize ();	};
-namespace aaOceanDeformer		{	extern void	initialize ();	};
-namespace aaOceanTextureNamespace		{	extern void	initialize ();	};
-namespace aaOceanChanModNameSpace		{	extern void	initialize ();	};
+namespace aaOceanBSDCommand		{	extern void	initialize ();	};
+namespace aaOceanBSDDeformer		{	extern void	initialize ();	};
+namespace aaOceanBSDTextureNamespace		{	extern void	initialize ();	};
+namespace aaOceanBSDChanModNameSpace		{	extern void	initialize ();	};
 
 void initialize ()
 {
-    aaOceanCommand :: initialize ();
-    aaOceanDeformer :: initialize ();
-    aaOceanTextureNamespace :: initialize ();
-    aaOceanChanModNameSpace :: initialize();
+    aaOceanBSDCommand :: initialize ();
+    aaOceanBSDDeformer :: initialize ();
+    aaOceanBSDTextureNamespace :: initialize ();
+    aaOceanBSDChanModNameSpace :: initialize();
 }
