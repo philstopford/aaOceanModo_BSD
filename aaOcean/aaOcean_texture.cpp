@@ -354,12 +354,16 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
     float u_oPos = sPosition->wPos[0] / mOcean_.m_oceanScale;
     float v_oPos = -sPosition->wPos[2] / mOcean_.m_oceanScale; // aaOcean has a hardcoded sign inversion for the 'V'
 
+	u_oPos = tInp->uvw0[0];
+	v_oPos = -tInp->uvw0[1];
+
 
     tOut->direct   = 1;
     // The intent of tInpDsp->enable isn't entirely clear. The docs, such as they are, indicate that the texture should set this when outputting displacement.
     tInpDsp->enable = true;
     
     result[1] = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eHEIGHTFIELD);/* +w_oPos;*/
+
     if (mOcean_.isChoppy())
     {
         result[0] = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eCHOPX);
@@ -387,7 +391,7 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
     
     // object position used here as the ocean wraps to the ocean tile size, so the remainder is the object coordinate.
     
-    positionMatrix.setTranslation((destPosition - origin) / (dispAmplitude * 141.0f) );
+    positionMatrix.setTranslation((destPosition - origin) /*/ (dispAmplitude * 141.0f)*/ );
     
     CLxMatrix4 matResult = positionMatrix * tangentMatrix.inverse();
     
@@ -403,7 +407,11 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
             {
                 LXx_VSCL(outVector, -1.0f);
             }
+			if (debug == 5){
+				outVector[0] = outVector[1] = 0.0;
+			}
             LXx_VCPY (tOut->color[0], outVector);
+
         }
         
         value = result[1];// * rd->m_waveHeight; // in case displacement is used rather than vector displacement.
@@ -415,34 +423,9 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
         
         float foamResult = 0.0f;
         
-        switch (debug) {
-            case 0:
-                foamResult = mOcean_.getOceanData(sPosition->uPos[0]/mOcean_.m_oceanScale, -sPosition->uPos[2]/mOcean_.m_oceanScale, aaOcean::eFOAM);
-                break;
-                
-            case 1:
-                //positionMatrix.setTranslation((destPosition - origin) / (dispAmplitude * 141.0f) );//(destPosition - origin);
-                // matResult = positionMatrix * tangentMatrix.inverse();
-                
-                outVector = positionMatrix.getTranslation();
-                foamResult = mOcean_.getOceanData(outVector[0], outVector[2], aaOcean::eFOAM);
-                break;
-                
-            case 2:
-                foamResult = mOcean_.getOceanData(outVector[0] - u_oPos, outVector[2] - v_oPos, aaOcean::eFOAM);
-                break;
-
-            case 3:
-                foamResult = mOcean_.getOceanData(outVector[0], outVector[2], aaOcean::eFOAM);
-                break;
-
-            default:
-                foamResult = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
-                break;
-        }
-
-        // Creates some stripes, making it easier to check if the output value of the subsequent foam mask is actually displaced
-        //value = fmod(float( u_oPos * 20.0f), 1.0f);
+		CLxVector sourcePos = (origin) / (dispAmplitude * 141.0f);
+		foamResult = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
+		foamResult = 1.0 - foamResult;
 
         if (tone)
         {
@@ -491,6 +474,7 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
         fout << tmpString;
         fout.close();
     }
+
 }
 
 LxResult aaOceanBSDTexture::vtx_Customize(ILxUnknownID customId, void **ppvData)
