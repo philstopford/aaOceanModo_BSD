@@ -612,7 +612,7 @@ void aaOceanBSDChanMod::maybeResetOceanData(std::unique_ptr<OceanData> newOceanD
                            oceanData_->m_waveAlign,
                            oceanData_->m_waveReflection,
                            oceanData_->m_waveSpeed,
-                           oceanData_->m_waveHeight * 100,
+                           oceanData_->m_waveHeight,
                            oceanData_->m_waveChop,
                            oceanData_->m_time,
                            oceanData_->m_repeatTime,
@@ -628,7 +628,7 @@ void aaOceanBSDChanMod::maybeResetOceanData(std::unique_ptr<OceanData> newOceanD
 }
 // Package class
 
-LXtTagInfoDesc	 aaOceanChanModPackage::descInfo[] = {
+LXtTagInfoDesc	 aaOceanBSDChanModPackage::descInfo[] = {
         { LXsPKG_SUPERTYPE,	"chanModify"	},
         { LXsSRV_LOGSUBSYSTEM,	"aaOceanBSDChanMod"	},
         { 0 }
@@ -636,7 +636,7 @@ LXtTagInfoDesc	 aaOceanChanModPackage::descInfo[] = {
 
 // Constructor
 
-aaOceanChanModPackage::aaOceanChanModPackage ()
+aaOceanBSDChanModPackage::aaOceanBSDChanModPackage ()
 {
         chanmod_factory.AddInterface (new CLxIfc_PackageInstance<aaOceanBSDChanMod>);
         chanmod_factory.AddInterface (new CLxIfc_ChannelModItem<aaOceanBSDChanMod>);
@@ -658,7 +658,7 @@ static LXtTextValueHint hint_resolution[] = {
 };
 
         LxResult
-aaOceanChanModPackage::pkg_SetupChannels (
+aaOceanBSDChanModPackage::pkg_SetupChannels (
         ILxUnknownID		 addChan)
 {
         CLxUser_AddChannel	 ac (addChan);
@@ -758,14 +758,14 @@ aaOceanChanModPackage::pkg_SetupChannels (
 }
 
         LxResult
-aaOceanChanModPackage::pkg_TestInterface (
+aaOceanBSDChanModPackage::pkg_TestInterface (
         const LXtGUID		*guid)
 {
         return (chanmod_factory.TestInterface (guid) ? LXe_TRUE : LXe_FALSE);
 }
 
         LxResult
-aaOceanChanModPackage::pkg_Attach (
+aaOceanBSDChanModPackage::pkg_Attach (
         void		       **ppvObj)
 {
         aaOceanBSDChanMod	*chanmod = chanmod_factory.Alloc (ppvObj);

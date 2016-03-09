@@ -14,15 +14,15 @@
 
 namespace aaOceanBSDChanModNameSpace {
 
-class aaOceanChanModLog : public CLxLuxologyLogMessage
+class aaOceanBSDChanModLog : public CLxLuxologyLogMessage
 {
     public:
-        aaOceanChanModLog () : CLxLuxologyLogMessage ("aaOceanBSDChanMod") { }
+        aaOceanBSDChanModLog () : CLxLuxologyLogMessage ("aaOceanBSDChanMod") { }
 
         const char *	 GetFormat  () { return "aaOcean for Modo Channel modifier"; }
 };
 
-class aaOceanChanModPackage;
+class aaOceanBSDChanModPackage;
 
 class OceanData {
         
@@ -82,7 +82,7 @@ class aaOceanBSDChanMod
         public CLxImpl_PackageInstance,
         public CLxImpl_ChannelModItem
 {
-        aaOceanChanModLog		 log;
+        aaOceanBSDChanModLog		 log;
 
     private:
         // This will reinitialize the ocean data and aaOcean object if the values have changed, or
@@ -100,7 +100,7 @@ class aaOceanBSDChanMod
         std::mutex myMutex_;
     public:
     
-        aaOceanChanModPackage	*src_pkg;
+        aaOceanBSDChanModPackage	*src_pkg;
         CLxUser_Item		 m_item;
         ILxUnknownID		 inst_ifc;
         
@@ -195,13 +195,13 @@ class aaOceanBSDChanMod
 
 };
 
-class aaOceanChanModPackage : public CLxImpl_Package
+class aaOceanBSDChanModPackage : public CLxImpl_Package
 {
     public:
         static LXtTagInfoDesc			descInfo[];
         CLxPolymorph<aaOceanBSDChanMod>	chanmod_factory;
         
-        aaOceanChanModPackage ();
+        aaOceanBSDChanModPackage ();
 
         LxResult		pkg_SetupChannels (ILxUnknownID addChan);
         LxResult		pkg_TestInterface (const LXtGUID *guid);
@@ -214,9 +214,9 @@ class aaOceanChanModPackage : public CLxImpl_Package
     {
         CLxGenericPolymorph		*srv;
         
-        srv = new CLxPolymorph<aaOceanChanModPackage>;
-        srv->AddInterface (new CLxIfc_Package          <aaOceanChanModPackage>);
-        srv->AddInterface (new CLxIfc_StaticDesc       <aaOceanChanModPackage>);
+        srv = new CLxPolymorph<aaOceanBSDChanModPackage>;
+        srv->AddInterface (new CLxIfc_Package          <aaOceanBSDChanModPackage>);
+        srv->AddInterface (new CLxIfc_StaticDesc       <aaOceanBSDChanModPackage>);
         lx::AddServer ("aaOceanBSDChanMod", srv);
     }
 

@@ -146,9 +146,6 @@ LxResult aaOceanBSDTexture::vtx_SetupChannels (ILxUnknownID addChan)
     
     ac.NewChannel  ("randWeight",	LXsTYPE_FLOAT);
     ac.SetDefault  (0.0f, 0);
-
-    //ac.NewChannel("div", LXsTYPE_FLOAT);
-    //ac.SetDefault(50.0f, 0);
     
     return LXe_OK;
 }
@@ -182,7 +179,6 @@ LxResult aaOceanBSDTexture::vtx_LinkChannels (ILxUnknownID eval, ILxUnknownID	it
     m_idx_foamRange = ev.AddChan(item, "foamRange");
     m_idx_foamMax = ev.AddChan(item, "foamMax");
     m_idx_randWeight = ev.AddChan(item, "randWeight");
-    //m_idx_div = ev.AddChan(item, "div");
     
     // m_idx_time = ev.AddChan (item, "time");
     
@@ -265,9 +261,7 @@ LxResult aaOceanBSDTexture::vtx_ReadChannels(ILxUnknownID attr, void  **ppvData)
     }
     
     newOceanData->m_time = at.Float(m_idx_time);
-    
-    //newOceanData->m_div = at.Float(m_idx_div);
-    
+        
     maybeResetOceanData(std::move(newOceanData));
     
     return LXe_OK;
@@ -291,8 +285,8 @@ void aaOceanBSDTexture::maybeResetOceanData(std::unique_ptr<OceanData> newOceanD
                           oceanData_->m_waveAlign,
                           oceanData_->m_waveReflection,
                           oceanData_->m_waveSpeed,
-                          oceanData_->m_waveHeight * 100,
-                          oceanData_->m_waveChop * 200,
+                          oceanData_->m_waveHeight,
+                          oceanData_->m_waveChop,
                           oceanData_->m_time,
                           oceanData_->m_repeatTime,
                           oceanData_->m_doFoam,
@@ -375,8 +369,6 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
         
     // This is the new position we want to apply in world space
     CLxVector destPosition(result[0], result[1], result[2]);
-    //double len = CLxVector(destPosition - CLxVector(sPosition->oPos)).length();
-    //CLxVector destPosition(0, 0.1, 0);
     
     CLxMatrix4 positionMatrix = CLxMatrix4();
     
@@ -391,7 +383,7 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
     
     // object position used here as the ocean wraps to the ocean tile size, so the remainder is the object coordinate.
     
-    positionMatrix.setTranslation((destPosition - origin) /*/ (dispAmplitude * 141.0f)*/ );
+    positionMatrix.setTranslation((destPosition - origin) /* (dispAmplitude * 141.0f)*/ );
     
     CLxMatrix4 matResult = positionMatrix * tangentMatrix.inverse();
     
@@ -410,6 +402,9 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
 			if (debug == 5){
 				outVector[0] = outVector[1] = 0.0;
 			}
+            
+            // LXx_VSCL(outVector, 1/dispAmplitude);
+
             LXx_VCPY (tOut->color[0], outVector);
 
         }
@@ -423,7 +418,6 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
         
         float foamResult = 0.0f;
         
-		CLxVector sourcePos = (origin) / (dispAmplitude * 141.0f);
 		foamResult = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
 		foamResult = 1.0 - foamResult;
 
@@ -481,7 +475,6 @@ LxResult aaOceanBSDTexture::vtx_Customize(ILxUnknownID customId, void **ppvData)
 {
     CLxLoc_ValueTextureCustom	cust(customId);
     cust.AddFeature(LXiTBLX_BASEFEATURE, LXsTBLX_FEATURE_NORMAL );
-    cust.AddFeature(LXiTBLX_BASEFEATURE, LXsTBLX_FEATURE_POS );
     cust.AddFeature(LXiTBLX_BASEFEATURE, LXsTBLX_FEATURE_POS );
     
     return LXe_OK;
