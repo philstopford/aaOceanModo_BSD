@@ -383,7 +383,13 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
     
     // object position used here as the ocean wraps to the ocean tile size, so the remainder is the object coordinate.
     
-    positionMatrix.setTranslation((destPosition - origin) /* (dispAmplitude * 141.0f)*/ );
+    CLxVector localPosition = destPosition - origin;
+    
+    //localPosition.v[1] /= (dispAmplitude * 150); // compensate for displacement on material
+    
+    LXx_VSCL(localPosition, 1/(dispAmplitude * 141.0f));
+    
+    positionMatrix.setTranslation( localPosition );
     
     CLxMatrix4 matResult = positionMatrix * tangentMatrix.inverse();
     
@@ -403,8 +409,6 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
 				outVector[0] = outVector[1] = 0.0;
 			}
             
-            // LXx_VSCL(outVector, 1/dispAmplitude);
-
             LXx_VCPY (tOut->color[0], outVector);
 
         }
