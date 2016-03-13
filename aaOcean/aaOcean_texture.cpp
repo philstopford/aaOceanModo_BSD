@@ -84,8 +84,8 @@ LxResult aaOceanBSDTexture::vtx_SetupChannels (ILxUnknownID addChan)
     ac.NewChannel("tone", LXsTYPE_BOOLEAN);
     ac.SetDefault(0.0, 1);
     
-    ac.NewChannel("debug", LXsTYPE_INTEGER);
-    ac.SetDefault(0.0, 0);
+    ac.NewChannel("divide", LXsTYPE_FLOAT);
+    ac.SetDefault(141.0f, 0);
 
     ac.NewChannel  ("outputType",	LXsTYPE_INTEGER);
     ac.SetDefault  (0.0, 0);
@@ -159,7 +159,7 @@ LxResult aaOceanBSDTexture::vtx_LinkChannels (ILxUnknownID eval, ILxUnknownID	it
     CLxUser_Evaluation	 ev (eval);
     
     m_idx_tone = ev.AddChan (item, "tone");
-    m_idx_debug = ev.AddChan (item, "debug");
+    m_idx_divide = ev.AddChan (item, "divide");
     m_idx_outputType = ev.AddChan (item, "outputType");
     m_idx_resolution = ev.AddChan (item, "resolution");
     m_idx_oceanSize = ev.AddChan (item, "oceanSize");
@@ -203,7 +203,11 @@ LxResult aaOceanBSDTexture::vtx_ReadChannels(ILxUnknownID attr, void  **ppvData)
     std::unique_ptr<OceanData> newOceanData(new OceanData());
     
     tone = at.Bool(m_idx_tone);
-    debug = at.Int(m_idx_debug);
+    divide = at.Int(m_idx_divide);
+    if (divide < 1E-9)
+    {
+        divide = 1E-9;
+    }
     
     newOceanData->m_outputType = at.Int(m_idx_outputType);
     if(newOceanData->m_outputType > 6)
@@ -387,7 +391,7 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
     
     //localPosition.v[1] /= (dispAmplitude * 150); // compensate for displacement on material
     
-    LXx_VSCL(localPosition, 1/(dispAmplitude * 141.0f));
+    LXx_VSCL(localPosition, 1/(dispAmplitude * divide));
     
     positionMatrix.setTranslation( localPosition );
     
@@ -405,9 +409,6 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
             {
                 LXx_VSCL(outVector, -1.0f);
             }
-			if (debug == 5){
-				outVector[0] = outVector[1] = 0.0;
-			}
             
             LXx_VCPY (tOut->color[0], outVector);
 

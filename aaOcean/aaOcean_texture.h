@@ -122,9 +122,9 @@ class aaOceanBSDTexture : public CLxImpl_ValueTexture
         LXtItemType		my_type;
 
         bool tone;
-        int debug;
+        float divide;
         unsigned m_idx_tone;
-        unsigned m_idx_debug;
+        unsigned m_idx_divide;
         unsigned m_idx_outputType;
 		unsigned m_idx_resolution;
 		unsigned m_idx_oceanSize;
