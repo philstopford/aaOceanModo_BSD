@@ -724,10 +724,10 @@ aaOceanBSDChanModPackage::pkg_SetupChannels (
         ac.SetDefault  (0.0, 0);
     
         ac.NewChannel  ("foamMax",	LXsTYPE_FLOAT);
-        ac.SetDefault  (1000.0f, 0);
+        ac.SetDefault  (1.0f, 0);
 
         ac.NewChannel  ("foamRange",	LXsTYPE_FLOAT);
-        ac.SetDefault  (1000.0f, 0);
+        ac.SetDefault  (1.0f, 0);
 
         ac.NewChannel  ("randWeight",	LXsTYPE_FLOAT);
         ac.SetDefault  (0.0f, 0);

@@ -85,7 +85,7 @@ LxResult aaOceanBSDTexture::vtx_SetupChannels (ILxUnknownID addChan)
     ac.SetDefault(0.0, 1);
     
     ac.NewChannel("divide", LXsTYPE_FLOAT);
-    ac.SetDefault(141.0f, 0);
+    ac.SetDefault(1.0f, 0);
 
     ac.NewChannel  ("outputType",	LXsTYPE_INTEGER);
     ac.SetDefault  (0.0, 0);
@@ -139,10 +139,10 @@ LxResult aaOceanBSDTexture::vtx_SetupChannels (ILxUnknownID addChan)
     ac.SetHint(hint_boolLimit);
     
     ac.NewChannel  ("foamRange",	LXsTYPE_FLOAT);
-    ac.SetDefault  (1000.0f, 0);
+    ac.SetDefault  (1.0f, 0);
     
     ac.NewChannel  ("foamMax",	LXsTYPE_FLOAT);
-    ac.SetDefault  (1000.0f, 0);
+    ac.SetDefault  (1.0f, 0);
     
     ac.NewChannel  ("randWeight",	LXsTYPE_FLOAT);
     ac.SetDefault  (0.0f, 0);
@@ -352,8 +352,8 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
     float u_oPos = sPosition->wPos[0] / mOcean_.m_oceanScale;
     float v_oPos = -sPosition->wPos[2] / mOcean_.m_oceanScale; // aaOcean has a hardcoded sign inversion for the 'V'
 
-	u_oPos = tInp->uvw0[0];
-	v_oPos = -tInp->uvw0[1];
+	// u_oPos = tInp->uvw0[0];
+	// v_oPos = -tInp->uvw0[1];
 
 
     tOut->direct   = 1;
