@@ -157,7 +157,7 @@ img.c {
 </style>
 </head>
 <body lang="en-US" text="#00000a" link="#0000ff" dir="ltr">
-<p style=" border-top: none; border-bottom: 1.00pt solid #4f81bd; border-left: none; border-right: none; padding-top: 0in; padding-bottom: 0.06in; padding-left: 0in; padding-right: 0in; letter-spacing: 0.3pt; line-height: 100%"> <font color="#17365d" face="Cambria, serif"><font size="6" style="font-size: 26pt">aaOcean </font><font size="6" style="font-size: 13pt">(1.1.1)</font></font></p>
+<p style=" border-top: none; border-bottom: 1.00pt solid #4f81bd; border-left: none; border-right: none; padding-top: 0in; padding-bottom: 0.06in; padding-left: 0in; padding-right: 0in; letter-spacing: 0.3pt; line-height: 100%"> <font color="#17365d" face="Cambria, serif"><font size="6" style="font-size: 26pt">aaOcean </font><font size="6" style="font-size: 13pt">(1.1.2)</font></font></p>
 
 <a name="introduction"></a>
 <h1 class="western">Introduction</h1>
@@ -185,6 +185,8 @@ releases is not available</u></b>.</p>
     <li>side-by-side installation with previous 1.0.x versions of aaOcean is working on Windows and Linux (Mac is proving troublesome).</li>
   </ul>
   <p class="western" style=" line-height: 100%">Note that look-and-feel is not maintained, due to an unavoidable code adjustment related to the foam fix.</p>
+
+  <p class="western" style=" line-height: 100%">Release 1.1.2 fixes the repeat time. It was locked to 1000 seconds previously. Docs updated to specify this is in seconds.</p>
 
 </blockquote>
 <a name="requirements"></a>
@@ -382,12 +384,12 @@ etc.</p>
 
 <p class="western" style=" line-height: 100%">The texture system is the fastest way of generating displacement
 for the ocean. You can take a simple quad poly and generate enormous oceans
-with compelling detail. Vector displacement is recommended over Ôdisplacement'
-in order to provide convincing Ôchop' effects.</p>
+with compelling detail. Vector displacement is recommended over 'displacement'
+in order to provide convincing 'chop' effects.</p>
 
 <p class="western" style=" line-height: 100%">The texture implementation of aaOcean
 for MODO also works pretty similarly to most texture items in MODO, with one
-exception when used for vector displacement effects - see Ôwave height' in the
+exception when used for vector displacement effects - see 'wave height' in the
 input section below.</p>
 
 <p class="western" style=" line-height: 100%">Using the output type setting, you have the option of choosing
@@ -417,8 +419,7 @@ will be blank and no effect will be seen!</b></p>
 
 <p class="western" style=" line-height: 100%"><u>Ocean size</u> : Sets the ocean size to fit within
 your UV map. Note that the texture internally uses object space values, so a 
-tileable effect that works across instances will be seen
-when the ocean size is an integer multiple of the edge length of your square
+tileable effect that works across instances will be seen when the ocean size is an integer multiple of the edge length of your square
 ocean.</p>
 
 <p class="western" style=" line-height: 100%"><u>Wave height</u> : As noted earlier, this defines
@@ -737,7 +738,7 @@ plugins.</p>
 
 <p class="western" style=" line-height: 100%">2. The aaOcean texture, as of 1.1.0,
 requires a UV projection to work. We can't do this automatically, and scenes
-from earlier versions will likely have a Ôsolid' projection. Switch to a UV
+from earlier versions will likely have a 'solid' projection. Switch to a UV
 projection and the texture will then work.</p>
 
 <p class="western" style=" line-height: 100%">&nbsp;</p>
