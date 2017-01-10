@@ -40,13 +40,20 @@ class OceanData {
         float m_waveChop; // default is 2.0
         float m_oceanDepth; // default is 10000
         int m_seed; // default is 1.0
+        int m_spectrum; // default is 1.0
         float m_repeatTime; // default is 1000.0
         bool m_doFoam; // default is FALSE for now.
         bool m_doNormals; // default is FALSE
         float m_time;
+        float m_timeOffset;
         float foamMax;
         float foamRange;
         float m_randWeight; // default is 0. Limited to 0.0 to 1.0
+        float m_peakSharpening; // peak sharpening. default 1.0. Limited to 1.0 to 2.0
+        float m_specMult; // spectrum multiplier. default 1.0. Limited to 1.0 to 100.0
+        float m_swell; // swell. default 0
+        float m_jswpfetch; // TMA fetch. default 1.0
+        bool newFoam;
     
         bool operator == (const OceanData &oceanData) const {
             return (this->m_resolution == oceanData.m_resolution &&
@@ -62,14 +69,21 @@ class OceanData {
                     this->m_waveChop == oceanData.m_waveChop &&
                     this->m_oceanDepth == oceanData.m_oceanDepth &&
                     this->m_seed == oceanData.m_seed &&
+                    this->m_spectrum == oceanData.m_spectrum &&
                     this->m_doFoam == oceanData.m_doFoam &&
                     this->m_doNormals == oceanData.m_doNormals &&
                     this->m_time == oceanData.m_time &&
+                    this->m_timeOffset == oceanData.m_timeOffset &&
                     this->foamMax == oceanData.foamMax &&
                     this->foamRange == oceanData.foamRange &&
                     this->m_repeatTime == oceanData.m_repeatTime &&
-                    this->m_randWeight == oceanData.m_randWeight
-                    ); // Check all the other values.
+                    this->m_randWeight == oceanData.m_randWeight &&
+                    this->m_peakSharpening == oceanData.m_peakSharpening &&
+                    this->m_specMult == oceanData.m_specMult &&
+                    this->m_swell == oceanData.m_swell &&
+                    this->m_jswpfetch == oceanData.m_jswpfetch &&
+                    this->newFoam == oceanData.newFoam
+                ); // Check all the other values.
         }
         
         bool operator != (const OceanData &oceanData) const {
@@ -143,10 +157,17 @@ class aaOceanBSDChanMod
         unsigned m_idx_foamRange;
         unsigned m_idx_foamMax;
         unsigned m_idx_randWeight;
-
+        unsigned m_idx_peakSharpening;
+        unsigned m_idx_specMult;
+        unsigned m_idx_swell;
+        unsigned m_idx_jswpfetch;
+        unsigned m_idx_newFoam;
+    
         unsigned m_idx_seed;
+        unsigned m_idx_spectrum;
         unsigned m_idx_time;
-
+        unsigned m_idx_timeOffset;
+    
         unsigned m_idx_displacementX;
         unsigned m_idx_displacementY;
         unsigned m_idx_displacementZ;
@@ -179,9 +200,16 @@ class aaOceanBSDChanMod
         unsigned cm_idx_foamRange;
         unsigned cm_idx_foamMax;
         unsigned cm_idx_randWeight;
-
+        unsigned cm_idx_peakSharpening;
+        unsigned cm_idx_specMult;
+        unsigned cm_idx_swell;
+        unsigned cm_idx_jswpfetch;
+        unsigned cm_idx_newFoam;
+    
         unsigned cm_idx_seed;
+        unsigned cm_idx_spectrum;
         unsigned cm_idx_time;
+        unsigned cm_idx_timeOffset;
     
         unsigned cm_idx_displacementX;
         unsigned cm_idx_displacementY;

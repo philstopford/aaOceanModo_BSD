@@ -87,12 +87,18 @@ class CChanState : public CLxObject
         float waveSpeed; // default is 1.0
         float waveChop; // default is 2.0
 		float oceanDepth; // default is 10000
-		float seed; // default is 1.0
-		float time;
+		int seed; // default is 1
+        int spectrum; // default is 0
+        float time;
+        float timeOffset;
         float repeatTime; // default is 1000.0
         bool doFoam; // default is FALSE for now.
         bool doNormals; // default is FALSE
         float randWeight; // default is 0.0f and limited to 0-1
+        float peakSharpening; // peak sharpening. default 1.0. Limited to 1.0 to 2.0
+        float specMult; // spectrum multiplier. default 1.0. Limited to 1.0 to 100.0
+        float swell; // swell. default 0
+        float jswpfetch; // TMA prefetch. default 20.0
 
         aaOcean *m_pOcean;
 
@@ -141,11 +147,17 @@ class CModifierElement : public CLxItemModifierElement
         float waveSpeed; // default is 1.0
         float waveChop; // default is 2.0
         float oceanDepth; // default is 10000
-        float seed; // default is 1.0
+        int seed; // default is 1
+        int spectrum; // default is 1
         float repeatTime; // default is 1000.0
+        float timeOffset;
         bool doFoam;
         bool doNormals;
         float randWeight; // default is 0.0f and limited to 0-1
+        float peakSharpening; // peak sharpening. default 1.0. Limited to 1.0 to 2.0
+        float specMult; // spectrum multiplier. default 1.0. Limited to 1.0 to 100.0
+        float swell; // swell. default 0
+        float jswpfetch; // TMA prefetch. default 20.0
 
 		CModifierElement()
 		{
@@ -163,11 +175,17 @@ class CModifierElement : public CLxItemModifierElement
             waveSpeed = 1.0; // default is 1.0
             waveChop = 2.0; // default is 2.0
             oceanDepth = 10000.0; // default is 10000
-            seed = 1.0; // default is 1.0
+            seed = 1; // default is 1
+            spectrum = 0;
             repeatTime = 1000.0; // default is 1000.0
+            timeOffset = 0.0;
             doFoam = bool(0);
             doNormals = bool(1);
             randWeight = 0.0f;
+            specMult = 1.0f;
+            peakSharpening = 1.0f;
+            jswpfetch = 20.0f;
+            swell = 0.0f;
 		}
 
 		~CModifierElement()

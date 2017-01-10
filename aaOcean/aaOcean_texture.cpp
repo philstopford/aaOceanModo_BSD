@@ -5,6 +5,7 @@
 #include <lxvmath.h>
 #include <lx_vector.hpp>
 #include <lxu_matrix.hpp>
+#include <lxvalue.h>
 
 using namespace aaOceanBSDTextureNamespace;
 
@@ -74,6 +75,13 @@ static LXtTextValueHint hint_boolLimit[] = {
     -1,			NULL
 };
 
+static LXtTextValueHint hint_spectrum[] = {
+    0,			"Philips",
+    1,			"Pierson-Morkowitz",
+    2,			"TMA",
+    0,          NULL
+};
+
 /*
  * Setup channels for the item type.
  */
@@ -131,6 +139,10 @@ LxResult aaOceanBSDTexture::vtx_SetupChannels (ILxUnknownID addChan)
     ac.NewChannel  ("seed",	LXsTYPE_INTEGER);
     ac.SetDefault  (0.0f, 1);
     
+    ac.NewChannel  ("spectrum",	LXsTYPE_INTEGER);
+    ac.SetDefault  (0.0f, 0);
+    ac.SetHint(hint_spectrum);
+    
     ac.NewChannel  ("repeatTime",	LXsTYPE_FLOAT);
     ac.SetDefault  (1000.0f, 0);
     
@@ -147,6 +159,24 @@ LxResult aaOceanBSDTexture::vtx_SetupChannels (ILxUnknownID addChan)
     ac.NewChannel  ("randWeight",	LXsTYPE_FLOAT);
     ac.SetDefault  (0.0f, 0);
     
+    ac.NewChannel  ("specMult",	LXsTYPE_FLOAT);
+    ac.SetDefault  (1.0f, 0);
+    
+    ac.NewChannel  ("peakSharpening",	LXsTYPE_FLOAT);
+    ac.SetDefault  (1.0f, 0);
+    
+    ac.NewChannel  ("swell",	LXsTYPE_FLOAT);
+    ac.SetDefault  (0.0f, 0);
+    
+    ac.NewChannel  ("tmaFetch",	LXsTYPE_FLOAT);
+    ac.SetDefault  (20.0f, 0);
+    
+    ac.NewChannel("newFoam", LXsTYPE_BOOLEAN);
+    ac.SetDefault(0.0, 1);
+    
+    ac.NewChannel  ("timeOffset",	LXsTYPE_FLOAT);
+    ac.SetDefault  (0.0f, 0);
+
     return LXe_OK;
 }
 
@@ -174,11 +204,18 @@ LxResult aaOceanBSDTexture::vtx_LinkChannels (ILxUnknownID eval, ILxUnknownID	it
     m_idx_waveChop = ev.AddChan (item, "waveChop");
     m_idx_oceanDepth = ev.AddChan (item, "oceanDepth");
     m_idx_seed = ev.AddChan(item, "seed");
+    m_idx_spectrum = ev.AddChan(item, "spectrum");
     m_idx_repeatTime = ev.AddChan(item, "repeatTime");
     m_idx_doFoam = ev.AddChan(item, "doFoam");
     m_idx_foamRange = ev.AddChan(item, "foamRange");
     m_idx_foamMax = ev.AddChan(item, "foamMax");
     m_idx_randWeight = ev.AddChan(item, "randWeight");
+    m_idx_peakSharpening = ev.AddChan(item, "peakSharpening");
+    m_idx_specMult = ev.AddChan(item, "specMult");
+    m_idx_jswpfetch = ev.AddChan(item, "tmaFetch");
+    m_idx_swell = ev.AddChan(item, "swell");
+    m_idx_newFoam = ev.AddChan(item, "newFoam");
+    m_idx_timeOffset = ev.AddChan(item, "timeOffset");
     
     // m_idx_time = ev.AddChan (item, "time");
     
@@ -249,6 +286,15 @@ LxResult aaOceanBSDTexture::vtx_ReadChannels(ILxUnknownID attr, void  **ppvData)
     newOceanData->m_waveChop = at.Float(m_idx_waveChop);
     newOceanData->m_oceanDepth = at.Float(m_idx_oceanDepth);
     newOceanData->m_seed = at.Int(m_idx_seed);
+    newOceanData->m_spectrum = at.Int(m_idx_spectrum);
+    if (newOceanData->m_spectrum < 0)
+    {
+        newOceanData->m_spectrum = 0;
+    }
+    if (newOceanData->m_spectrum > 2)
+    {
+        newOceanData->m_spectrum = 2;
+    }
     newOceanData->m_repeatTime = at.Float(m_idx_repeatTime);
     newOceanData->m_doFoam = (bool) at.Int(m_idx_doFoam);
     newOceanData->foamRange = at.Float(m_idx_foamRange);
@@ -263,6 +309,50 @@ LxResult aaOceanBSDTexture::vtx_ReadChannels(ILxUnknownID attr, void  **ppvData)
     {
         newOceanData->m_randWeight = 0.0f;
     }
+    
+    newOceanData->m_specMult = at.Float(m_idx_specMult);
+    if(newOceanData->m_specMult > 100)
+    {
+        newOceanData->m_specMult = 100.0f;
+    }
+    if(newOceanData->m_specMult < 1)
+    {
+        newOceanData->m_specMult = 1.0f;
+    }
+    
+    newOceanData->m_peakSharpening = at.Float(m_idx_peakSharpening);
+    if(newOceanData->m_peakSharpening > 6)
+    {
+        newOceanData->m_peakSharpening = 6.0f;
+    }
+    if(newOceanData->m_peakSharpening < 0.001f)
+    {
+        newOceanData->m_peakSharpening = 0.001f;
+    }
+    
+    newOceanData->m_jswpfetch = at.Float(m_idx_jswpfetch);
+    if(newOceanData->m_jswpfetch > 1000)
+    {
+        newOceanData->m_jswpfetch = 1000;
+    }
+    if(newOceanData->m_jswpfetch < 0.001f)
+    {
+        newOceanData->m_jswpfetch = 0.001f;
+    }
+    
+    newOceanData->m_swell = at.Float(m_idx_swell);
+    if(newOceanData->m_swell > 1)
+    {
+        newOceanData->m_swell = 1;
+    }
+    if(newOceanData->m_swell < 0)
+    {
+        newOceanData->m_swell = 0;
+    }
+    
+    newOceanData->newFoam = at.Bool(m_idx_newFoam);
+ 
+    newOceanData->m_timeOffset = at.Float(m_idx_timeOffset);
     
     newOceanData->m_time = at.Float(m_idx_time);
         
@@ -279,7 +369,8 @@ void aaOceanBSDTexture::maybeResetOceanData(std::unique_ptr<OceanData> newOceanD
         if (oceanData_.get() == nullptr || *newOceanData != *oceanData_) {
             oceanData_ = std::move(newOceanData); // newOceanData is no longer valid, do not use it again in this function!
             mOcean_.input(  oceanData_->m_resolution,
-                          (unsigned long)oceanData_->m_seed,
+                          oceanData_->m_spectrum,
+                          (unsigned int)oceanData_->m_seed,
                           oceanData_->m_oceanSize,
                           oceanData_->m_oceanDepth,
                           oceanData_->m_surfaceTension,
@@ -291,12 +382,17 @@ void aaOceanBSDTexture::maybeResetOceanData(std::unique_ptr<OceanData> newOceanD
                           oceanData_->m_waveSpeed,
                           oceanData_->m_waveHeight,
                           oceanData_->m_waveChop,
-                          oceanData_->m_time,
+                          oceanData_->m_time + oceanData_->m_timeOffset,
                           oceanData_->m_repeatTime,
                           oceanData_->m_doFoam,
-                          oceanData_->m_randWeight);
+                          oceanData_->m_randWeight,
+                          oceanData_->m_specMult,
+                          oceanData_->m_peakSharpening,
+                          oceanData_->m_jswpfetch,
+                          oceanData_->m_swell);
             mOcean_.m_foamBoundrange = oceanData_->foamRange;
             mOcean_.m_foamBoundmax = oceanData_->foamMax;
+            mOcean_.m_newFoam = oceanData_->newFoam;
             // clear arrays that are not required during shader evaluation
 			// Disabled as this crashes the library - yay.
             // mOcean_.clearResidualArrays();
@@ -348,13 +444,8 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
     float alpha = 1.0; // alpha output
     
 
-	// Using UVs instead of object space here now
     float u_oPos = sPosition->wPos[0] / mOcean_.m_oceanScale;
     float v_oPos = -sPosition->wPos[2] / mOcean_.m_oceanScale; // aaOcean has a hardcoded sign inversion for the 'V'
-
-	// u_oPos = tInp->uvw0[0];
-	// v_oPos = -tInp->uvw0[1];
-
 
     tOut->direct   = 1;
     // The intent of tInpDsp->enable isn't entirely clear. The docs, such as they are, indicate that the texture should set this when outputting displacement.
@@ -423,7 +514,7 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
         
         float foamResult = 0.0f;
         
-		foamResult = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
+        foamResult = mOcean_.getOceanData(u_oPos, v_oPos, aaOcean::eFOAM);
 		foamResult = 1.0 - foamResult;
 
         if (tone)

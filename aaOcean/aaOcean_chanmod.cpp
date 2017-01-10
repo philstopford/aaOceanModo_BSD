@@ -163,12 +163,30 @@ aaOceanBSDChanMod::cmod_Allocate (
         cm_idx_seed = index;
         index++;
 
+        // Lookup the index of the 'spectrum' channel and add as an input.
+        modItem.ChannelLookup ("spectrum", &m_idx_spectrum);
+        chanMod.AddInput (item, m_idx_spectrum);
+        cm_idx_spectrum = index;
+        index++;
+
+        // Lookup the index of the 'timeOffset' channel and add as an input.
+        modItem.ChannelLookup ("timeOffset", &m_idx_timeOffset);
+        chanMod.AddInput (item, m_idx_timeOffset);
+        cm_idx_timeOffset = index;
+        index++;
+        
         // Lookup the index of the 'repeatTime' channel and add as an input.
         modItem.ChannelLookup ("repeatTime", &m_idx_repeatTime);
         chanMod.AddInput (item, m_idx_repeatTime);
         cm_idx_repeatTime = index;
         index++;
 
+        // Lookup the index of the 'tmaFetch' channel and add as an input.
+        modItem.ChannelLookup ("newFoam", &m_idx_newFoam);
+        chanMod.AddInput (item, m_idx_newFoam);
+        cm_idx_newFoam = index;
+        index++;
+        
         // Lookup the index of the 'doFoam' channel and add as an input.
         modItem.ChannelLookup ("doFoam", &m_idx_doFoam);
         chanMod.AddInput (item, m_idx_doFoam);
@@ -186,13 +204,43 @@ aaOceanBSDChanMod::cmod_Allocate (
         chanMod.AddInput (item, m_idx_foamRange);
         cm_idx_foamRange = index;
         index++;
-
+    
         // Lookup the index of the 'randWeight' channel and add as an input.
         modItem.ChannelLookup ("randWeight", &m_idx_randWeight);
         chanMod.AddInput (item, m_idx_randWeight);
         cm_idx_randWeight = index;
         index++;
 
+        // Lookup the index of the 'peakSharpening' channel and add as an input.
+        modItem.ChannelLookup ("peakSharpening", &m_idx_peakSharpening);
+        chanMod.AddInput (item, m_idx_peakSharpening);
+        cm_idx_peakSharpening = index;
+        index++;
+        
+        // Lookup the index of the 'specMult' channel and add as an input.
+        modItem.ChannelLookup ("specMult", &m_idx_specMult);
+        chanMod.AddInput (item, m_idx_specMult);
+        cm_idx_specMult = index;
+        index++;
+        
+        // Lookup the index of the 'spectrum' channel and add as an input.
+        modItem.ChannelLookup ("spectrum", &m_idx_spectrum);
+        chanMod.AddInput (item, m_idx_spectrum);
+        cm_idx_spectrum = index;
+        index++;
+        
+        // Lookup the index of the 'tmaFetch' channel and add as an input.
+        modItem.ChannelLookup ("tmaFetch", &m_idx_jswpfetch);
+        chanMod.AddInput (item, m_idx_jswpfetch);
+        cm_idx_jswpfetch = index;
+        index++;
+    
+        // Lookup the index of the 'swell' channel and add as an input.
+        modItem.ChannelLookup ("swell", &m_idx_swell);
+        chanMod.AddInput (item, m_idx_swell);
+        cm_idx_swell = index;
+        index++;
+    
         chanMod.AddTime ();
         cm_idx_time = index;
 
@@ -344,6 +392,11 @@ aaOceanBSDChanMod::cmod_Flags (
                 return LXfCHMOD_INPUT;
         }
 
+        if (LXx_OK (modItem.ChannelLookup ("spectrum", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+    
         if (LXx_OK (modItem.ChannelLookup ("doFoam", &chanIdx))) {
             if (index == chanIdx)
                 return LXfCHMOD_INPUT;
@@ -364,11 +417,46 @@ aaOceanBSDChanMod::cmod_Flags (
                 return LXfCHMOD_INPUT;
         }
 
+        if (LXx_OK (modItem.ChannelLookup ("peakSharpening", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+        
+        if (LXx_OK (modItem.ChannelLookup ("specMult", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+    
+        if (LXx_OK (modItem.ChannelLookup ("spectrum", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+    
+        if (LXx_OK (modItem.ChannelLookup ("tmaFetch", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+    
+        if (LXx_OK (modItem.ChannelLookup ("timeOffset", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+        
+        if (LXx_OK (modItem.ChannelLookup ("swell", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+    
         if (LXx_OK (modItem.ChannelLookup ("repeatTime", &chanIdx))) {
             if (index == chanIdx)
                 return LXfCHMOD_INPUT;
         }
     
+        if (LXx_OK (modItem.ChannelLookup ("newFoam", &chanIdx))) {
+            if (index == chanIdx)
+                return LXfCHMOD_INPUT;
+        }
+        
         if (LXx_OK (modItem.ChannelLookup ("displacement.X", &chanIdx))) {
                 if (index == chanIdx)
                         return LXfCHMOD_OUTPUT;
@@ -513,6 +601,9 @@ aaOceanBSDChanMod::cmod_Evaluate (
     chanMod.ReadInputInt (attr, cm_idx_seed, &iTemp);
     newOceanData->m_seed = iTemp;
 
+    chanMod.ReadInputInt (attr, cm_idx_spectrum, &iTemp);
+    newOceanData->m_spectrum = iTemp;
+    
     chanMod.ReadInputFloat (attr, cm_idx_repeatTime, &dTemp);
     newOceanData->m_repeatTime = (float) dTemp;
 
@@ -539,8 +630,68 @@ aaOceanBSDChanMod::cmod_Evaluate (
         newOceanData->m_randWeight = 0.0f;
     }
 
+    chanMod.ReadInputFloat (attr, cm_idx_specMult, &dTemp);
+    newOceanData->m_specMult = (float) dTemp;
+    if(newOceanData->m_specMult > 100)
+    {
+        newOceanData->m_specMult = 100.0f;
+    }
+    if(newOceanData->m_specMult < 0.001f)
+    {
+        newOceanData->m_specMult = 0.001f;
+    }
+
+    chanMod.ReadInputFloat (attr, cm_idx_peakSharpening, &dTemp);
+    newOceanData->m_peakSharpening = (float) dTemp;
+    if(newOceanData->m_peakSharpening > 6)
+    {
+        newOceanData->m_peakSharpening = 6.0f;
+    }
+    if(newOceanData->m_peakSharpening < 0.001f)
+    {
+        newOceanData->m_peakSharpening = 0.001f;
+    }
+    
+    chanMod.ReadInputFloat (attr, cm_idx_swell, &dTemp);
+    newOceanData->m_swell = (float) dTemp;
+    if(newOceanData->m_swell > 1)
+    {
+        newOceanData->m_swell = 1.0f;
+    }
+    if(newOceanData->m_swell < 0)
+    {
+        newOceanData->m_swell = 0;
+    }
+    
+    chanMod.ReadInputFloat (attr, cm_idx_jswpfetch, &dTemp);
+    newOceanData->m_jswpfetch = (float) dTemp;
+    if(newOceanData->m_jswpfetch > 1000)
+    {
+        newOceanData->m_jswpfetch = 1000;
+    }
+    if(newOceanData->m_jswpfetch < 0.001f)
+    {
+        newOceanData->m_jswpfetch = 0.001f;
+    }
+    
+    chanMod.ReadInputInt (attr, cm_idx_spectrum, &iTemp);
+    if(newOceanData->m_spectrum > 2)
+    {
+        newOceanData->m_spectrum = 2;
+    }
+    if(newOceanData->m_spectrum < 0)
+    {
+        newOceanData->m_spectrum = 0;
+    }
+    
     newOceanData->m_doNormals = false;
 
+    chanMod.ReadInputInt (attr, cm_idx_newFoam, &iTemp);
+    newOceanData->newFoam = (bool) iTemp;
+    
+    chanMod.ReadInputFloat (attr, cm_idx_timeOffset, &dTemp);
+    newOceanData->m_timeOffset = (float) dTemp;
+  
     chanMod.ReadInputFloat (attr, cm_idx_time, &dTemp);
     newOceanData->m_time = (float) dTemp;
 
@@ -602,7 +753,8 @@ void aaOceanBSDChanMod::maybeResetOceanData(std::unique_ptr<OceanData> newOceanD
         if (oceanData_.get() == nullptr || *newOceanData != *oceanData_) {
             oceanData_ = std::move(newOceanData); // newOceanData is no longer valid, do not use it again in this function!
             mOcean_.input(	oceanData_->m_resolution,
-                           (unsigned long)oceanData_->m_seed,
+                           oceanData_->m_spectrum,
+                           (unsigned int)oceanData_->m_seed,
                            oceanData_->m_oceanSize,
                            oceanData_->m_oceanDepth,
                            oceanData_->m_surfaceTension,
@@ -614,12 +766,17 @@ void aaOceanBSDChanMod::maybeResetOceanData(std::unique_ptr<OceanData> newOceanD
                            oceanData_->m_waveSpeed,
                            oceanData_->m_waveHeight,
                            oceanData_->m_waveChop,
-                           oceanData_->m_time,
+                           oceanData_->m_time + oceanData_->m_timeOffset,
                            oceanData_->m_repeatTime,
                            oceanData_->m_doFoam,
-                           oceanData_->m_randWeight);
+                           oceanData_->m_randWeight,
+                           oceanData_->m_specMult,
+                           oceanData_->m_peakSharpening,
+                           oceanData_->m_jswpfetch,
+                           oceanData_->m_swell);
             mOcean_.m_foamBoundrange = oceanData_->foamRange;
             mOcean_.m_foamBoundmax = oceanData_->foamMax;
+            mOcean_.m_newFoam= oceanData_->newFoam;
             // clear arrays that are not required during shader evaluation
 			// Disabled as this crashes the library - yay.
 			// mOcean_.clearResidualArrays();
@@ -655,6 +812,13 @@ static LXtTextValueHint hint_resolution[] = {
     13,			"Map size : 8192 (memory hungry!)",
     14,			"Map size : 16384 (very memory hungry!)",
     4,			NULL
+};
+
+static LXtTextValueHint hint_spectrum[] = {
+    0,			"Philips",
+    1,			"Pierson-Morkowitz",
+    2,			"TMA",
+    0,          NULL
 };
 
         LxResult
@@ -717,8 +881,18 @@ aaOceanBSDChanModPackage::pkg_SetupChannels (
         ac.NewChannel  ("seed",	LXsTYPE_INTEGER);
         ac.SetDefault  (0.0f, 1);
         
+        ac.NewChannel  ("spectrum",	LXsTYPE_INTEGER);
+        ac.SetDefault  (0.0f, 0);
+        ac.SetHint(hint_spectrum);
+    
+        ac.NewChannel  ("timeOffset",	LXsTYPE_FLOAT);
+        ac.SetDefault  (0.0f, 0);
+    
         ac.NewChannel  ("repeatTime",	LXsTYPE_FLOAT);
         ac.SetDefault  (1000.0f, 0);
+        
+        ac.NewChannel ("newFoam", LXsTYPE_BOOLEAN);
+        ac.SetDefault (0.0, 1);
         
         ac.NewChannel  ("doFoam",	LXsTYPE_INTEGER);
         ac.SetDefault  (0.0, 0);
@@ -732,6 +906,18 @@ aaOceanBSDChanModPackage::pkg_SetupChannels (
         ac.NewChannel  ("randWeight",	LXsTYPE_FLOAT);
         ac.SetDefault  (0.0f, 0);
 
+        ac.NewChannel  ("specMult",	LXsTYPE_FLOAT);
+        ac.SetDefault  (1.0f, 0);
+    
+        ac.NewChannel  ("peakSharpening",	LXsTYPE_FLOAT);
+        ac.SetDefault  (1.0f, 0);
+    
+        ac.NewChannel  ("tmaFetch",	LXsTYPE_FLOAT);
+        ac.SetDefault  (20.0f, 0);
+      
+        ac.NewChannel  ("swell",	LXsTYPE_FLOAT);
+        ac.SetDefault  (0.0f, 0);
+    
         // Output channels below, this being defined in Flags and Allocate.
 
         // Note that these vectors end up having three channels (.X, .Y, .Z) elsewhere, leading to checks for displacement.X, etc. Don't get confused.

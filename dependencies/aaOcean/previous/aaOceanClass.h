@@ -36,8 +36,7 @@ public:
         eEIGENPLUSX,
         eEIGENPLUSZ,
         eEIGENMINUSX,
-        eEIGENMINUSZ,
-        eSPECTRUM
+        eEIGENMINUSZ
     };
 
     // array for holding the current state of aaOcean object
@@ -70,7 +69,7 @@ public:
         float   spectrumMult = 1.f,
         float   pmWaveSize = 1.f,
         float   jswpfetch = 100.f,
-        float   swell = 0.0f);
+        float   jswpgamma = 3.3f);
 
     // main output function
     // should be called from host app
@@ -99,7 +98,7 @@ public:
     // initialization functions
     int     m_resolution;     // resolution in powers of 2
     unsigned int m_seed;      // seed for random number generator
-    unsigned int m_spectrum;  // philips, JONSWAP, PM , TMA etc.
+    unsigned int m_spectrum;  // philips, JONSWAP, PM etc.
     float   m_oceanScale;     // size of the ocean patch to generate in meters
     float   m_velocity;       // exposed as 'Wave Size' in some aaOcean plugins
     float   m_windDir;        // wind direction in degrees
@@ -118,13 +117,10 @@ public:
     float   m_randWeight;     // control blend between rand distributions
 
     // optional variables
-    float   m_spectrumMult;         // multiplier for generated spectrum
-    float   m_peakSharpening;   // JONSWAP Peak Sharpening
-    float   m_jswpfetch;            // wind region
-    float   m_swell;                // swell
-    
-    bool m_newFoam; // new foam calculation
-    bool m_accumulateFoam; // accumulate foam
+    float   m_spectrumMult;   // multiplier for generated spectrum
+    float   m_pmWaveSize;     // Pierson Moskowitz wave size
+    float   m_jswpfetch;      // jonswap fetch
+    float   m_jswpgamma;      // jonswap gamma
 
 private:
     // ocean array pointers
@@ -139,7 +135,6 @@ private:
     float   *m_omega;   // omega (see Tessendorf paper)
     float   *m_rand1;   // random number array 
     float   *m_rand2;   // random number array 
-    float   *m_fftSpectrum; // spectrum array 
 
     // ocean output array pointers
     float *m_out_fft_htField;   // y displacement
@@ -153,7 +148,7 @@ private:
 
     // array of pointers pointing to m_out* arrays
     // used with 'enum arrayType' and in getOceanData() and getOceanArray()
-    float *m_arrayPointer[9];
+    float *m_arrayPointer[8];
 
     // bool types for various checks during run-time
     bool    m_isAllocated;      // working arrays memory allocation check
@@ -186,8 +181,7 @@ private:
     unsigned int generateUID(const float, const float) const;
     float philips(float k_sq);
     float piersonMoskowitz(float omega, float k_sq);
-    float tma(float omega, int index = 0);
-    float swell(float omega, float theta, float k_mag);
+    float jonswap(float omega);
 
     // tessendorf ocean functions
     void evaluateHokData();

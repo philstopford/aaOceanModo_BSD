@@ -15,6 +15,16 @@
 #ifndef AAOCEANCLASS_CPP
 #define AAOCEANCLASS_CPP
 
+// Test for gcc
+// gcc 4.2.0+ required for OpenMP
+// 4.2.0 is ABI-compatible with 4.1.x.
+// recommended compiler: gcc-4.2.4
+#ifdef __GNUC__
+#if __GNUC_MINOR__ < 2 
+#warning[aaOcean] GNU C compiler 4.2.x, which is ABI - compatible with 4.1.0, is required
+#endif
+#endif
+
 #include <cmath>
 #include <omp.h>
 #include <climits>
@@ -44,15 +54,13 @@ aaOcean::aaOcean() :
     m_waveSpeed(1.0f),
     m_time(1.0f),
     m_loopTime(10000.0f),
-    m_foamBoundmax(1000.0f),
     m_foamBoundrange(1000.0f),
+    m_foamBoundmax(1000.0f),
     m_randWeight(0.f),
     m_spectrumMult(1.f),
-    m_peakSharpening(1.f),
+    m_pmWaveSize(1.f),
     m_jswpfetch(1.f),
-    m_swell(0.0f),
-
-    m_newFoam(1), // bool
+    m_jswpgamma(3.3f),
 
     // working arrays
     m_xCoord(0),
@@ -66,7 +74,6 @@ aaOcean::aaOcean() :
     m_omega(0),
     m_rand1(0),
     m_rand2(0),
-    m_fftSpectrum(0),
 
     // output arrays
     m_out_fft_htField(0),
@@ -163,9 +170,9 @@ void aaOcean::input(
     bool doFoam,
     float randWeight,
     float spectrumMult,
-    float peakSharpening,
+    float pmWaveSize,
     float jswpfetch,
-    float swell)
+    float jswpgamma)
 {
     // forcing to be power of two, setting minimum resolution of 2^4
     resolution = (int)pow(2.0f, (4 + abs(resolution)));
@@ -176,20 +183,7 @@ void aaOcean::input(
     }
 
     // scaled for better UI control
-    if (spectrum < 2 )
-    {
-        // for Philips and PM spectrums
-        waveHeight *= 0.01f;
-        chopAmount *= 0.01f;
-    }
-    else
-    {
-        // TMA spectrum
-        waveHeight *= 0.1f;
-        chopAmount *= 0.1f;
-    }
-
-    m_waveHeight    = waveHeight;
+    m_waveHeight    = waveHeight * 0.01f;
     m_time          = time;
     m_waveSpeed     = waveSpeed;
     m_doFoam        = doFoam;
@@ -197,7 +191,7 @@ void aaOcean::input(
     if (chopAmount > 1.0e-6f)
     {
         // scaled for better UI control
-        m_chopAmount = chopAmount;
+        m_chopAmount = chopAmount * 0.01f;
         m_doChop = 1;
     }
     else
@@ -230,9 +224,7 @@ void aaOcean::input(
         m_damp != damp                      ||
         m_loopTime != loopTime              ||
         m_spectrumMult != spectrumMult      ||
-        m_peakSharpening != peakSharpening  ||
-        m_jswpfetch != jswpfetch            ||
-        m_swell != swell             )
+        m_pmWaveSize != pmWaveSize          )
     {
         m_oceanScale = oceanScale;
         m_spectrum = spectrum;
@@ -245,9 +237,7 @@ void aaOcean::input(
         m_damp = damp;
         m_loopTime = loopTime;
         m_spectrumMult = spectrumMult;
-        m_peakSharpening = peakSharpening;
-        m_jswpfetch = jswpfetch;
-        m_swell = swell;
+        m_pmWaveSize = pmWaveSize;
 
         // re-evaluate HoK if any of these vars change
         m_doHoK = 1;
@@ -320,7 +310,6 @@ void aaOcean::allocateBaseArrays()
     m_omega = (float*)malloc(size * sizeof(float));
     m_rand1 = (float*)malloc(size * sizeof(float));
     m_rand2 = (float*)malloc(size * sizeof(float));
-    m_fftSpectrum = (float*)malloc(size * sizeof(float));
 
     m_out_fft_htField = (float*)malloc(size * sizeof(float));
     m_out_fft_chopX = (float*)malloc(size * sizeof(float));
@@ -333,7 +322,6 @@ void aaOcean::allocateBaseArrays()
     m_arrayPointer[eHEIGHTFIELD] = m_out_fft_htField;
     m_arrayPointer[eCHOPX] = m_out_fft_chopX;
     m_arrayPointer[eCHOPZ] = m_out_fft_chopZ;
-    m_arrayPointer[eSPECTRUM] = m_fftSpectrum;
 
     m_doHoK = 1;
     m_doSetup = 1;
@@ -369,23 +357,18 @@ void aaOcean::allocateFoamArrays()
     m_isFoamAllocated = 1;
 }
 
+
 void aaOcean::clearResidualArrays()
 {
     bool isResidualAllocated = 1;
-
-    if (m_fftSpectrum)
-    {
-        free(m_fftSpectrum);
-        m_fftSpectrum = 0;
-    }
-    else
-        isResidualAllocated = 0;
 
     if (m_rand2)
     {
         free(m_rand2);
         m_rand2 = 0;
     }
+    else
+        isResidualAllocated = 0;
 
     if (m_rand1)
     {
@@ -595,50 +578,37 @@ void aaOcean::setupGrid()
 float aaOcean::philips(float k_sq)
 {
     const float L = m_velocity * m_velocity / aa_GRAVITY;
-    return ((exp(-1.0f / (L * L * k_sq))) / (k_sq * k_sq)) * m_spectrumMult;
+    return m_spectrumMult * (exp(-1.0f / (L * L * k_sq))) / (k_sq * k_sq);
 }
 
 float aaOcean::piersonMoskowitz(float omega, float k_sq)
 {
-    float peakOmegaPM = 0.87f * aa_GRAVITY / m_velocity;
-    
     const float alpha = 0.0081f;
     const float beta = 1.29f;
+    float peakOmega = 0.87f * aa_GRAVITY / m_velocity;
 
-    float spectrum = 100.f * alpha * aa_GRAVITYSQ / pow(omega, 5.f);
-    spectrum *= exp(-beta * pow(peakOmegaPM / omega, 4.f));
+    float spectrum = m_spectrumMult * 100.f * alpha * aa_GRAVITYSQ / pow(omega, 5);
+    spectrum *= exp(-beta * pow(peakOmega / omega, 4));
 
-    return spectrum * m_spectrumMult;
+    spectrum = pow(spectrum, m_pmWaveSize);
+    return spectrum;
 }
 
-float aaOcean::tma(float omega, int index)
+float aaOcean::jonswap(float omega)
 {
-    // This function is based on the following paper
-    // Empirical Directional Wave Spectra for Computer Graphics
-    // Christopher J. Horvath
+    float m_fetch = m_oceanScale * 1000.0f;
+    float peakOmega = 2.84f * pow(aa_GRAVITY, 0.7f) * pow(m_fetch, -0.3f) * pow(m_velocity, -0.4f);
+    const float alphaP = (peakOmega * m_velocity) / aa_GRAVITY;
+    float alpha = 0.033f * pow(alphaP, 0.66667f);
+    const float sigma = (omega <= peakOmega) ? 0.07f : 0.09f;
 
-    float dimensionlessFetch = std::abs(aa_GRAVITY * m_jswpfetch / (m_velocity * m_velocity));
-    float alpha = 0.076f * std::pow(dimensionlessFetch, -0.22f);
-    
-    float peakOmega = 2.84f * pow(aa_GRAVITY, 0.7f) * pow(m_jswpfetch, -0.3f) * pow(m_velocity, -0.4f);
-    float sigma = (omega <= peakOmega) ? (0.07f) : (0.09f);
-    float peakSharpening = pow(m_peakSharpening, exp(-pow((omega - peakOmega) / (sigma * peakOmega), 2.0f) / 2.0f));
+    float jonswap = alpha * aa_GRAVITYSQ / pow(omega, 5);
+    float jonswapExp = exp(-1.25f * pow(peakOmega, 4) / pow(omega, 4));
+    float gammaPow = -1.f * pow((omega - peakOmega), 2) / (2.f * pow(peakOmega, 2) * pow(sigma, 2));
+    gammaPow = exp(gammaPow);
 
-    float tma = peakSharpening * (alpha * aa_GRAVITYSQ / std::pow(omega, 5.0f)) * \
-                 std::exp(-1.25f * std::pow(peakOmega / omega, 4.0f));
-
-    float m_kdGain = sqrt(m_oceanDepth / aa_GRAVITY);
-    float wh = omega * m_kdGain;
-    float kitaigorodskiiDepth =  0.5f + (0.5f * tanh(1.8f * (wh - 1.125f)));
-
-    tma *= kitaigorodskiiDepth;
-    return  tma * m_spectrumMult;
-}
-
-float aaOcean::swell(float omega, float kdotw, float k_mag)
-{
-    // TODO: implement frequency-dependent swell generation
-    return 1.f;
+    jonswap = jonswap * jonswapExp * gammaPow;
+    return  pow(jonswap, m_pmWaveSize);
 }
 
 void aaOcean::evaluateHokData()
@@ -662,46 +632,37 @@ void aaOcean::evaluateHokData()
         m_kX[index] = (float)m_xCoord[index] * k_mult;
         m_kZ[index] = (float)m_zCoord[index] * k_mult;
         k_sq = (m_kX[index] * m_kX[index]) + (m_kZ[index] * m_kZ[index]);
-        k_mag = sqrt(k_sq);
-        float k_mag_inv = 1.0f / sqrt(k_sq);
+        k_mag = 1.0f / sqrt(k_sq);
 
-        // build dispersion relationship with oceanDepth relationship and capillary waves
-        m_omega[index] = aa_GRAVITY * k_mag * tanh(k_mag * m_oceanDepth);
+        // build dispersion relationship with oceanDepth relationship
+        m_omega[index] = (aa_GRAVITY / k_mag) * tanh(sqrt(k_sq) * m_oceanDepth);
+        // modifying dispersion for capillary waves
+        m_omega[index] *= (1.0f + k_sq * m_surfaceTension * m_surfaceTension);
+        m_omega[index] = sqrt(m_omega[index]);
 
-        // calculate spectrum
-        if (m_spectrum == 1) // Pierson-Moskowitz
-        {
-            m_omega[index] = sqrt(m_omega[index]);
-            m_fftSpectrum[index] = piersonMoskowitz(m_omega[index], k_sq);
+        // add time looping support with OmegaNought
+        m_omega[index] = (int(m_omega[index] / omega0)) * omega0;
 
-        }
-        else if (m_spectrum == 2) //  Texel MARSEN ARSLOE (TMA) SpectruM
-        {
-            m_omega[index] = sqrt(m_omega[index]);
-            m_fftSpectrum[index] = tma(m_omega[index], index);
-        }
-        else // Philips
-        { 
-            // modifying dispersion for capillary waves
-            m_omega[index] = aa_GRAVITY * k_mag * (1.0f + k_sq * m_surfaceTension * m_surfaceTension);
-            m_omega[index] = sqrt(m_omega[index]);
-            // add time looping support with OmegaNought
-            m_omega[index] = (int(m_omega[index] / omega0)) * omega0;
-
-            m_fftSpectrum[index] = sqrt(philips(k_sq));
-        }
+        // calculate philips spectrum
+        if (m_spectrum == 1)
+            spectrum = piersonMoskowitz(m_omega[index], k_sq);
+        else if (m_spectrum == 2)
+            spectrum = jonswap(m_omega[index]);
+        else
+            spectrum = philips(k_sq);
 
         // spectrum-type indenpendant modifications
-        k_dot_w = (m_kX[index] * k_mag_inv * windx) + (m_kZ[index] * k_mag_inv * windz);
-        m_fftSpectrum[index] *= pow(k_dot_w, m_windAlign);  // bias towards wind dir
-        m_fftSpectrum[index] *= exp(-k_sq * m_cutoff);      // eliminate wavelengths smaller than cutoff
+        k_dot_w = (m_kX[index] * k_mag * windx) + (m_kZ[index] * k_mag * windz);
+        spectrum *= pow(k_dot_w, m_windAlign);  // bias towards wind dir
+        spectrum *= exp(-k_sq * m_cutoff);      // eliminate wavelengths smaller than cutoff
 
-       // reduce reflected waves
+        // reduce reflected waves
         if (bDamp && (k_dot_w < 0.0f))
-            m_fftSpectrum[index] *= (1.0f - m_damp);
+            spectrum *= (1.0f - m_damp);
 
-        m_hokReal[index] = (aa_INV_SQRTTWO) * (m_rand1[index]) * m_fftSpectrum[index];
-        m_hokImag[index] = (aa_INV_SQRTTWO) * (m_rand2[index]) * m_fftSpectrum[index];
+        spectrum = sqrt(spectrum);
+        m_hokReal[index] = (aa_INV_SQRTTWO) * (m_rand1[index]) * spectrum;
+        m_hokImag[index] = (aa_INV_SQRTTWO) * (m_rand2[index]) * spectrum;
     }
 
     sprintf(m_state, "\n[aaOcean Core] Finished initializing all ocean data");
@@ -788,7 +749,7 @@ void aaOcean::evaluateChopField()
     n = m_resolution;
     for (i = 0; i < n; ++i)
     {
-        #pragma omp parallel for private(multiplier, j, index)  
+#pragma omp parallel for private(multiplier, j, index)  
         for (j = 0; j < n; ++j)
         {
             index = (i*n) + j;
@@ -877,15 +838,8 @@ void aaOcean::evaluateJacobians()
         m_out_fft_jzzZ[index] = qMinus / temp;
 
         //store foam back in this array for convenience
-        if (m_newFoam)
-        {
-            m_out_fft_jxz[index] = ((Jxx + Jzz) - sqrt(((Jxx - Jzz) * (Jxx - Jzz)) + 4.0f * (Jxz*Jxz))) * 0.5f;
-        }
-        else
-        {
-            // old foam calculation.
-            m_out_fft_jxz[index] = (Jxx * Jzz) - (Jxz * Jxz);
-        }
+        //m_out_fft_jxz[index] = (Jxx * Jzz) - (Jxz * Jxz); // OLD
+        m_out_fft_jxz[index] = ((Jxx + Jzz) - sqrt(((Jxx - Jzz) * (Jxx - Jzz)) + 4.0f * (Jxz*Jxz))) * 0.5f;
     }
 }
 
@@ -983,7 +937,7 @@ float aaOcean::getOceanData(float uCoord, float vCoord, aaOcean::arrayType type)
                             arrayPointer[xPlus2     + yPlus2]);
 
     float returnValue = catmullRom(dv, a1, b1, c1, d1);
-    
+
     if (type == eFOAM)
     {
         float maxValue = m_foamBoundmax;
@@ -992,28 +946,24 @@ float aaOcean::getOceanData(float uCoord, float vCoord, aaOcean::arrayType type)
         float range = m_foamBoundrange;
         if (range == 0)
         {
-            returnValue = 0;
-            if (returnValue >= maxValue)
-            {
-                returnValue = 1.0f;
-            }
+            range = 1.0f;
         }
-        else
+        
+        // Clamp.
+        if (returnValue < minValue)
         {
-            // Clamp.
-            if (returnValue <= minValue)
-            {
-                returnValue = 0;
-            }
-            else if (returnValue >= maxValue)
-            {
-                returnValue = 1;
-            }
-            else
-            {                
-                returnValue = (returnValue - minValue) / (maxValue - minValue);
-            }
+            returnValue = minValue;
         }
+        if (returnValue > maxValue)
+        {
+            returnValue = maxValue;
+        }
+        
+        // Find our delta in the range.
+        
+        float delta = std::abs(returnValue - minValue);
+        
+        returnValue = std::abs(delta / range);
     }
     
     return returnValue;

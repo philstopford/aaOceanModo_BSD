@@ -60,6 +60,13 @@ static LXtTextValueHint hint_resolution[] = {
     4,			NULL
 };
 
+static LXtTextValueHint hint_spectrum[] = {
+    0,			"Philips",
+    1,			"Pierson-Morkowitz",
+    2,			"TMA",
+    0,          NULL
+};
+
 LxResult CPackage::pkg_SetupChannels(ILxUnknownID addChan)
 {
 	CLxUser_AddChannel	 ac (addChan);
@@ -112,8 +119,12 @@ LxResult CPackage::pkg_SetupChannels(ILxUnknownID addChan)
     ac.NewChannel  ("waveSize",	LXsTYPE_FLOAT);
 	ac.SetDefault  (4.0f, 0);
     
-    ac.NewChannel  ("seed",	LXsTYPE_FLOAT);
-	ac.SetDefault  (1.0f, 0);
+    ac.NewChannel  ("seed",	LXsTYPE_INTEGER);
+	ac.SetDefault  (0.0f, 1);
+    
+    ac.NewChannel  ("spectrum",	LXsTYPE_INTEGER);
+    ac.SetDefault  (1.0f, 0);
+    ac.SetHint(hint_spectrum);
     
     ac.NewChannel  ("repeatTime",	LXsTYPE_FLOAT);
 	ac.SetDefault  (1000.0f, 0);
@@ -127,6 +138,21 @@ LxResult CPackage::pkg_SetupChannels(ILxUnknownID addChan)
     ac.NewChannel  ("randWeight",	LXsTYPE_FLOAT);
     ac.SetDefault  (0.0f, 0);
 
+    ac.NewChannel  ("specMult",	LXsTYPE_FLOAT);
+    ac.SetDefault  (1.0f, 0);
+    
+    ac.NewChannel  ("peakSharpening",	LXsTYPE_FLOAT);
+    ac.SetDefault  (1.0f, 0);
+    
+    ac.NewChannel  ("tmaFetch",	LXsTYPE_FLOAT);
+    ac.SetDefault  (20.0f, 0);
+    
+    ac.NewChannel  ("swell",	LXsTYPE_FLOAT);
+    ac.SetDefault  (0.0f, 0);
+    
+    ac.NewChannel  ("timeOffset",	LXsTYPE_FLOAT);
+    ac.SetDefault  (0.0f, 0);
+    
     return LXe_OK;
 }
 
@@ -154,7 +180,8 @@ LxResult CPackage::pkg_Attach (void **ppvObj)
 void CChanState::buildOcean()
 {
     m_pOcean->input(resolution,
-                    (unsigned long)seed,
+                    spectrum,
+                    (unsigned int)seed,
                     oceanSize,
                     oceanDepth,
                     surfaceTension,
@@ -166,10 +193,14 @@ void CChanState::buildOcean()
                     waveSpeed,
                     waveHeight,
                     waveChop,
-                    time,
+                    time + timeOffset,
                     repeatTime,
                     doFoam,
-                    randWeight);
+                    randWeight,
+                    specMult,
+                    peakSharpening,
+                    jswpfetch,
+                    swell);
 	// Disabled as this crashes the library - yay.
 	// m_pOcean->clearResidualArrays();
 }
@@ -197,11 +228,17 @@ void CChanState::Attach (CLxUser_Evaluation	&eval, ILxUnknownID item)
 	eval.AddChan (item, "oceanDepth");
 	eval.AddChan (item, "waveSize");
 	eval.AddChan (item, "seed");
-	eval.AddChan (item, "repeatTime");
+    eval.AddChan (item, "spectrum");
+    eval.AddChan (item, "repeatTime");
 	eval.AddChan (item, "doFoam");
 	eval.AddChan (item, "doNormals");
     eval.AddChan (item, "randWeight");
-
+    eval.AddChan (item, "specMult");
+    eval.AddChan (item, "peakSharpening");
+    eval.AddChan (item, "tmaFetch");
+    eval.AddChan (item, "swell");
+    eval.AddChan (item, "timeOffset");
+    
 	eval.AddTime ();
 
 	eval.AddChan (item, LXsICHAN_XFRMCORE_WORLDMATRIX);
@@ -244,7 +281,8 @@ void CChanState::Read (CLxUser_Attributes &attr, unsigned index)
 		oceanDepth = attr.Float (index++);
 		waveSize = attr.Float (index++);
 		seed = attr.Float (index++);
-		repeatTime = attr.Float (index++);
+        spectrum = attr.Float (index++);
+        repeatTime = attr.Float (index++);
 		doFoam  = attr.Bool(index++);
 		doNormals  = attr.Bool  (index++);
         randWeight  = attr.Float  (index++);
@@ -256,8 +294,45 @@ void CChanState::Read (CLxUser_Attributes &attr, unsigned index)
         {
             randWeight = 0.0f;
         }
-		
-		time = attr.Float (index++);
+        specMult  = attr.Float  (index++);
+        if(specMult > 100.0f)
+        {
+            specMult = 100.0f;
+        }
+        if(specMult < 1)
+        {
+            specMult = 1.0f;
+        }
+        peakSharpening  = attr.Float  (index++);
+        if(peakSharpening > 6.0f)
+        {
+            peakSharpening = 6.0f;
+        }
+        if(peakSharpening < 0.001f)
+        {
+            peakSharpening = 0.001f;
+        }
+        jswpfetch  = attr.Float  (index++);
+        if(jswpfetch > 1000.0f)
+        {
+            jswpfetch = 1000.0f;
+        }
+        if(jswpfetch < 0.001f)
+        {
+            jswpfetch = 0.001f;
+        }
+        swell  = attr.Float  (index++);
+        if(swell > 1.0f)
+        {
+            swell = 1.0f;
+        }
+        if(swell < 0.0f)
+        {
+            swell = 0.0f;
+        }
+        
+        timeOffset  = attr.Float  (index++);
+        time = attr.Float (index++);
 
         attr.ObjectRO (index++, m4);
         m4.Get3 (xfrm);
@@ -360,13 +435,20 @@ LxResult CModifierElement::EvalCache (CLxUser_Evaluation &eval, CLxUser_Attribut
     waveChop = infl->cur.waveChop;
     oceanDepth = infl->cur.oceanDepth;
     repeatTime = infl->cur.repeatTime;
+    timeOffset = infl->cur.timeOffset;
     doFoam = infl->cur.doFoam;
     doNormals = infl->cur.doNormals;
+    spectrum = infl->cur.spectrum;
     seed = infl->cur.seed;
     randWeight = infl->cur.randWeight;
+    specMult = infl->cur.specMult;
+    peakSharpening = infl->cur.peakSharpening;
+    jswpfetch = infl->cur.jswpfetch;
+    swell = infl->cur.swell;
 
     pOcean->input(	resolution,
-                    (unsigned long)seed,
+                    spectrum,
+                    (unsigned int)seed,
                     oceanSize,
                     oceanDepth,
                     surfaceTension,
@@ -378,10 +460,14 @@ LxResult CModifierElement::EvalCache (CLxUser_Evaluation &eval, CLxUser_Attribut
                     waveSpeed,
                     waveHeight,
                     waveChop,
-                    infl->cur.time,
+                    infl->cur.time + infl->cur.timeOffset,
                     repeatTime,
                     doFoam,
-                    randWeight);
+                    randWeight,
+                    specMult,
+                    peakSharpening,
+                    jswpfetch,
+                    swell);
     infl->cur.setUpOceanPtrs(pOcean);
 
     if (prev)
