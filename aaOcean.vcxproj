@@ -149,14 +149,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>MODO801;WIN32;NDEBUG;_WINDOWS;_USRDLL;AAOCEAN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\phil\Documents\Visual Studio 2015\Projects\modo\aaOceanModo_BSD\dependencies\aaOcean;C:\Users\phil\Documents\Visual Studio 2015\Projects\modo\LXSDK_85499_901\include;C:\Users\phil\Documents\Visual Studio 2015\Projects\modo\aaOceanModo_BSD\dependencies\helpers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\development\git\aaOceanModo_BSD\dependencies\aaOcean;D:\development\modo\LXSDK_117244\include;D:\development\git\aaOceanModo_BSD\dependencies\helpers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\phil\Documents\Visual Studio 2015\Projects\modo\aaOceanModo_BSD\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\development\git\aaOceanModo_BSD\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>dsFMT.lib;kiss.lib;commonLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

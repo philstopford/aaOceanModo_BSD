@@ -1,845 +1,857 @@
-<html xmlns:v="urn:schemas-microsoft-com:vml"
-xmlns:o="urn:schemas-microsoft-com:office:office"
-xmlns:w="urn:schemas-microsoft-com:office:word"
-xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
-xmlns:mv="http://macVmlSchemaUri" xmlns="http://www.w3.org/TR/REC-html40">
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>aaOcean for MODO 1.2</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+  <style type="text/css">
+   /* over all rules */
+   *{ box-sizing:border-box; }
+   html,body{ margin:0;padding:0;background:#ddd;color:#333;font-family:'Open Sans','Trebuchet MS','Arial',sans-serif;font-size:12px; }
+   .container{ width:1200px;float:left;position:relative;left:50%;margin-left:-600px;background:#fff;padding:10px; }
+   a{ text-decoration:none;color:#c33; }
+   
+   /* header and footer */
+   header,footer,article,nav,section{ float:left;padding:10px; }
+   header,footer{ margin-left:150px; width:85%; }
+   header,footer{ background-color:#333;color:#fff;text-align:right;height:40px; }
+   header{ font-size:1.5em;font-weight:bold; }
+   header big{ line-height:20px;vertical-align:center; }
+   
+   footer{ background-color:#999;text-align:center;height:40px; }
+   footer a{ text-decoration:underline;color:#fff;font-weight:bold; }
+      
+  #menu {
+    position: fixed;
+    left: 0;
+    top: 42px;
+    width: 14em;
+    margin: -2.5em 0 0 0;
+    z-index: 5;
+    background: rgba(40, 40, 40, 0.9);
+    color: #ccc;
+    font-weight: normal;
+    font-size: 12px;
+    text-align: left;
+    border: solid rgba(40, 40, 40, 0.5);
+    border-left: none;
+    padding: 0.5em 0.5em 0.5em 2.5em;
+    box-shadow: 0 1px 3px black;
+    /*border-radius: 3em 0.5em 0.5em 3em;*/
+  }
+  #menu li { margin: 0 }
+  #menu a { color: inherit }
 
-<head>
-<style type="text/css">
-p.western {
-  font-family: "Calibri", serif;
-  font-size: 11pt;
-  so-language: en-US
-}
-p.cjk {
-  font-family: "Calibri";
-  font-size: 11pt;
-  so-language: en-US
-}
-p.ctl {
-font-family:;
-  font-size: 11pt;
-  so-language: ar-SA
-}
-h1 {
-  direction: ltr;
-  color: #365f91;
-  line-height: 100%;
-  text-align: justify;
-  page-break-inside: avoid;
-  orphans: 2;
-  widows: 2
-}
-h1.western {
-  font-family: "Cambria", serif;
-  font-size: 14pt;
-  so-language: en-US
-}
-h1.cjk {
-  font-family: "宋体";
-  font-size: 14pt;
-  so-language: en-US
-}
-h1.ctl {
-font-family:;
-  font-size: 14pt;
-  so-language: ar-SA
-}
-h2 {
-  direction: ltr;
-  color: #4f81bd;
-  line-height: 100%;
-  text-align: justify;
-  page-break-inside: avoid;
-  orphans: 2;
-  widows: 2
-}
-h2.western {
-  font-family: "Cambria", serif;
-  font-size: 13pt;
-  so-language: en-US
-}
-h2.cjk {
-  font-family: "宋体";
-  font-size: 13pt;
-  so-language: en-US
-}
-h2.ctl {
-font-family:;
-  font-size: 13pt;
-  so-language: ar-SA
-}
-h3 {
-  direction: ltr;
-  color: #4f81bd;
-  line-height: 100%;
-  text-align: justify;
-  page-break-inside: avoid;
-  orphans: 2;
-  widows: 2
-}
-h3.western {
-  font-family: "Cambria", serif;
-  font-size: 11pt;
-  so-language: en-US
-}
-h3.cjk {
-  font-family: "宋体";
-  font-size: 11pt;
-  so-language: en-US
-}
-h3.ctl {
-font-family:;
-  font-size: 11pt;
-  so-language: ar-SA
-}
-h4 {
-  direction: ltr;
-  color: #4f81bd;
-  line-height: 100%;
-  text-align: justify;
-  page-break-inside: avoid;
-  orphans: 2;
-  widows: 2
-}
-h4.western {
-  font-family: "Cambria", serif;
-  font-size: 11pt;
-  so-language: en-US;
-  font-style: italic
-}
-h4.cjk {
-  font-family: "宋体";
-  font-size: 11pt;
-  so-language: en-US;
-  font-style: italic
-}
-h4.ctl {
-font-family:;
-  font-size: 11pt;
-  so-language: ar-SA;
-  font-style: italic
-}
-a:link {
-  color: #0000ff
-}
-ul {
-  font-family: "Calibri", serif;
-  font-size: 11pt;
-  so-language: en-US
-}
-ol {
-  font-family: "Calibri", serif;
-  font-size: 11pt;
-  so-language: en-US
-}
-h1.western1 { font-family: "Cambria", serif;
-  font-size: 14pt;
-  so-language: en-US
-}
-p.western1 {  font-family: "Calibri", serif;
-  font-size: 11pt;
-  so-language: en-US
-}
-h2.western1 { font-family: "Cambria", serif;
-  font-size: 13pt;
-  so-language: en-US
-}
-p.western2 {  font-family: "Calibri", serif;
-  font-size: 11pt;
-  so-language: en-US
-}
-img.c {
-    display: block;
-    margin-left: auto;
-    margin-right: auto }
+  /* Make menu absolute, not fixed, on IE 5 & 6 */
+  #menu { position: absolute }
+  *>#menu { position: fixed }
 
-</style>
-</head>
-<body lang="en-US" text="#00000a" link="#0000ff" dir="ltr">
-<p style=" border-top: none; border-bottom: 1.00pt solid #4f81bd; border-left: none; border-right: none; padding-top: 0in; padding-bottom: 0.06in; padding-left: 0in; padding-right: 0in; letter-spacing: 0.3pt; line-height: 100%"> <font color="#17365d" face="Cambria, serif"><font size="6" style="font-size: 26pt">aaOcean </font><font size="6" style="font-size: 13pt">(1.1.2)</font></font></p>
+   /* <article> tag is our 'content area' */
+   article{margin-left:141px; width:85%; }
+   h1{ padding:0;margin:0 0 20px 0; }
+   
+   /* section */
+   article section{ padding:0; }
+   
+   /* basic page division */
+   .halves,.thirds{ width:49%;float:left;margin-right:2%; }
+   .thirds{ width:32.66666%;margin-right:1%; }
+   
+   .last{ margin-right:0; }
 
-<a name="introduction"></a>
-<h1 class="western">Introduction</h1>
-<blockquote>
-  <img src="images/intro.png" width="496" height="351" alt=""/>
-  <p class="western" style=" line-height: 100%">The aaOcean library was developed by Amaan Akram and is an
-implementation of Jerry Tessendorf's 2004 paper on simulating ocean waves. Version 2.6 of the library is the foundation of the
-port for MODO. </p>
+   .myTable { background-color:#eee;border-collapse:collapse; display: block; margin-left: auto; margin-right: auto;}
+   .myTable th { background-color:#000;color:white;text-align: center;so-language: en-US}
+   .myTable td, .myTable th { padding:5px;border:1px solid #000; }
+  </style>
+ </head> 
+ <body>
+  <div class="container">
+   <header>
+    <big>aaOcean MODO</big>
+   </header>
 
-  <p class="western" style=" line-height: 100%">aaOcean for MODO consists of two separate plugins, each with their own advantages and disadvantages. Note that,
-due to the way the plugins work in MODO, identical settings may not give the exact same results between plugins (e.g deformer has different operating conditions than the texture system).</p>
 
-  <p class="western" style=" line-height: 100%">aaOcean is <u>not</u> an ocean shader.</p>
-
-  <p class="western" style=" line-height: 100%">This revision of aaOcean is BSD-licensed.</p>
-
-  <p class="western" style=" line-height: 100%">Release 1.1.0 moves to the BSD library. It revises the texture
-internals to better map the output of the ocean library on to surfaces. Wave height is once more available due to the changes
-made. Foam is available, but is not quite right yet. Documentation errors for the surface tension were also corrected. <b><u>Compatibility with previous
-releases is not available</u></b>.</p>
-
-  <p class="western" style=" line-height: 100%">Release 1.1.1 fixes the known defects in 1.1.0:</p>
-  <ul>
-    <li>foam is now applied correctly</li>
-    <li>side-by-side installation with previous 1.0.x versions of aaOcean is working on Windows and Linux (Mac is proving troublesome).</li>
+  <ul id=menu>
+    <li><a href="#introduction">Introduction</a>
+    <li><a href="#releasehistory">Changelog</a>
+    <li><a href="#requirements">Requirements</a>
+    <li><a href="#installation">Installation</a>
+    <li><a href="#installation_location">&nbsp;&nbsp;&nbsp;&nbsp;Location</a>
+    <li><a href="#installation_windows">&nbsp;&nbsp;&nbsp;&nbsp;Windows</a>
+    <li><a href="#installation_mac">&nbsp;&nbsp;&nbsp;&nbsp;macOS</a>
+    <li><a href="#installation_linux">&nbsp;&nbsp;&nbsp;&nbsp;Linux</a>
+    <li><a href="#generalinformation">Information</a>
+    <li><a href="#generalinformation_inputs">&nbsp;&nbsp;&nbsp;&nbsp;Inputs</a>
+    <li><a href="#generalinformation_spectra">&nbsp;&nbsp;&nbsp;&nbsp;Spectra</a>
+    <li><a href="#deformer">Deformer</a>
+    <li><a href="#deformer_inputs">&nbsp;&nbsp;&nbsp;&nbsp;Inputs</a>
+    <li><a href="#deformer_outputs">&nbsp;&nbsp;&nbsp;&nbsp;Outputs</a>
+    <li><a href="#texture">Texture</a>
+    <li><a href="#texture_inputs">&nbsp;&nbsp;&nbsp;&nbsp;Inputs</a>
+    <li><a href="#texture_outputs">&nbsp;&nbsp;&nbsp;&nbsp;Outputs</a>
+    <li><a href="#channel">Channel</a>
+    <li><a href="#tutorials">Tutorials</a>
+    <li><a href="#tutorialdeformer">&nbsp;&nbsp;&nbsp;&nbsp;Deformer</a>
+    <li><a href="#tutorialtexture_start">&nbsp;&nbsp;&nbsp;&nbsp;Texture</a>
+    <li><a href="#tutorialfoam_start">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Foam</a>
+    <li><a href="#examples">Example Scenes</a>
+    <li><a href="#exampledeformer">&nbsp;&nbsp;&nbsp;&nbsp;Deformer</a>
+    <li><a href="#exampledeformerstack">&nbsp;&nbsp;&nbsp;&nbsp;Deformer Stack</a>
+    <li><a href="#examplechannel">&nbsp;&nbsp;&nbsp;&nbsp;Channel Modifier</a>
+    <li><a href="#exampleoldfoam">&nbsp;&nbsp;&nbsp;&nbsp;Texture (Old Foam)</a>
+    <li><a href="#examplenewfoam">&nbsp;&nbsp;&nbsp;&nbsp;Texture (New Foam)</a>
+    <li><a href="#exampleaccumulatedfoam">&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Foam</a>
+    <li><a href="#faq">FAQ</a>
+    <li><a href="#knownissues">Issues</a>
+    <li><a href="#acknowledgements">Credits</a>
+    <li><a href="#copyrights_licenses">Legal</a>
   </ul>
-  <p class="western" style=" line-height: 100%">Note that look-and-feel is not maintained, due to an unavoidable code adjustment related to the foam fix.</p>
 
-  <p class="western" style=" line-height: 100%">Release 1.1.2 fixes the repeat time. It was locked to 1000 seconds previously. Docs updated to specify this is in seconds.</p>
-
-</blockquote>
-<a name="requirements"></a>
-<h1 class="western">Requirements</h1>
-<blockquote>
-
-  <p class="western" style=" line-height: 100%">aaOcean for MODO is built in its default configuration for MODO 901 (a MODO 701/801 kit will depend on
-requests). It's available for Mac OS X, Linux and Windows.</p>
-</blockquote>
-
-
-<a name="installation"></a>
-<h1 class="western">Installation</h1>
-<blockquote>
-
-  <p class="western" style=" line-height: 100%">aaOcean for MODO is delivered as a kit. You can install aaOcean to your user Scripts folder
-or to the MODO kit folder by following the instructions below.</p>
-
-<h2 class="western">Install Location</h2>
-<blockquote>
-
-<ol>
-<li>Launch MODO.</li>
-<li>From MODO's 'System' menu, select 'Open User Scripts Folder'</li>
-<li>A file browser opens in that folder.</li>
-<li>Drag and drop the folder in the kit archive into that location</li>
-<li>Restart MODO</li>
-</ol>
-</blockquote>
-
-<a name="installation_mac"></a>
-<h2 class="western">Mac OS X - Additional Steps</h2>
-<blockquote>
-
-  <p class="western" style=" line-height: 100%">The Mac version is built against Yosemite (10.11), but should
-work back to Mountain Lion (10.7). It's only been tested on 10.11, however.
-Note that sharing kit locations across networks (e.g. via mounted network
-shares) causes issues for the aaOcean kit on this platform.</p>
-</blockquote>
-
-<a name="installation_windows"></a>
-<h2 class="western">Windows - Additional Steps</h2>
-<blockquote>
-
-  <p class="western" style=" line-height: 100%">The Windows version is built using Microsoft's Visual C++ 2015
-system (update 1). That requires updated runtime libraries on this platform
-(x64). They can be downloaded and installed from Microsoft's site here : <a
-href="https://www.microsoft.com/en-us/download/details.aspx?id=49984">https://www.microsoft.com/en-us/download/details.aspx?id=49984</a></p>
-</blockquote>
-
-<a name="installation_linux"></a>
-<h2 class="western">Linux - Additional Steps</h2>
-<blockquote>
-
-  <p class="western" style=" line-height: 100%">Debian Jessie was used to compile this
-plugin. It makes use of libgomp for the OpenMP implementation; this may need to be manually
-installed.</p>
-</blockquote>
-
-</blockquote>
-
-<a name="generalinformation"></a>
-<h1 class="western">General aaOcean Information</h1>
-<blockquote>
-
-<p class="western" style=" line-height: 100%">aaOcean works, behind the scenes, in a
-pretty general manner. It generates a tile, the dimensions of which are set by
-the ocean size value and the detail of which is set by the resolution value.
-This tile is repeated over the geometry/surface as needed.</p>
-
-<p class="western" style=" line-height: 100%">Common parameters are discussed here. Outputs are discussed under
-each respective implementation because the implementation defines the available
-outputs and how they can be used.</p>
-
-<h2 class="western">Inputs</h2>
-<blockquote>
-
-<p class="western" style=" line-height: 100%"><u>Output Type</u> : Choose the output type (not
-available for all aaOcean implementations)</p>
-
-<p class="western" style=" line-height: 100%"><u>Resolution</u> : Choose the map size
-to set the amount of detail. Larger values will provide more detail, but take
-significantly longer to evaluate and require more memory. They may also give
-the impression that MODO has frozen. Give it time. See additional notes for the
-deformer with regard to this setting.</p>
-
-<p class="western" style=" line-height: 100%"><u>Ocean size</u> : The physical size of the ocean tile
-that is being generated.</p>
-
-<p class="western" style=" line-height: 100%"><u>Wave height</u> : This defines the wave height,
-essentially a contrast control for the wave patterns.</p>
-
-<p class="western" style=" line-height: 100%"><u>Surface Tension</u> : Drives the existence of
-capillary waves (ripples)</p>
-
-<p class="western" style=" line-height: 100%"><u>Wind Align</u> : Stretches the waves perpendicular to
-the direction of the wind.</p>
-
-<p class="western" style=" line-height: 100%"><u>Smoothing</u> : Smooths out the surface, removing smaller waves from big ones.</p>
-
-<p class="western" style=" line-height: 100%"><u>Wave Direction</u> : Angular setting to control the
-prevailing direction of the waves.</p>
-
-<p class="western" style=" line-height: 100%"><u>Wave Reflection</u> : By default, the ocean will have
-no prevailing direction of travel for the waves. You can use this control to
-change that. A value of 1 will completely eliminate waves traveling in the
-opposite direction to the wind.</p>
-
-<p class="western" style=" line-height: 100%"><u>Wave Speed</u> : Controls the speed of the waves
-traveling over the surface. Increasing the ocean size will seem to slow down
-the waves, as they will have a longer distance to travel.</p>
-
-<p class="western" style=" line-height: 100%"><u>Chop</u> : This controls the
-sharpness of the peaks of the waves. Higher values sharpen the tops. If you set
-the value too high, the tops of the waves will self-intersect.</p>
-
-<p class="western" style=" line-height: 100%"><u>Wave Size</u> : Sets the wave size,
-as you might expect.</p>
-
-<p class="western" style=" line-height: 100%"><u>Ocean Depth</u> : This can be changed, but has a
-relatively minor effect on the ocean.</p>
-
-<p class="western" style=" line-height: 100%"><u>Seed</u> : This is used to initialize
-the random number generator. You can use this to change the Ocean; if you find
-a value you like, you can use this in the same context in a different scene to
-get the exact same result.</p>
-
-<p class="western" style=" line-height: 100%"><u>Repeat Time</u> : The time at which the ocean
-animation should repeat, in seconds.</p>
-
-<p class="western" style=" line-height: 100%"><u>Do foam</u> : Where applicable, this enables foam
-generation for the ocean. This is required for the foam output type to be
-operable.</p>
-
-<p class="western" style=" line-height: 100%"><u>Foam Maximum</u> : Defines the set point for foam.
-This is explained in a dedicated section later in the manual.</p>
-
-<p class="western" style=" line-height: 100%"><u>Foam Range</u> : Defines the amount of foam to be
-generated around the set point. This is explained in a dedicated section later
-in the manual.</p>
-
-</blockquote>
-</blockquote>
-
-<a name="deformer"></a>
-<h1 class="western">Deformer</h1>
-<blockquote>
-
-<p class="western" style=" line-height: 100%">The deformer works against any mesh item that contains vertices.
-It has the benefit of providing immediate feedback in the viewport, working
-with the MODO deformer stack and also enabling vertex-based constraints of
-items (e.g. buoys, boats). It does require a dense mesh to provide convincing
-close-ups. You can use this with subdivision surfaces - the deformer will
-affect the cage.</p>
-
-<a name="deformerinputs"></a>
-<h2 class="western">Implementation Notes for Inputs</h2>
-<blockquote>
-
-<p class="western" style=" line-height: 100%"><u>Resolution</u> : in this mode, the
-final resolution of your ocean will of course depend on the number of vertices
-in your mesh. The resolution value only defines the granularity of the ocean
-map used to calculate the deformation. Increasing the ocean resolution on a low
-density mesh will not improve the output.</p>
-
-<p class="western" style=" line-height: 100%"><u>Ocean size</u> : this defines the real world ocean
-size from which the vertices on your mesh are processed. Note that your ocean
-size should be an integer multiple of your edge length if you want to tile
-instances to make a sweeping ocean vista. If this is not the case, the edges
-will not align and there will be gaps in the result.</p>
-
-</blockquote>
-
-<a name="deformeroutputs"></a>
-<h2 class="western">Outputs</h2>
-<blockquote>
-
-<p class="western" style=" line-height: 100%">The deformer only uses the displacement outputs of the aaOcean library.
-There is no output support for extended features (e.g. foam, eigenvectors) due to architectural limitations in MODO.</p>
-
-<p class="western" style=" line-height: 100%">aaOcean for MODO allows you to take
-advantage of MODO's order of operations system to stack deformers. In this way,
-you can use a bend effector to create looming waves, a vortex effector to create whirlpools,
-etc.</p>
-
-  <img src="images/deformer_stack.png" width="496" height="313" alt=""/>
-
-</blockquote>
-
-</blockquote>
-
-<a name="texture"></a>
-<h1 class="western">Texture</h1>
-<blockquote>
-
-<p class="western" style=" line-height: 100%">The texture system is the fastest way of generating displacement
-for the ocean. You can take a simple quad poly and generate enormous oceans
-with compelling detail. Vector displacement is recommended over 'displacement'
-in order to provide convincing 'chop' effects.</p>
-
-<p class="western" style=" line-height: 100%">The texture implementation of aaOcean
-for MODO also works pretty similarly to most texture items in MODO, with one
-exception when used for vector displacement effects - see 'wave height' in the
-input section below.</p>
-
-<p class="western" style=" line-height: 100%">Using the output type setting, you have the option of choosing
-the information output in the RGB channels of the color texture. For the full
-set of outputs, you will need to instance (or duplicate) the texture multiple
-times and this will incur additional memory and computation expense.</p>
-
-<p class="western" style=" line-height: 100%">Note also that you won't see any viewport updates from this
-texture in displacement mode - you'll need to have Preview running.</p>
-
-<p class="western" style=" line-height: 100%"><b>Note that the texture requires a UV map in order to work, and
-must be used with UV projection. Without a UV map and UV projection, the output
-will be blank and no effect will be seen!</b></p>
-
-<a name="textureinputs"></a>
-<h2 class="western">Implementation Notes for Inputs</h2>
-<blockquote>
-
-<p class="western" style=" line-height: 100%"><u>Output type</u> : Used to select what is output by the texture:</p>
-
-<ul>
-<li>Displacement data (RGB or scalar)</li>
-<li>Foam map (scalar)</li>
-<li>Eigenminus vector (RGB)</li>
-<li>Eigenplus vector (RGB)</li>
-</ul>
-
-<p class="western" style=" line-height: 100%"><u>Ocean size</u> : Sets the ocean size to fit within
-your UV map. Note that the texture internally uses object space values, so a 
-tileable effect that works across instances will be seen when the ocean size is an integer multiple of the edge length of your square
-ocean.</p>
-
-<p class="western" style=" line-height: 100%"><u>Wave height</u> : As noted earlier, this defines
-the wave height. Note that the aaOcean texture system
-works a little differently as a displacement effect. In traditional modo, the texture works with the displacement height set on
-the material and the displacement is fitted to the range. In aaOcean, for vector displacement, the material displacement
-height is ignored and the wave height (e.g. 4 m) will always be applied. If you
-encounter clipping, increase the displacement height value on the material
-being applied.</p>
-</blockquote>
-
-<a name="textureoutputs"></a>
-<h2 class="western">Outputs</h2>
-<blockquote>
-
-<p class="western" style=" line-height: 100%">The texture output depends first of all on the way that the
-texture layer is being used in the ShaderTree.</p>
-
-<p class="western" style=" line-height: 100%">In all modes of the texture layer, the value and alpha outputs
-are processed. The alpha is always set to 1.0 and the value output is always
-the Y displacement of the Ocean.</p>
-
-<p class="western" style=" line-height: 100%">In color/vector modes, the texture layer output varies based on
-the Output Type set for the ocean texture. In vector displacement mode, the red/green/blue channels are set
-to the respective displacement amounts in XYZ. In eigenvector modes, the output
-is the XYZ vector (in RGB form).</p>
-</blockquote>
-</blockquote>
-
-<a name="channelmodifier"></a>
-<h1 class="western">Channel Modifier</h1>
-<blockquote>
-
-<p class="western" style=" line-height: 100%">The channel modifier is intended to drive features like particles
-and arbitrary item positioning based on the ocean configuration. The output is
-perfectly matched to the texture plugin for the same inputs, but the evaluation
-will generally be slightly slower. The controls and outputs are identical to
-the texture plugin. Some notes are below in the case you want to drive
-surfacing with the channel modifier :</p>
-
-<ul>
-<li>Use the Sample Position World Position X and Z inputs to input X and input Z on the channel modifier.</li>
-<li>Driving displacement on the surface will be challenging because the aaOcean coordinate system is not intrinsically
-compatible with the displacement system in modo. There does not appear to be exposed functionality to convert between
- these in the schematic at this time.</li>
-</ul>
-
-<p class="western" style=" line-height: 100%">The channel modifier exposes additional vector outputs:</p>
-
-<ul>
-<li>Min : the minimum X, Y, Z values of the bounding box of the aaOcean values. Note that these are not suitable for
-animation - the range of values will vary frame-to-frame.</li>
-<li>Max : the maximum X, Y, Z values of the bounding box of the aaOcean values. Note that these are not suitable for
-animation - the range of values will vary frame-to-frame.</li>
-<li>Normalization : the normalization values (X, Y, Z) that can
-be used to map the displacement output into a 0-1 range by dividing the output
-values by the corresponding normalization value. This is not going to be
-consistent frame-to-frame in an animation so is limited in usefulness and may
-be removed (like min, max) in a future revision.</li>
-</ul>
-
-</blockquote>
-
-<a name="tutorialstart"></a>
-<h1 class="western">Let's Get Our Feet Wet</h1>
-<blockquote>
-
-<a name="tutorialdeformer_start"></a>
-<h2 class="western">Deformer</h2>
-<blockquote>
-
-<p class="western" style=" line-height: 100%">We're going to start with the deformer system because it has the
-advantage of displaying its results in the viewport and the ocean works based on the mesh size.</p>
-
-<ol>
-<li>Add a unit plane to a mesh item. Scale it up to be 200 m on each side, centered on the world origin. If you sized the mesh item
-rather than the geometry itself, freeze the transforms on the mesh item.</li>
-
-<li>Right click the mesh item in the item list and the Use the 'Add Item' drop down menu in the item list to add aaOceanBSDDeform from the Deformers submenu.
-</li>
-
-  <img src="images/deformer_add.png" width="635" height="398" alt=""/>
-
-<li>You should see a small shift in the viewport. It's not very convincing as an ocean, so let's subdivide the plane a few times.</li>
-
-<li>In polygon mode, select your quad, hit Shift-D and hit return. This will turn your single quad into 4 polygons. You'll begin
-to see the ocean deform. Keep subdividing and increase amounts of detail will show up, but of course your mesh will become very dense.</li>
-
-<li>Scrub the timeline to show how the ocean characteristics change over time.</li>
-
-<li>Change the wave height to, say, 5 m and you should begin to more clearly see the ocean effect.</li>
-
-<li>Let's quickly review the chop effect. By default, it's set to 2.0. Switch to a top view of your mesh. You'll see that
-the edges are all irregular. If you set chop to 0, the edges will become orthogonal. Chop, basically, adds lateral movement to the displacement of the vertices.
-No chop means only vertical displacement is applied to each vertex.</li>
-
-  <img src="images/deformer_chop.png" width="236" height="236" alt=""/>&nbsp;
-  <img src="images/deformer_nochop.png" width="226" height="225" alt=""/>
-
-<li>At 256 polygons, the ocean starts taking some basic shape. Let's keep subdividing to 4096 polygons. A reference is below.</li>
-
-  <img src="images/deformer_viewport.png" width="743" height="327" alt=""/>
-
-<li>With the ocean mesh item selected, hit the tab key on your keyboard to engage subdivision surface, giving a good smooth ocean surface</li>
-
-<li>If you scrub the timeline now, you will be able to see the wave interactions (forward and reverse).</li>
-
-<li>Let's add a point of interest. Add a unit sphere to the scene in a new mesh item.</li>
-
-<li>Select the aaOceanBSDDeform entry in the item list and deselect 'Enable' to temporarily turn off the deformer.</li>
-
-<li>Select the Sphere. Shift-select the ocean mesh.</li>
-
-<li>From the 'Setup' workspace, under 'Modifiers' choose 'Vertex Position'. This will
-set up a constraint from the ball to the nearest vertex on the ocean.</li>
-
-<li>Re-enable the aaOceanBSDDeform deformer. You should see something like this :</li>
-
-  <img src="images/deformer_ballconstrained.png" width="540" height="294" alt=""/>
-
-<li>As you scrub the timeline, the ball will follow the deformed ocean. This is one of
-the key benefits to the deformer mode for aaOcean. It's very easy to set up and it's trivial to create constraints for objects.</li>
-
-<li>Now that we have a lightly detailed ocean mesh thanks to the subdivision, let's explore how the resolution parameter affects the look and feel. Go ahead and
-change it from the default. Lower values evaluate extremely quickly, but lack any subtle motions that impart realism. At the higher end, impressive detail is
-added, but the evaluation slows down markedly.</li>
-
-<li>Try also adjusting the ocean size. This is where you have to pay some attention to
-your settings. The ocean size relates directly to your ocean mesh size. For our
-example here, the default value of 200 matches with our geometry because of the
-sizing we performed in step 1. If you change the ocean size to 100, you will
-see tiling in the pattern because the ocean map needs to affect the entire mesh
-and so it has to repeat twice in both directions. If you make the ocean size
-400, the ocean will appear blurred because a significant portion of the map is
-never applied to the mesh because it falls outside the mesh itself. In general,
-matching this value to your mesh size should be the first step in setting up
-your ocean. Detail is added using the other settings.</li>
-<ul>
-<li>Note that scaling the mesh item without freezing it will not change the effect of the deformer on the ocean mesh item.</li>
-</ul>
-
-<li>The surface tension control will add the effect of ripples to the surface.</li>
-
-<p class="western" style=" line-height: 100%">Let's take a look at the wind settings.</p>
-
-<li>Set your ocean size back to 200.0. Set resolution at the highest value you can live
-with, e.g. 1024. Set wave height to 7.0 and chop to 0.0 for the moment. Set
-surface tension back to 0.0, wave speed to 2.0 and wind align to 0. If you
-scrub the timeline now, you'll see that the waves behave as though there is no
-wind in the scene. Change Wind Align to 1 and this will change. You can use the
-Wind Direction control to steer the waves.</li>
-
-<li>The smoothing value, at higher values, will work to suppress the waves on the ocean.</li>
-
-<li>Wave Reflection affects the amplitude of the waves traveling against the prevailing flow. At a setting of 0.0, the waves have the same amplitude in both
-directions; for a value of 1.0, there are no waves traveling against the prevailing flow. You can adjust this during playback to get an idea of the
-response to this control.</li>
-
-<li>The smoothing value, at higher values, will work to suppress the waves on the ocean.</li>
-
-<li>Wave Reflection affects the amplitude of the waves traveling against the prevailing flow. At a setting of 0.0, the waves have the same amplitude in both
-directions; for a value of 1.0, there are no waves traveling against the prevailing flow. You can adjust this during playback to get an idea of the
-response to this control.</li>
-
-<li>The seed value can be used to define the input to the ocean's internal random number generator to change the ocean look for the given set of parameters.</li>
-
-<li>Repeat Time defines the time at which the animation of the waves should loop.</li>
-
-<li>In the deformer the 'Do Foam' options is exposed, but doesn't yield anything in the current MODO system.</li>
-
-<li>Now, let's explore the deformer stack options for aaOcean. Go back to the item list and right click on your ocean mesh. Add a bend
-effector from 'Add Deformer -&gt; Effectors' from this menu. Hop over to the Deformers list. If all went well, the Bend effector will be at the top of the
-listing, with aaOceanBSDDeform at the bottom.</li>
-
-  <img src="images/deformer_bend.png" width="743" height="356" alt=""/>
-
-<ul>
-<li>You might find some ugly shearing being displayed in the viewport - to resolve this, you need to increase the radius value of the bend.</li>
-</ul>
-
-<li>Let's adjust the bend settings on the Bend Effector (you can expand the Bend group in the Deformer list, or hop over to the Item List and select the Bend Effector
-directly). The Properties panel will then show the controls we want to adjust. Choose the X axis and increase the angle.</li>
-
-<li>Now had back over to the Deformers list and move aaOcean to the top of the list. You'll see something like below.
-This is because aaOcean uses the X and Z positions of vertices to define the deformation in the Y axis, so the bend affects this and gives a different result.</li>
-
-  <img src="images/deformer_bend2.png" width="744" height="329" alt=""/>
-
-<li>You can also use falloffs with the aaOcean deformer. Just right click the aaOceanBSDDeform to add any falloffs that you would like to use.</li>
-</ol>
-
-<p class="western" style=" line-height: 100%">Remember that you can also use Subdivision or Catmull-Clark Subdivision surfaces with the deformed mesh.</p>
-
-</blockquote>
-
-<a name="tutorialtexture_start"></a>
-<h2 class="western">Texture</h2>
-<blockquote>
-
-<p class="western" style=" line-height: 100%">Please go through the Deformer introduction before this section.
-By doing so, the basic principles will be familiar to you and we can skip to the interesting aspects of this part of aaOcean for MODO.</p>
-
-<ol>
-
-<li>Start with a fresh scene. As before, add a unit plane and scale it up to be a reasonable size (e.g. 20-50 m on each edge). If
-you resized it in item mode, freeze the transforms.</li>
-
-<li>Let's now jump over to the render workspace in modo . All of our work will be done here, with our single
-quad ocean. Add an aaOceanBSDTexture from the aaOceanBSDTexture group in the 'Add Layer' drop-down of the ShaderTree.
-The default mode is 'Diffuse Color' and we'll leave it like this for a moment. Most of the time, you will probably be using
-aaOcean as a vector displacement texture, with instances as layer masks for foam layers.Head over to the Texture Locator
-panel and change the projection to UV and choose the UV map from the related drop-down. The render view will show you a colorful pattern.</li>
-
-  <img src="images/texture_initial.png" width="835" height="374" alt=""/>
-
-<li>Let's try the vector displacement option. Right click on the aaOcean Texture row in the item list,
-within the effect column and change from Diffuse Color to Vector Displacement (found under Surface Shading). You'll probably immediately be disappointed
-because nothing has happened. If you are familiar with traditional displacements in MODO, you will need to take note that aaOcean
-does things slightly differently.</li>
-
-  <img src="images/texture_vecdisp_1.png" width="745" height="419" alt=""/>
-
-<li>Change the wave height to 4 m. Nothing will appear to change.</li>
-
-<li>On the associated material, which in this basic scene is our Base Material, find the 'Displacement Distance' parameter on the
-Material Ref sheet and increase it to 10 m. This will allow our 4 m waves to be displayed. The texture defines the height, not the material. Note that very
-large values in the material displacement distance parameter with cause precision errors, so make it a few multiples of your wave height.</li>
-
-  <img src="images/texture_vecdisp_2.png" width="745" height="419" alt=""/>
-
-<li>Change the ocean size to 50.0, making the internal map better fit our object size and crank up the resolution to something like 128 or 256.</li>
-
-  <img src="images/texture_vecdisp_3.png" width="745" height="419" alt=""/>
-
-<ul>
-<li>Preview can sometimes get stuck and hold on to the same displacement in different frames, or only draw a very poorly evaluated mesh. If that happens, toggling the
-displacement texture on and off in the ShaderTree with the eye icon will force Preview to update.</li>
-</ul>
-
-<li>Unlike HOT, increasing the resolution in aaOcean doesn't radically change the ocean shape - it just adds more detail. Note that, at the maximum setting of 4096, you'll be getting over 16 million points on the ocean map that defines the displacement! These high settings can take a while to evaluate, so if modo appears to be hanging, you might want to reduce the resolution until you come to render. Play around with the resolution setting and then, once happy, set it back to 128 or 256 and save the scene. These large texture sizes also consume considerable amounts of RAM.</li>
-
-<li>aaOcean also works with the regular displacement mode. Sometimes, this can even work better than the vector displacement, but you will probably need to greatly reduce the wave height value (e.g. from 4.0 to 1.0) and, in this case, the displacement height on the material will be the control (so reduce it from 10 m to 4 m). Switch
-over to compare the results, in the same way that you changed from Diffuse Color to Vector Displacement back in step 2. Note that sharp crests are not available except in the vector displacement texture.</li>
-
-  <img src="images/texture_vecdisp_4.png" width="745" height="419" alt=""/>
-</ol>
-
-<p class="western" style=" line-height: 100%">For larger oceans, you will find that you need to blend multiple oceans of
-different sizes and seeds in order to eliminate tiling whilst preserving detail in close-up shots.</p>
-
-</blockquote>
-
-<a name="tutorialfoam_start"></a>
-<h2 class="western">Foam</h2>
-<blockquote>
-
-<ol>
-<li>Now let's try something more advanced: foam. Close preview and reload the scene from step (7) earlier.</li>
-<li>On the base material, in the Material Ref sheet, change the diffuse color to a dark blue.</li>
-<li>Add a constant texture layer and set the color to a pale blue / white. Leave it with the default diffuse color texture effect.</li>
-<li>Instance the aaOcean texture layer. On the instanced layer, change the Output type to output foam. Accordingly, also set the 'Do Foam' value to 1. To soften the effect and to reduce CPU and memory load, also reduce the resolution down to 64 on this layer.</li>
-<li>Drag and drop the instanced aaOcean texture layer on top of the constant to use it as a layer mask. Fire up Preview and you should get something like the image below.</li>
-  <img src="images/texture_foam_1.png" width="745" height="419" alt=""/>
-
-<li>This needs some refinement. aaOcean actually outputs a foam value for all areas of the ocean. To make this useful, we need to find the range of values that we would like to use. Best practice is to leave the range value alone and increase the max value until the foam just disappears. In the case below, the foam just disappears with a max foam value of 3.0.</li>
-
-  <img src="images/texture_foam_2.png" width="745" height="419" alt=""/>
-
-<li>We now start adding foam back, we concentrate on the range value. Increase it from 1.0 to 2.0</li>
-
-  <img src="images/texture_foam_3.png" width="745" height="419" alt=""/>
-
-<li>The image below is for a range value of 1.5.</li>
-
-  <img src="images/texture_foam_4.png" width="745" height="419" alt=""/>
-
-</ol>
-
-</blockquote>
-</blockquote>
-
-<a name="faq"></a>
-<h1 class="western">FAQ</h1>
-<blockquote>
-
-<p class="western" style=" line-height: 100%"><u>The plugin isn't showing up in 801 (release, SP1, SP2, SP3,
-etc.). Why?</u></p>
-<p class="western" style=" line-height: 100%">This plugin is built against MODO 901 SDK. It won't show up in
-earlier versions.</p>
-
-<p class="western" style=" line-height: 100%">&nbsp;</p>
-
-<p class="western" style=" line-height: 100%"><u>I get tiling - what can I do?</u></p>
-
-<p class="western" style=" line-height: 100%">The ocean system uses tiles that are repeated over the ocean
-surface. You'll need to blend multiple oceans with different seeds and sizes to
-break this up. For the texture and channel modifier plugins, this is easy - you
-can just stack them up. For the deformer, this presents a problem - you're best
-off using the deformer for crude deformations and then using displacement or
-bump mapping using aaOcean to hide the tiling from
-each part.</p>
-
-<p class="western" style=" line-height: 100%">&nbsp;</p>
-
-<p class="western" style=" line-height: 100%"><u>I don't see any displacement in my render (using displacement
-or vector displacement). What's up?</u></p>
-
-<p class="western" style=" line-height: 100%">There are several possibilities:</p>
-
-<p class="western" style=" line-height: 100%">1. Check that you have a material affecting the surface and
-ensure that the displacement height on this material is appropriately set (for
-displacement, set this to the amplitude of the wave you would like; for vector
-displacement set it to any value significantly larger than the wave height in
-the texture). Due to MODO's architecture, we can't set this from the texture
-plugins.</p>
-
-<p class="western" style=" line-height: 100%">2. The aaOcean texture, as of 1.1.0,
-requires a UV projection to work. We can't do this automatically, and scenes
-from earlier versions will likely have a 'solid' projection. Switch to a UV
-projection and the texture will then work.</p>
-
-<p class="western" style=" line-height: 100%">&nbsp;</p>
-
-<p class="western" style=" line-height: 100%"><u>Linux : MODO won't start after
-installing this. Why?</u></p>
-
-<p class="western" style=" line-height: 100%">This is likely the result of at least one missing dependency.
-Ensure that libgomp or its equivalent is installed, <a href="#installation_linux">Linux : Additional Steps</a></p>
-
-<p class="western" style=" line-height: 100%">&nbsp;</p>
-
-<p class="western" style=" line-height: 100%"><u>Linux : MODO renderslaves are having trouble. Why?</u></p>
-
-<p class="western" style=" line-height: 100%">This is likely the result of at least one missing dependency.
-Ensure that libgomp or its equivalent is installed, <a href="#installation_linux">Linux : Additional Steps</a>.</p>
-
-<p class="western" style=" line-height: 100%">&nbsp;</p>
-
-<p class="western" style=" line-height: 100%"><u>Windows : I'm getting an error
-that the program cannot start due to MSVCR120.DLL being missing.</u></p>
-
-<p class="western" style=" line-height: 100%">The Windows kit is compiled using Microsoft's Visual C++ 2015
-software (update 1). That requires updated runtimes on many Windows systems.
-You can find a link to the installer in the Installation section, <a href="#installation_windows">Windows : Additional Steps</a>.</p>
-
-<p class="western" style=" line-height: 100%">&nbsp;</p>
-
-<p class="western" style=" line-height: 100%"><u>Any wake or similar functionality?</u></p>
-
-<p class="western" style=" line-height: 100%">Not in aaOcean itself, no. However, the
-channel modifier can drive particles.</p>
-
-</blockquote>
-
-<a name="faq"></a>
-<h1 class="western">Known Issues in 1.1.1</h1>
-<blockquote>
-
-<ul>
-<li>A UV map is mandatory for the texture to work, in order to support the internal mechanisms that translate the aaOcean
-library output to the required values for the vector displacement.</li>
-
-<li>Settings from scenes using aaOcean 1.0.x will not carry forward to 1.1.0 without rework.</li>
-
-<li>Scenes from 1.1.0 will see a change in look-and-feel with 1.1.1
-due to the nature of the fix for the foam tracking problem in 1.1.0.</li>
-
-<li>Scenes from 1.0.x are not handled by 1.1.x</li>
-</ul>
-
-</blockquote>
-
-<a name="acknowledgements"></a>
-<h1 class="western">Acknowledgements</h1>
-<blockquote>
-
-<ul>
-<li>Amaan Akram for creating  aaOcean and being kind enough to respond to e-mails asking
-for implementation insights.</li>
-
-<li>Matt Painter for the generous support.</li>
-
-<li>David Maas for testing and UI feedback.</li>
-
-<li>Jonathan Josenhans</li>
-
-<li>Andrew Helmer for figuring out the root cause for the infuriating crash bug that drove me mad for weeks.</li>
-
-<li>Erwin Zwart for gently goading me into action.</li>
-
-<li>Greg Duquesne, Gwynne Reddick (of The Foundry), for help with HOT that enabled me to make faster headway with aaOcean, and for the
-encouragement throughout.</li>
-
-<li>Pete Segal, Matt Cox, Arnie Cachelin, Milan Bulat (of The Foundry) for extensive and patient guidance
-during both HOT and aaOcean efforts.</li>
-
-<li>Ivo Grigull (of The Foundry) for his extensive help and support in fixing up the texture system to work properly
-in aaOcean 1.1. He's also been of immense help getting the foam issues sorted out.</li>
-
-<li>Stuart Ferguson, for guidance about the cause of side-by-side installation headaches.</li>
-
-</ul>
-</blockquote>
-
-<a name="copyrights_licenses"></a>
-<h1 class="western">Copyrights and Licenses</h1>
-<blockquote>
-
-<ul>
-<li>aaOcean for MODO is licensed under BSD. It is copyright &copy; 2014-2016 Philip Stopford.</li>
-
-<li>aaOcean is copyright &copy; 2013 Amaan Akram. It is licensed under BSD. <a
-href="https://bitbucket.org/amaanakram/aaocean">https://bitbucket.org/amaanakram/aaocean</a></li>
-
-<li>MODO is copyright &copy; 2001-2016 The Foundry Visionmongers Ltd. <a
-href="http://www.thefoundry.co.uk">http://www.thefoundry.co.uk</a></li>
-
-</ul>
-</blockquote>
-
-</body>
-
+   <article>
+    <h1 id="introduction">Introduction</h1>
+    <img src="images/intro.png" style="margin-left: auto; margin-right: auto; display: block" alt=""/>
+    <p>
+     The aaOcean library was developed by Amaan Akram and is an implementation of Jerry Tessendorf's 2004 paper on simulating ocean waves. 
+    </p>
+    <p>
+     aaOcean for MODO consists of two separate plugins, each with their own advantages and disadvantages. Note that, due to the way the plugins work in MODO, identical settings may not give the exact same results between plugins (e.g deformer has different operating conditions than the texture system).
+    </p>
+    <p>
+      aaOcean is <strong>not</strong> an ocean shader.
+    </p>
+    <hr>
+
+    <h1 id="releasehistory">Release History</h1>
+    <table class="myTable">
+    <tr>
+    <th>Version</th>
+    <th>Notes</th>
+    </tr>
+    <tr>
+    <td valign=top>
+    <p>1.2.0</p>
+    </td>
+    <td>
+    <p>Spectrum settings are available (Phillips, Pierson-Moskowitz and the shallow-water TMA model), and the foam evaluation was also modified in the base library (the legacy model is available by clearing the 'new foam model' checkbox). Time offset support was also added. This release is compiled against the modo 10 SDK, but seems to work with modo 902.</p>
+    </td>
+    </tr>
+    <tr>
+    <td valign=top>
+    <p>1.1.3</p>
+    </td>
+    <td>
+    <p>Recompile against the modo 10 SDK, to fix a compatibility issue with a different kit. This still seems to work with modo 902 (not tested with 901).</p>
+    </td>
+    </tr>
+    <tr>
+    <td valign=top>
+    <p>1.1.2</p>
+    </td>
+    <td>
+    <p>Fixes the repeat time. It was locked to 1000 seconds previously. Docs updated to specify this is in seconds.</p>
+    </td>
+    </tr>
+    <tr>
+    <td valign=top>
+    <p>1.1.1</p>
+    </td>
+    <td>
+    <p>Fixes identified defects in 1.1.0:</p>
+    <ul>
+      <li>foam is now applied correctly</li>
+      <li>side-by-side installation with previous 1.0.x versions of aaOcean is working on Windows and Linux (Mac is proving troublesome).</li>
+    </ul>
+    <p>Note that look-and-feel is not maintained, due to an unavoidable code adjustment related to the foam fix.</p>
+    </td>
+    </tr>
+    <tr>
+    <td valign=top>
+    <p>1.1.0</p>
+    </td>
+    <td>
+    <p>Moves to the BSD library. It revises the texture internals to better map the output of the ocean library on to surfaces. Wave height is once more available due to the changes made. Foam is available, but is not quite right yet. Documentation errors for the surface tension were also corrected. <strong>Compatibility with previous releases (1.0.x) is not available</strong>.</p>
+    </td>
+    </tr>
+    </table>
+  <hr>
+
+  <h1 id="requirements">Requirements</h1>
+    <p>aaOcean for MODO is built in its default configuration for MODO 901/10. It's available for Mac OS X, Linux and Windows.</p>
+  <hr>
+
+  <h1 id="installation">Installation</h1>
+    <p>aaOcean for MODO is delivered as a kit. You can install aaOcean to your user Scripts folder or to the MODO kit folder by following the instructions below.</p>
+    <blockquote>
+      <h3 id="installation_location">Install Location</h3>
+        <ol>
+          <li>Launch MODO.</li>
+          <li>From MODO's 'System' menu, select 'Open User Scripts Folder'</li>
+          <li>A file browser opens in that folder.</li>
+          <li>Drag and drop the folder in the kit archive into that location</li>
+          <li>Restart MODO</li>
+        </ol>
+    </blockquote>
+    <blockquote>
+      <h3 id="installation_windows">Windows</h3>
+        <p>The Windows version is built using Microsoft's Visual C++ 2015 system (update 3). That requires updated runtime libraries on this platform (x64). They can be downloaded and installed from Microsoft's site here : <a href="https://www.microsoft.com/en-us/download/details.aspx?id=49984">https://www.microsoft.com/en-us/download/details.aspx?id=49984</a></p>
+    </blockquote>
+    <blockquote>
+      <h3 id="installation_mac">macOS</h3>
+        <p>The Mac version is built against Yosemite (10.11), but should work back to Mountain Lion (10.7). It's only been tested on 10.11, however. Note that sharing kit locations across networks (e.g. via mounted network shares) causes issues for the aaOcean kit on this platform.</p>
+    </blockquote>
+    <blockquote>
+      <h3 id="installation_linux">Linux</h3>
+        <p>Debian Jessie was used to compile this plugin. It makes use of libgomp for the OpenMP implementation; this may need to be manually installed.</p>
+    </blockquote>
+  <hr>
+
+  <h1 id="generalinformation">General aaOcean Information</h1>
+    <p>aaOcean works, behind the scenes, in a pretty general manner. It generates a tile, the dimensions of which are set by the ocean size value and the detail of which is set by the resolution value. This tile is repeated over the geometry/surface as needed.</p>
+    <p>Common parameters are discussed here. Outputs are discussed under each respective implementation because the implementation defines the available outputs and how they can be used.</p>
+    <blockquote>
+      <h3 id="generalinformation_inputs">Inputs</h3>
+        <table class="myTable">
+        <tr>
+        <th width=100px>Inputs</th>
+        <th>Notes</th>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Output type</p>
+        </td>
+        <td>
+        <p>Choose the output type (not available for all aaOcean implementations).</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Resolution</p>
+        </td>
+        <td>
+        <p>Choose the map size to set the amount of detail. Larger values will provide more detail, but take significantly longer to evaluate and require more memory. They may also give the impression that MODO has frozen. Give it time. See additional notes for the deformer with regard to this setting.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Ocean size</p>
+        </td>
+        <td>
+        <p>The physical size of the ocean tile that is being generated.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Wave height</p>
+        </td>
+        <td>
+        <p>This defines the wave height, essentially a contrast control for the wave patterns.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Surface tension</p>
+        </td>
+        <td>
+        <p>Drives the existence of capillary waves (ripples)</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Wind align</p>
+        </td>
+        <td>
+        <p>Stretches the waves perpendicular to the direction of the wind.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Smoothing</p>
+        </td>
+        <td>
+        <p>Smooths out the surface, removing smaller waves from big ones.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Wave direction</p>
+        </td>
+        <td>
+        <p>Angular setting to control the prevailing direction of the waves.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Reflection damping</p>
+        </td>
+        <td>
+        <p>By default, the ocean will have no prevailing direction of travel for the waves. You can use this control to change that. A value of 1 will completely eliminate waves traveling in the opposite direction to the wind.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Wave speed</p>
+        </td>
+        <td>
+        <p>Controls the speed of the waves traveling over the surface. Increasing the ocean size will seem to slow down the waves, as they will have a longer distance to travel.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Chop</p>
+        </td>
+        <td>
+        <p>This controls the sharpness of the peaks of the waves. Higher values sharpen the tops. If you set the value too high, the tops of the waves will self-intersect.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Wave size</p>
+        </td>
+        <td>
+        <p>Sets the wave size, as you might expect.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Ocean depth</p>
+        </td>
+        <td>
+        <p>This can be changed, but has a relatively minor effect on the ocean.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Seed</p>
+        </td>
+        <td>
+        <p>This is used to initialize the random number generator. You can use this to change the Ocean; if you find a value you like, you can use this in the same context in a different scene to get the exact same result.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Time Offset <strong>(New to 1.2)</strong></p>
+        </td>
+        <td>
+        <p>Allow an offset to be applied to the scene time that is being used. This can be used to ensure consistency when breaking a large scene into separate sequences, or to freeze the ocean in-place by applying a linear negative slope.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Repeat time</p>
+        </td>
+        <td>
+        <p>The time at which the ocean animation should repeat, in seconds.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Foam Model <strong>(New to 1.2)</strong></p>
+        </td>
+        <td>
+        <p>Deselecting this enables the legacy foam model from versions prior to 1.2.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Do Foam</p>
+        </td>
+        <td>
+        <p>Where applicable, this enables foam generation for the ocean. This is required for the foam output type to be operable.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Foam Maximum</p>
+        </td>
+        <td>
+        <p>Defines the set point for foam. This is explained in a dedicated section later in the manual.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Foam Range</p>
+        </td>
+        <td>
+        <p>Defines the amount of foam to be generated around the set point. This is explained in a dedicated section later in the manual.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>RNG Weight</p>
+        </td>
+        <td>
+        <p>This parameter mixes the internal RNG with an additional source, to allow for some additional variation.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Spectrum <strong>(New to 1.2)</strong></p>
+        </td>
+        <td>
+        <p>Three options are available.</p>
+          <ul>
+            <li>Phillips : The default, and the standard aaOcean empirical model. (Hanson, J.L., Phillips, O.M., 1999, "Wind sea growth and dissipation in the open ocean", Journal of Physical Oceanography, vol. 29, no. 8, pp. 1633-1648).</li>
+            <li>Pierson-Moskowitz : This empirical model assumed that if the wind blew steadily for a long time over a large area an ocean, an equilibrium would be reached. This is the concept of a fully developed sea. Here, a long time is roughly ten-thousand wave periods, and a "large area" is roughly five-thousand wave-lengths on a side. The work orignally took place in 1964 and saw review in 2003.</li>
+            <li>TMA : Texel MARSEN ARSLOE is suited for shallow water. (Christopher J. Horvath, "Empirical Directional Wave Spectra for Computer Graphics")"</li>
+          </ul>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Spectrum Multiplier <strong>(New to 1.2)</strong></p>
+        </td>
+        <td>
+        <p>This parameter increases the contrast of the spectrum function.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Swell <strong>(Coming soon)</strong></p>
+        </td>
+        <td>
+        <p>This parameter is not currently enabled, but will be activated in a future release.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>TMA Fetch <strong>(New to 1.2)</strong></p>
+        </td>
+        <td>
+        <p>This parameter applies to the TMA spectrum. Lower values result in a higher frequency surface.</p>
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>TMA Peak Sharpening <strong>(New to 1.2)</strong></p>
+        </td>
+        <td>
+        <p>This parameter applies to the TMA spectrum. It sharpens the peaks of the waves.</p>
+        </td>
+        </tr>
+        </table>
+    </blockquote>
+
+    <blockquote>
+      <h3 id="generalinformation_spectra">Spectra</h3>
+        <table class="myTable">
+        <tr>
+        <th width=100px>Spectrum</th>
+        <th>Image</th>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Phillips</p>
+        </td>
+        <td>
+        <img src="./images/phillips_spectrum.png" width="100%">
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>Pierson-Moskowitz</p>
+        </td>
+        <td>
+        <img src="./images/pm_spectrum.png" width="100%">
+        </td>
+        </tr>
+        <tr>
+        <td valign=top>
+        <p>TMA</p>
+        </td>
+        <td>
+        <img src="./images/tma_spectrum.png" width="100%">
+        </td>
+        </tr>
+        </table>
+    </blockquote>
+  <hr>
+
+  <h1 id="deformer">Deformer</h1>
+    <p>The deformer works against any mesh item that contains vertices. It has the benefit of providing immediate feedback in the viewport, working with the MODO deformer stack and also enabling vertex-based constraints of items (e.g. buoys, boats). It does require a dense mesh to provide convincing close-ups. You can use this with subdivision surfaces - the deformer will affect the cage.</p>
+    <blockquote>
+      <h3 id="deformer_inputs">Inputs</h3>
+      <p><strong>Resolution</strong> : in this mode, the final resolution of your ocean will of course depend on the number of vertices in your mesh. The resolution value only defines the granularity of the ocean map used to calculate the deformation. Increasing the ocean resolution on a low density mesh will not improve the output.</p>
+
+      <p><strong>Ocean size</strong> : this defines the real world ocean size from which the vertices on your mesh are processed. Note that your ocean size should be an integer multiple of your edge length if you want to tile instances to make a sweeping ocean vista. If this is not the case, the edges will not align and there will be gaps in the result.</p>
+    </blockquote>
+    <blockquote>
+      <h3 id="deformer_outputs">Outputs</h3>
+      <p>The deformer only uses the displacement outputs of the aaOcean library. There is no output support for extended features (e.g. foam, eigenvectors) due to architectural limitations in MODO.</p>
+
+      <p>aaOcean for MODO allows you to take advantage of MODO's order of operations system to stack deformers. In this way, you can use a bend effector to create looming waves, a vortex effector to create whirlpools, etc.</p>
+
+      <img src="images/deformer_stack.png"  style="width: 85%; height: 85%; display: block; margin-left: auto; margin-right: auto"/>
+    </blockquote>
+  <hr>
+
+  <h1 id="texture">Texture</h1>
+  <p>The texture system is the fastest way of generating displacement for the ocean. You can take a simple quad poly and generate enormous oceans with compelling detail. Vector displacement is recommended over 'displacement' in order to provide convincing 'chop' effects.</p>
+
+  <p>The texture implementation of aaOcean for MODO also works pretty similarly to most texture items in MODO, with one exception when used for vector displacement effects - see 'wave height' in the input section below.</p>
+
+  <p>Using the output type setting, you have the option of choosing the information output in the RGB channels of the color texture. For the full set of outputs, you will need to instance (or duplicate) the texture multiple times and this will incur additional memory and computation expense.</p>
+
+  <p>Note also that you won't see any viewport updates from this texture in displacement mode - you'll need to have Preview running.</p>
+
+  <p><strong>Note that the texture requires a UV map in order to work, and must be used with UV projection. Without a UV map and UV projection, the output will be blank and no effect will be seen!</strong></p>
+    <blockquote>
+      <h3 id="texture_inputs">Inputs</h3>
+      <p><strong>Output type</strong> : Used to select what is output by the texture:</p>
+
+      <ul>
+        <li>Displacement data (RGB or scalar)</li>
+        <li>Foam map (scalar)</li>
+        <li>Eigenminus vector (RGB)</li>
+        <li>Eigenplus vector (RGB)</li>
+      </ul>
+
+      <p><strong>Ocean size</strong> : Sets the ocean size to fit within your UV map. Note that the texture internally uses object space values, so a tileable effect that works across instances will be seen when the ocean size is an integer multiple of the edge length of your square ocean.</p>
+
+      <p><strong>Wave height</strong> : As noted earlier, this defines the wave height. Note that the aaOcean texture system works a little differently as a displacement effect. In traditional modo, the texture works with the displacement height set on the material and the displacement is fitted to the range. In aaOcean, for vector displacement, the material displacement height is ignored and the wave height (e.g. 4 m) will always be applied. If you encounter clipping, increase the displacement height value on the material being applied.</p>
+    </blockquote>
+    <blockquote>
+      <h3 id="texture_outputs">Outputs</h3>
+      <p>The texture output depends first of all on the way that the texture layer is being used in the ShaderTree.</p>
+
+      <p>In all modes of the texture layer, the value and alpha outputs are processed. The alpha is always set to 1.0 and the value output is always the Y displacement of the Ocean.</p>
+
+      <p>In color/vector modes, the texture layer output varies based on the Output Type set for the ocean texture. In vector displacement mode, the red/green/blue channels are set to the respective displacement amounts in XYZ. In eigenvector modes, the output is the XYZ vector (in RGB form).</p>
+    </blockquote>
+  <hr>
+
+  <h1 id="channel">Channel Modifier</h1>
+  <p>The channel modifier is intended to drive features like particles and arbitrary item positioning based on the ocean configuration. The output is perfectly matched to the texture plugin for the same inputs, but the evaluation will generally be slightly slower. The controls and outputs are identical to the texture plugin. Some notes are below in the case you want to drive surfacing with the channel modifier :</p>
+
+  <ul>
+    <li>Use the Sample Position World Position X and Z inputs to input X and input Z on the channel modifier.</li>
+    <li>Driving displacement on the surface will be challenging because the aaOcean coordinate system is not intrinsically compatible with the displacement system in modo. There does not appear to be exposed functionality to convert between these in the schematic at this time.</li> 
+  </ul>
+
+  <p>The channel modifier exposes additional vector outputs:</p>
+
+  <ul>
+    <li>Min : the minimum X, Y, Z values of the bounding box of the aaOcean values. Note that these are not suitable for animation - the range of values will vary frame-to-frame.</li>
+    <li>Max : the maximum X, Y, Z values of the bounding box of the aaOcean values. Note that these are not suitable for animation - the range of values will vary frame-to-frame.</li>
+    <li>Normalization : the normalization values (X, Y, Z) that can be used to map the displacement output into a 0-1 range by dividing the output values by the corresponding normalization value. This is not going to be consistent frame-to-frame in an animation so is limited in usefulness and may be removed (like min, max) in a future revision.</li>
+  </ul>
+  <hr>
+
+
+  <h1 id="tutorials">Let's Get Our Feet Wet</h1>
+
+  <p>The following tutorials do not touch on the new controls in version 1.2 (the spectrum choices, and their related controls). They were written for 1.1.x and remain valid in all respects.</p>
+
+  <blockquote>
+    <h3 id="tutorialdeformer">Deformer</h3>
+
+    <p>We're going to start with the deformer system because it has the advantage of displaying its results in the viewport and the ocean works based on the mesh size.</p>
+
+    <ol>
+      <li>Add a unit plane to a mesh item. Scale it up to be 200 m on each side, centered on the world origin. If you sized the mesh item rather than the geometry itself, freeze the transforms on the mesh item.</li>
+      <li>Right click the mesh item in the item list and the Use the 'Add Item' drop down menu in the item list to add aaOceanBSDDeform from the Deformers submenu.</li>
+
+      <img src="images/deformer_add.png" width="635" height="398" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+      <li>You should see a small shift in the viewport. It's not very convincing as an ocean, so let's subdivide the plane a few times.</li>
+
+      <li>In polygon mode, select your quad, hit Shift-D and hit return. This will turn your single quad into 4 polygons. You'll begin to see the ocean deform. Keep subdividing and increase amounts of detail will show up, but of course your mesh will become very dense.</li>
+
+      <li>Scrub the timeline to show how the ocean characteristics change over time.</li>
+
+      <li>Change the wave height to, say, 5 m and you should begin to more clearly see the ocean effect.</li>
+
+      <li>Let's quickly review the chop effect. By default, it's set to 2.0. Switch to a top view of your mesh. You'll see that the edges are all irregular. If you set chop to 0, the edges will become orthogonal. Chop, basically, adds lateral movement to the displacement of the vertices. No chop means only vertical displacement is applied to each vertex.</li>
+
+      <table style= "margin-left: auto; margin-right: auto">
+        <tr>
+          <td>
+          <img src="images/deformer_chop.png" width="236" height="236" alt=""/>
+          </td>
+          <td>
+          <img src="images/deformer_nochop.png" width="226" height="225" alt=""/>
+          </td>
+        </tr>
+      </table>
+
+      <li>At 256 polygons, the ocean starts taking some basic shape. Let's keep subdividing to 4096 polygons. A reference is below.</li>
+
+      <img src="images/deformer_viewport.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+      <li>With the ocean mesh item selected, hit the tab key on your keyboard to engage subdivision surface, giving a good smooth ocean surface</li>
+
+      <li>If you scrub the timeline now, you will be able to see the wave interactions (forward and reverse).</li>
+
+      <li>Let's add a point of interest. Add a unit sphere to the scene in a new mesh item.</li>
+
+      <li>Select the aaOceanBSDDeform entry in the item list and deselect 'Enable' to temporarily turn off the deformer.</li>
+
+      <li>Select the Sphere. Shift-select the ocean mesh.</li>
+
+      <li>From the 'Setup' workspace, under 'Modifiers' choose 'Vertex Position'. This will set up a constraint from the ball to the nearest vertex on the ocean.</li>
+
+      <li>Re-enable the aaOceanBSDDeform deformer. You should see something like this :</li>
+
+      <img src="images/deformer_ballconstrained.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+      <li>As you scrub the timeline, the ball will follow the deformed ocean. This is one of the key benefits to the deformer mode for aaOcean. It's very easy to set up and it's trivial to create constraints for objects.</li>
+
+      <li>Now that we have a lightly detailed ocean mesh thanks to the subdivision, let's explore how the resolution parameter affects the look and feel. Go ahead and change it from the default. Lower values evaluate extremely quickly, but lack any subtle motions that impart realism. At the higher end, impressive detail is added, but the evaluation slows down markedly.</li>
+
+      <li>Try also adjusting the ocean size. This is where you have to pay some attention to your settings. The ocean size relates directly to your ocean mesh size. For our example here, the default value of 200 matches with our geometry because of the sizing we performed in step 1. If you change the ocean size to 100, you will see tiling in the pattern because the ocean map needs to affect the entire mesh and so it has to repeat twice in both directions. If you make the ocean size 400, the ocean will appear blurred because a significant portion of the map is never applied to the mesh because it falls outside the mesh itself. In general, matching this value to your mesh size should be the first step in setting up your ocean. Detail is added using the other settings.</li>
+      <ul>
+        <li>Note that scaling the mesh item without freezing it will not change the effect of the deformer on the ocean mesh item.</li>
+      </ul>
+
+      <li>The surface tension control will add the effect of ripples to the surface.</li>
+
+      <p>Let's take a look at the wind settings.</p>
+
+      <li>Set your ocean size back to 200.0. Set resolution at the highest value you can live with, e.g. 1024. Set wave height to 7.0 and chop to 0.0 for the moment. Set surface tension back to 0.0, wave speed to 2.0 and wind align to 0. If you scrub the timeline now, you'll see that the waves behave as though there is no wind in the scene. Change Wind Align to 1 and this will change. You can use the Wind Direction control to steer the waves.</li>
+
+      <li>The smoothing value, at higher values, will work to suppress the waves on the ocean.</li>
+
+      <li>Wave Reflection affects the amplitude of the waves traveling against the prevailing flow. At a setting of 0.0, the waves have the same amplitude in both directions; for a value of 1.0, there are no waves traveling against the prevailing flow. You can adjust this during playback to get an idea of the response to this control.</li>
+
+      <li>The smoothing value, at higher values, will work to suppress the waves on the ocean.</li>
+
+      <li>Wave Reflection affects the amplitude of the waves traveling against the prevailing flow. At a setting of 0.0, the waves have the same amplitude in both directions; for a value of 1.0, there are no waves traveling against the prevailing flow. You can adjust this during playback to get an idea of the response to this control.</li>
+
+      <li>The seed value can be used to define the input to the ocean's internal random number generator to change the ocean look for the given set of parameters.</li>
+
+      <li>Repeat Time defines the time at which the animation of the waves should loop.</li>
+
+      <li>In the deformer the 'Do Foam' options is exposed, but doesn't yield anything in the current MODO system.</li>
+
+      <li>Now, let's explore the deformer stack options for aaOcean. Go back to the item list and right click on your ocean mesh. Add a bend effector from 'Add Deformer -&gt; Effectors' from this menu. Hop over to the Deformers list. If all went well, the Bend effector will be at the top of the listing, with aaOceanBSDDeform at the bottom.</li>
+
+      <img src="images/deformer_bend.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+      <ul>
+        <li>You might find some ugly shearing being displayed in the viewport - to resolve this, you need to increase the radius value of the bend.</li>
+      </ul>
+
+      <li>Let's adjust the bend settings on the Bend Effector (you can expand the Bend group in the Deformer list, or hop over to the Item List and select the Bend Effector directly). The Properties panel will then show the controls we want to adjust. Choose the X axis and increase the angle.</li>
+
+      <li>Now had back over to the Deformers list and move aaOcean to the top of the list. You'll see something like below. This is because aaOcean uses the X and Z positions of vertices to define the deformation in the Y axis, so the bend affects this and gives a different result.</li>
+
+      <img src="images/deformer_bend2.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+      <li>You can also use falloffs with the aaOcean deformer. Just right click the aaOceanBSDDeform to add any falloffs that you would like to use.</li>
+    </ol>
+
+    <p>Remember that you can also use Subdivision or Catmull-Clark Subdivision surfaces with the deformed mesh.</p>
+
+  </blockquote>
+
+  <blockquote>
+    <h3 id="tutorialtexture_start">Texture</h3>
+
+    <p>Please go through the Deformer introduction before this section.
+    By doing so, the basic principles will be familiar to you and we can skip to the interesting aspects of this part of aaOcean for MODO.</p>
+
+    <ol>
+
+      <li>Start with a fresh scene. As before, add a unit plane and scale it up to be a reasonable size (e.g. 20-50 m on each edge). If you resized it in item mode, freeze the transforms.</li>
+
+      <li>Let's now jump over to the render workspace in modo . All of our work will be done here, with our single quad ocean. Add an aaOceanBSDTexture from the aaOceanBSDTexture group in the 'Add Layer' drop-down of the ShaderTree. The default mode is 'Diffuse Color' and we'll leave it like this for a moment. Most of the time, you will probably be using aaOcean as a vector displacement texture, with instances as layer masks for foam layers.Head over to the Texture Locator panel and change the projection to UV and choose the UV map from the related drop-down. The render view will show you a colorful pattern.</li>
+
+      <img src="images/texture_initial.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+      <li>Let's try the vector displacement option. Right click on the aaOcean Texture row in the item list, within the effect column and change from Diffuse Color to Vector Displacement (found under Surface Shading). You'll probably immediately be disappointed because nothing has happened. If you are familiar with traditional displacements in MODO, you will need to take note that aaOcean does things slightly differently.</li>
+
+      <img src="images/texture_vecdisp_1.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+      <li>Change the wave height to 4 m. Nothing will appear to change.</li>
+
+      <li>On the associated material, which in this basic scene is our Base Material, find the 'Displacement Distance' parameter on the Material Ref sheet and increase it to 10 m. This will allow our 4 m waves to be displayed. The texture defines the height, not the material. Note that very large values in the material displacement distance parameter with cause precision errors, so make it a few multiples of your wave height.</li>
+
+      <img src="images/texture_vecdisp_2.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+      <li>Change the ocean size to 50.0, making the internal map better fit our object size and crank up the resolution to something like 128 or 256.</li>
+
+      <img src="images/texture_vecdisp_3.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+      <ul>
+        <li>Preview can sometimes get stuck and hold on to the same displacement in different frames, or only draw a very poorly evaluated mesh. If that happens, toggling the displacement texture on and off in the ShaderTree with the eye icon will force Preview to update.</li>
+      </ul>
+
+      <li>Unlike HOT, increasing the resolution in aaOcean doesn't radically change the ocean shape - it just adds more detail. Note that, at the maximum setting of 4096, you'll be getting over 16 million points on the ocean map that defines the displacement! These high settings can take a while to evaluate, so if modo appears to be hanging, you might want to reduce the resolution until you come to render. Play around with the resolution setting and then, once happy, set it back to 128 or 256 and save the scene. These large texture sizes also consume considerable amounts of RAM.</li>
+
+      <li>aaOcean also works with the regular displacement mode. Sometimes, this can even work better than the vector displacement, but you will probably need to greatly reduce the wave height value (e.g. from 4.0 to 1.0) and, in this case, the displacement height on the material will be the control (so reduce it from 10 m to 4 m). Switch
+      over to compare the results, in the same way that you changed from Diffuse Color to Vector Displacement back in step 2. Note that sharp crests are not available except in the vector displacement texture.</li>
+
+      <img src="images/texture_vecdisp_4.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+    </ol>
+
+    <p>For larger oceans, you will find that you need to blend multiple oceans of different sizes and seeds in order to eliminate tiling whilst preserving detail in close-up shots.</p>
+
+    <blockquote>
+    <h3 id="tutorialfoam_start">Foam</h3>
+
+      <ol>
+        <li>Now let's try something more advanced: foam. Close preview and reload the scene from step (7) earlier.</li>
+        <li>On the base material, in the Material Ref sheet, change the diffuse color to a dark blue.</li>
+        <li>Add a constant texture layer and set the color to a pale blue / white. Leave it with the default diffuse color texture effect.</li>
+        <li>Instance the aaOcean texture layer. On the instanced layer, change the Output type to output foam and deselect the 'New foam model' checkbox. Accordingly, also set the 'Do Foam' value to 1. To soften the effect and to reduce CPU and memory load, also reduce the resolution down to 64 on this layer.</li>
+        <li>Drag and drop the instanced aaOcean texture layer on top of the constant to use it as a layer mask. Fire up Preview and you should get something like the image below.</li>
+        <img src="images/texture_foam_1.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+        <li>This needs some refinement. aaOcean actually outputs a foam value for all areas of the ocean. To make this useful, we need to find the range of values that we would like to use. Best practice is to leave the range value alone and increase the max value until the foam just disappears. In the case below, the foam just disappears with a max foam value of 3.0.</li>
+
+        <img src="images/texture_foam_2.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+        <li>We now start adding foam back, we concentrate on the range value. Increase it from 1.0 to 2.0.</li>
+
+        <img src="images/texture_foam_3.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+        <li>The image below is for a range value of 1.5.</li>
+
+        <img src="images/texture_foam_4.png" width="85%" alt="" style= "display: block; margin-left: auto; margin-right: auto"/>
+
+      </ol>
+
+      <p>You are probably now wondering about that 'New foam model' checkbox that we deselected. In the original aaOcean foam model, implemented many years ago, there were some oversights. These were corrected more recently, but this brings a significant change to the look and feel of the foam; whilst the new model is more accurate, the old model can give more attractive results. As such, the new model can be deselected. Note, however, that the different models respond to the same inputs very different (max foam and range). Typically, the foam range value needs to be reduced by at least a factor of 10.</p>
+
+      <table class="myTable">
+      <tr>
+      <th>Old Foam Model</th>
+      <th>New Foam Model</th>
+      </tr>
+      <tr>
+      <td valign=top>
+        <video width="400" height="400" controls="controls">
+        <source src="./images/oldfoam_crop.mp4" type="video/mp4">
+        </video>
+      </td>
+      <td>
+        <video width="400" height="400" controls="controls">
+        <source src="./images/newfoam_crop.mp4" type="video/mp4">
+        </video>
+      </td>
+      </tr>
+      </table>
+
+    </blockquote>
+  </blockquote>
+
+  <h1 id="examples">Examples</h1>
+    <p>There are several example scenes included in the package. There are available from the help menu and load (rather than import) when selected.</p>
+
+    <blockquote>
+      <h3 id="exampledeformer">Deformer</h3>
+        <a href="../examples/deformer.lxo">Scene</a>
+        <p>This is a basic deformer setup, where a mesh is deformed by aaOcean.</p>
+
+      <h3 id="exampledeformerstack">Deformer Stack</h3>
+        <a href="../examples/deformer_swell_stack.lxo">Scene</a>
+        <p>This scene stacks two aaOcean deformers on a mesh, applying high frequency deformation on top of a low frequency ocean.</p>
+        
+      <h3 id="examplechannel">Channel Modifier</h3>
+        <a href="../examples/chanmod.lxo">Scene</a>
+        <p>This scene contains an ocean setup using a channel modifier.</p>
+        
+      <h3 id="exampleoldfoam">Texture (Old Foam)</h3>
+        <a href="../examples/aaOcean_foamTest11_120.lxo">Scene</a>
+        <p>This scene contains an ocean setup using a texture using the old foam model.</p>
+        
+      <h3 id="examplenewfoam">Texture (New Foam)</h3>
+        <a href="../examples/aaOcean_newFoamTest12_120.lxo">Scene</a>
+        <p>This scene contains an ocean setup using a texture using the new foam model.</p>
+        
+      <h3 id="exampleaccumulatedfoam">Texture (Accumulated Foam)</h3>
+        <a href="../examples/foam_accumulate_demo.lxo">Scene</a>
+        <p>This scene contains an ocean setup using instanced aaOcean textures with time offsets to mimic foam trails.</p>
+        
+    </blockquote>
+
+
+    <hr>
+
+  <h1 id="faq">FAQ</h1>
+    <p><strong>The plugin isn't showing up in 801 (release, SP1, SP2, SP3, etc.). Why?</strong></p>
+    <p>This plugin requires features in later versions of modo's SDK. It won't show up in versions of modo before 901.</p>
+
+    <p>&nbsp;</p>
+
+    <p><strong>I get tiling - what can I do?</strong></p>
+
+    <p>The ocean system uses tiles that are repeated over the ocean surface. You'll need to blend multiple oceans with different seeds and sizes to break this up. For the texture and channel modifier plugins, this is easy - you can just stack them up. For the deformer, this presents a problem - you're best off using the deformer for crude deformations and then using displacement or bump mapping using aaOcean to hide the tiling from each part.</p>
+
+    <p>&nbsp;</p>
+
+    <p><strong>I don't see any displacement in my render (using displacement or vector displacement). What's up?</strong></p>
+
+    <p>There are several possibilities:</p>
+
+    <p>1. Check that you have a material affecting the surface and ensure that the displacement height on this material is appropriately set (for displacement, set this to the amplitude of the wave you would like; for vector displacement set it to any value significantly larger than the wave height in the texture). Due to MODO's architecture, we can't set this from the texture plugins.</p>
+
+    <p>2. The aaOcean texture, as of 1.1.0, requires a UV projection to work. We can't do this automatically, and scenes from earlier versions will likely have a 'solid' projection. Switch to a UV projection and the texture will then work.</p>
+
+    <p>&nbsp;</p>
+
+    <p><strong>I get tearing (stitch errors) when I make a grid of planes that have aaOcean applied - what can I do?</strong></p>
+
+    <p>Assuming that you have the texture tiling within each plane, this ought to work. However, there is an unresolved MODO bug that causes vector displacement to fail to match at the edges of such planes. The only workaround available is to merge your planes into a single mesh item and to allow the texture to tile across that mesh - there will be no tearing or other artifacts with this approach.</p>
+
+    <p>&nbsp;</p>
+
+    <p><strong>Linux : MODO won't start after installing this. Why?</strong></p>
+
+    <p>This is likely the result of at least one missing dependency. Ensure that libgomp or its equivalent is installed, <a href="#installation_linux">Linux : Additional Steps</a></p>
+
+    <p>&nbsp;</p>
+
+    <p><strong>Linux : MODO renderslaves are having trouble. Why?</strong></p>
+
+    <p>This is likely the result of at least one missing dependency. Ensure that libgomp or its equivalent is installed, <a href="#installation_linux">Linux : Additional Steps</a>.</p>
+
+    <p>&nbsp;</p>
+
+    <p><strong>Windows : I'm getting an error that the program cannot start due to MSVCR120.DLL being missing.</strong></p>
+
+    <p>The Windows kit is compiled using Microsoft's Visual C++ 2015 software (update 3). That requires updated runtimes on many Windows systems. You can find a link to the installer in the Installation section, <a href="#installation_windows">Windows : Additional Steps</a>.</p>
+
+    <p>&nbsp;</p>
+
+    <p><strong>Any wake or similar functionality?</strong></p>
+
+    <p>Not in aaOcean itself, no. However, the channel modifier can drive particles.</p>
+
+  <h1 id="knownissues">Known Issues in 1.2.0</h1>
+  <ul>
+    <li>Due to an unresolved MODO bug, tearing will be observed if you use geometric tiles to construct an ocean. You need to use a single mesh item to cover the full expanse of ocean and allow the texture to tile across it.</li>
+    <li>A UV map is mandatory for the texture to work - the SDK needs the UV data to translate the aaOcean library output for the vector displacement.</li>
+    <li>Settings from scenes using aaOcean 1.0.x will not carry forward to 1.1.0+ without rework.</li>
+    <li>Scenes from 1.1.0 will see a change in look-and-feel with 1.1.1+ due to the nature of the fix for the foam tracking problem in 1.1.0.</li>
+    <li>Scenes from 1.1.1+ will see a change in foam with 1.2.0 due to the base library changes made by Amaan - you can recover the old look by clearing the 'new foam model' checkbox.</li>
+  </ul>
+
+  <h1 id="acknowledgements">Acknowledgements</h1>
+  <ul>
+    <li>Amaan Akram for creating  aaOcean and being kind enough to respond to e-mails asking for implementation insights.</li>
+    <li>Matt Painter for the generous support.</li>
+    <li>David Maas for testing and UI feedback.</li>
+    <li>Jonathan Josenhans</li>
+    <li>Andrew Helmer for figuring out the root cause for the infuriating crash bug that drove me mad for weeks.</li>
+    <li>Erwin Zwart for gently goading me into action.</li>
+    <li>Greg Duquesne, Gwynne Reddick (of The Foundry), for help with HOT that enabled me to make faster headway with aaOcean, and for the encouragement throughout.</li>
+    <li>Pete Segal, Matt Cox, Arnie Cachelin, Milan Bulat (of The Foundry) for extensive and patient guidance during both HOT and aaOcean efforts.</li>
+    <li>Ivo Grigull (of The Foundry) for his extensive help and support in fixing up the texture system to work properly in aaOcean 1.1. He's also been of immense help getting the foam issues sorted out.</li>
+    <li>Stuart Ferguson, for guidance about the cause of side-by-side installation headaches.</li>
+  </ul>
+
+  <h1 id="copyrights_licenses">Copyrights and Licenses</h1>
+  <ul>
+    <li>aaOcean for MODO is licensed under BSD. It is copyright &copy; 2014-2017 Philip Stopford.</li>
+
+    <li>aaOcean is copyright &copy; 2013 Amaan Akram. It is licensed under BSD. <a href="https://bitbucket.org/amaanakram/aaocean">https://bitbucket.org/amaanakram/aaocean</a></li>
+    <li>MODO is copyright &copy; 2001-2016 The Foundry Visionmongers Ltd. <a href="http://www.thefoundry.co.uk">http://www.thefoundry.co.uk</a></li>
+  </ul>
+
+   </article>
+   <footer>
+    If you like this, please support development <a href="gumroad.com/products/bgeNo" title="Gumroad store">Gumroad</a>
+   </footer>
+  </div>  
+ </body>   
 </html>

@@ -7,13 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4A08EA1D1964D33800C15AE7 /* aaOceanClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A1AD52C1964751200693F00 /* aaOceanClass.cpp */; };
 		4A1AD52719646D2800693F00 /* aaOcean_deformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AFBD3BD191E6B5F00181ED4 /* aaOcean_deformer.h */; };
 		4A30ED101B16BEF5004FD98B /* libiomp5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A30ED0F1B16BEF5004FD98B /* libiomp5.dylib */; };
 		4A3660631C01006700E9E15A /* kiss_fftnd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A36605F1C01006100E9E15A /* kiss_fftnd.cpp */; };
 		4A3660641C01006700E9E15A /* kiss_fftnd.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A3660601C01006100E9E15A /* kiss_fftnd.h */; };
+		4A516D591D689E0200558CF8 /* aaOceanClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A516D571D689E0200558CF8 /* aaOceanClass.cpp */; };
+		4A516D5A1D689E0200558CF8 /* aaOceanClass.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A516D581D689E0200558CF8 /* aaOceanClass.h */; };
+		4A58188B1E3122EA00551492 /* lxu_matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A5818871E3122EA00551492 /* lxu_matrix.cpp */; };
+		4A58188C1E3122EA00551492 /* lxu_octree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A5818881E3122EA00551492 /* lxu_octree.cpp */; };
+		4A58188D1E3122EA00551492 /* lxu_quaternion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A5818891E3122EA00551492 /* lxu_quaternion.cpp */; };
+		4A58188E1E3122EA00551492 /* lxu_vectorarray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A58188A1E3122EA00551492 /* lxu_vectorarray.cpp */; };
+		4A6EF6D61CF208B400D50C88 /* lxu_attrdesc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6EF6B41CF2088900D50C88 /* lxu_attrdesc.cpp */; };
+		4A6EF6D71CF208B400D50C88 /* lxu_chanmod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6EF6B51CF2088900D50C88 /* lxu_chanmod.cpp */; };
+		4A6EF6D81CF208B400D50C88 /* lxu_meta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6EF6B61CF2088900D50C88 /* lxu_meta.cpp */; };
+		4A6EF6D91CF208B400D50C88 /* lxu_package.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6EF6B71CF2088900D50C88 /* lxu_package.cpp */; };
+		4A6EF6DA1CF208B400D50C88 /* lxu_schematic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6EF6B81CF2088900D50C88 /* lxu_schematic.cpp */; };
+		4A6EF6DB1CF208B400D50C88 /* lxu_shade.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6EF6B91CF2088900D50C88 /* lxu_shade.cpp */; };
+		4A6EF6DC1CF208B400D50C88 /* lxu_vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6EF6BA1CF2088900D50C88 /* lxu_vector.cpp */; };
 		4A7B51601618018B0091E644 /* libcommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A7B5132161801040091E644 /* libcommon.a */; };
-		4A89A8061964A38600CE3A3C /* aaOceanClass.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1AD52519645A1500693F00 /* aaOceanClass.h */; };
 		4A89A8071964A39600CE3A3C /* aaOcean_command.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AFBD3BB191E6B5F00181ED4 /* aaOcean_command.h */; };
 		4AA1DDE8198C5193008C6D2E /* aaOcean_init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AA1DDE6198C5193008C6D2E /* aaOcean_init.cpp */; };
 		4AA1DDE9198C5193008C6D2E /* aaOcean_init.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AA1DDE7198C5193008C6D2E /* aaOcean_init.h */; };
@@ -21,7 +32,6 @@
 		4AA1DDED198C524B008C6D2E /* aaOcean_texture.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AA1DDEB198C524B008C6D2E /* aaOcean_texture.h */; };
 		4AC23C0A1BA208570094083D /* clean.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23BF41BA208570094083D /* clean.cpp */; };
 		4AC23C0B1BA208570094083D /* cwrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23BF51BA208570094083D /* cwrap.cpp */; };
-		4AC23C0C1BA208570094083D /* lxu_attrdesc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23BF61BA208570094083D /* lxu_attrdesc.cpp */; };
 		4AC23C0D1BA208570094083D /* lxu_attributes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23BF71BA208570094083D /* lxu_attributes.cpp */; };
 		4AC23C0E1BA208570094083D /* lxu_command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23BF81BA208570094083D /* lxu_command.cpp */; };
 		4AC23C0F1BA208570094083D /* lxu_deform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23BF91BA208570094083D /* lxu_deform.cpp */; };
@@ -39,7 +49,6 @@
 		4AC23C1B1BA208570094083D /* lxu_simd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23C051BA208570094083D /* lxu_simd.cpp */; };
 		4AC23C1C1BA208570094083D /* lxu_surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23C061BA208570094083D /* lxu_surface.cpp */; };
 		4AC23C1D1BA208570094083D /* lxu_tableau.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23C071BA208570094083D /* lxu_tableau.cpp */; };
-		4AC23C1E1BA208570094083D /* lxu_vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23C081BA208570094083D /* lxu_vector.cpp */; };
 		4AC23C1F1BA208570094083D /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AC23C091BA208570094083D /* util.cpp */; };
 		4AD9E0DF198D9AB30013A4C6 /* aaOcean_chanmod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9E0DB198D1E5B0013A4C6 /* aaOcean_chanmod.cpp */; };
 		4AD9E0E0198D9AB70013A4C6 /* aaOcean_chanmod.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AD9E0DC198D1E5B0013A4C6 /* aaOcean_chanmod.h */; };
@@ -94,11 +103,22 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4A1AD52519645A1500693F00 /* aaOceanClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aaOceanClass.h; path = dependencies/aaOcean/aaOceanClass.h; sourceTree = SOURCE_ROOT; };
-		4A1AD52C1964751200693F00 /* aaOceanClass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = aaOceanClass.cpp; path = dependencies/aaOcean/aaOceanClass.cpp; sourceTree = SOURCE_ROOT; };
 		4A30ED0F1B16BEF5004FD98B /* libiomp5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiomp5.dylib; path = ../../../../../../usr/local/Cellar/libiomp/20150701/lib/libiomp5.dylib; sourceTree = "<group>"; };
 		4A36605F1C01006100E9E15A /* kiss_fftnd.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = kiss_fftnd.cpp; path = dependencies/helpers/kissfft/tools/kiss_fftnd.cpp; sourceTree = "<group>"; };
 		4A3660601C01006100E9E15A /* kiss_fftnd.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = kiss_fftnd.h; path = dependencies/helpers/kissfft/tools/kiss_fftnd.h; sourceTree = "<group>"; };
+		4A516D571D689E0200558CF8 /* aaOceanClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = aaOceanClass.cpp; path = dependencies/aaOcean/aaOceanClass.cpp; sourceTree = SOURCE_ROOT; };
+		4A516D581D689E0200558CF8 /* aaOceanClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aaOceanClass.h; path = dependencies/aaOcean/aaOceanClass.h; sourceTree = SOURCE_ROOT; };
+		4A5818871E3122EA00551492 /* lxu_matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_matrix.cpp; path = ../LXSDK_117244/common/lxu_matrix.cpp; sourceTree = "<group>"; };
+		4A5818881E3122EA00551492 /* lxu_octree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_octree.cpp; path = ../LXSDK_117244/common/lxu_octree.cpp; sourceTree = "<group>"; };
+		4A5818891E3122EA00551492 /* lxu_quaternion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_quaternion.cpp; path = ../LXSDK_117244/common/lxu_quaternion.cpp; sourceTree = "<group>"; };
+		4A58188A1E3122EA00551492 /* lxu_vectorarray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_vectorarray.cpp; path = ../LXSDK_117244/common/lxu_vectorarray.cpp; sourceTree = "<group>"; };
+		4A6EF6B41CF2088900D50C88 /* lxu_attrdesc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_attrdesc.cpp; path = ../LXSDK/common/lxu_attrdesc.cpp; sourceTree = "<group>"; };
+		4A6EF6B51CF2088900D50C88 /* lxu_chanmod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_chanmod.cpp; path = ../LXSDK/common/lxu_chanmod.cpp; sourceTree = "<group>"; };
+		4A6EF6B61CF2088900D50C88 /* lxu_meta.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_meta.cpp; path = ../LXSDK/common/lxu_meta.cpp; sourceTree = "<group>"; };
+		4A6EF6B71CF2088900D50C88 /* lxu_package.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_package.cpp; path = ../LXSDK/common/lxu_package.cpp; sourceTree = "<group>"; };
+		4A6EF6B81CF2088900D50C88 /* lxu_schematic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_schematic.cpp; path = ../LXSDK/common/lxu_schematic.cpp; sourceTree = "<group>"; };
+		4A6EF6B91CF2088900D50C88 /* lxu_shade.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_shade.cpp; path = ../LXSDK/common/lxu_shade.cpp; sourceTree = "<group>"; };
+		4A6EF6BA1CF2088900D50C88 /* lxu_vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_vector.cpp; path = ../LXSDK/common/lxu_vector.cpp; sourceTree = "<group>"; };
 		4A7B5132161801040091E644 /* libcommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcommon.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AA1DDE6198C5193008C6D2E /* aaOcean_init.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = aaOcean_init.cpp; sourceTree = "<group>"; };
 		4AA1DDE7198C5193008C6D2E /* aaOcean_init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aaOcean_init.h; sourceTree = "<group>"; };
@@ -106,7 +126,6 @@
 		4AA1DDEB198C524B008C6D2E /* aaOcean_texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aaOcean_texture.h; sourceTree = "<group>"; };
 		4AC23BF41BA208570094083D /* clean.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = clean.cpp; path = ../LXSDK/common/clean.cpp; sourceTree = "<group>"; };
 		4AC23BF51BA208570094083D /* cwrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cwrap.cpp; path = ../LXSDK/common/cwrap.cpp; sourceTree = "<group>"; };
-		4AC23BF61BA208570094083D /* lxu_attrdesc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_attrdesc.cpp; path = ../LXSDK/common/lxu_attrdesc.cpp; sourceTree = "<group>"; };
 		4AC23BF71BA208570094083D /* lxu_attributes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_attributes.cpp; path = ../LXSDK/common/lxu_attributes.cpp; sourceTree = "<group>"; };
 		4AC23BF81BA208570094083D /* lxu_command.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_command.cpp; path = ../LXSDK/common/lxu_command.cpp; sourceTree = "<group>"; };
 		4AC23BF91BA208570094083D /* lxu_deform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_deform.cpp; path = ../LXSDK/common/lxu_deform.cpp; sourceTree = "<group>"; };
@@ -124,7 +143,6 @@
 		4AC23C051BA208570094083D /* lxu_simd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_simd.cpp; path = ../LXSDK/common/lxu_simd.cpp; sourceTree = "<group>"; };
 		4AC23C061BA208570094083D /* lxu_surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_surface.cpp; path = ../LXSDK/common/lxu_surface.cpp; sourceTree = "<group>"; };
 		4AC23C071BA208570094083D /* lxu_tableau.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_tableau.cpp; path = ../LXSDK/common/lxu_tableau.cpp; sourceTree = "<group>"; };
-		4AC23C081BA208570094083D /* lxu_vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lxu_vector.cpp; path = ../LXSDK/common/lxu_vector.cpp; sourceTree = "<group>"; };
 		4AC23C091BA208570094083D /* util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = util.cpp; path = ../LXSDK/common/util.cpp; sourceTree = "<group>"; };
 		4AD9E0DB198D1E5B0013A4C6 /* aaOcean_chanmod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = aaOcean_chanmod.cpp; sourceTree = "<group>"; };
 		4AD9E0DC198D1E5B0013A4C6 /* aaOcean_chanmod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aaOcean_chanmod.h; sourceTree = "<group>"; };
@@ -232,9 +250,19 @@
 		4AED76BD161800B100588EB3 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				4A5818871E3122EA00551492 /* lxu_matrix.cpp */,
+				4A5818881E3122EA00551492 /* lxu_octree.cpp */,
+				4A5818891E3122EA00551492 /* lxu_quaternion.cpp */,
+				4A58188A1E3122EA00551492 /* lxu_vectorarray.cpp */,
+				4A6EF6B41CF2088900D50C88 /* lxu_attrdesc.cpp */,
+				4A6EF6B51CF2088900D50C88 /* lxu_chanmod.cpp */,
+				4A6EF6B61CF2088900D50C88 /* lxu_meta.cpp */,
+				4A6EF6B71CF2088900D50C88 /* lxu_package.cpp */,
+				4A6EF6B81CF2088900D50C88 /* lxu_schematic.cpp */,
+				4A6EF6B91CF2088900D50C88 /* lxu_shade.cpp */,
+				4A6EF6BA1CF2088900D50C88 /* lxu_vector.cpp */,
 				4AC23BF41BA208570094083D /* clean.cpp */,
 				4AC23BF51BA208570094083D /* cwrap.cpp */,
-				4AC23BF61BA208570094083D /* lxu_attrdesc.cpp */,
 				4AC23BF71BA208570094083D /* lxu_attributes.cpp */,
 				4AC23BF81BA208570094083D /* lxu_command.cpp */,
 				4AC23BF91BA208570094083D /* lxu_deform.cpp */,
@@ -252,7 +280,6 @@
 				4AC23C051BA208570094083D /* lxu_simd.cpp */,
 				4AC23C061BA208570094083D /* lxu_surface.cpp */,
 				4AC23C071BA208570094083D /* lxu_tableau.cpp */,
-				4AC23C081BA208570094083D /* lxu_vector.cpp */,
 				4AC23C091BA208570094083D /* util.cpp */,
 			);
 			name = common;
@@ -261,8 +288,8 @@
 		4AFBD3B4191E6B5F00181ED4 /* aaOcean */ = {
 			isa = PBXGroup;
 			children = (
-				4A1AD52C1964751200693F00 /* aaOceanClass.cpp */,
-				4A1AD52519645A1500693F00 /* aaOceanClass.h */,
+				4A516D571D689E0200558CF8 /* aaOceanClass.cpp */,
+				4A516D581D689E0200558CF8 /* aaOceanClass.h */,
 				4AD9E0DB198D1E5B0013A4C6 /* aaOcean_chanmod.cpp */,
 				4AD9E0DC198D1E5B0013A4C6 /* aaOcean_chanmod.h */,
 				4AFBD3BA191E6B5F00181ED4 /* aaOcean_command.cpp */,
@@ -321,7 +348,7 @@
 			files = (
 				4A1AD52719646D2800693F00 /* aaOcean_deformer.h in Headers */,
 				4A89A8071964A39600CE3A3C /* aaOcean_command.h in Headers */,
-				4A89A8061964A38600CE3A3C /* aaOceanClass.h in Headers */,
+				4A516D5A1D689E0200558CF8 /* aaOceanClass.h in Headers */,
 				4AA1DDE9198C5193008C6D2E /* aaOcean_init.h in Headers */,
 				4AD9E0E0198D9AB70013A4C6 /* aaOcean_chanmod.h in Headers */,
 				4AA1DDED198C524B008C6D2E /* aaOcean_texture.h in Headers */,
@@ -445,25 +472,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4AC23C0C1BA208570094083D /* lxu_attrdesc.cpp in Sources */,
+				4A6EF6D61CF208B400D50C88 /* lxu_attrdesc.cpp in Sources */,
+				4A6EF6DB1CF208B400D50C88 /* lxu_shade.cpp in Sources */,
 				4AC23C0A1BA208570094083D /* clean.cpp in Sources */,
 				4AC23C0F1BA208570094083D /* lxu_deform.cpp in Sources */,
 				4AC23C0E1BA208570094083D /* lxu_command.cpp in Sources */,
 				4AC23C191BA208570094083D /* lxu_scene.cpp in Sources */,
 				4AC23C171BA208570094083D /* lxu_prefvalue.cpp in Sources */,
+				4A6EF6DA1CF208B400D50C88 /* lxu_schematic.cpp in Sources */,
 				4AC23C101BA208570094083D /* lxu_format.cpp in Sources */,
 				4AC23C121BA208570094083D /* lxu_log.cpp in Sources */,
 				4AC23C161BA208570094083D /* lxu_parser.cpp in Sources */,
-				4AC23C1E1BA208570094083D /* lxu_vector.cpp in Sources */,
 				4AC23C111BA208570094083D /* lxu_geometry.cpp in Sources */,
 				4AC23C181BA208570094083D /* lxu_queries.cpp in Sources */,
 				4AC23C0D1BA208570094083D /* lxu_attributes.cpp in Sources */,
+				4A6EF6D91CF208B400D50C88 /* lxu_package.cpp in Sources */,
+				4A6EF6D81CF208B400D50C88 /* lxu_meta.cpp in Sources */,
 				4AC23C1C1BA208570094083D /* lxu_surface.cpp in Sources */,
 				4AC23C151BA208570094083D /* lxu_modifier.cpp in Sources */,
+				4A6EF6DC1CF208B400D50C88 /* lxu_vector.cpp in Sources */,
 				4AC23C1F1BA208570094083D /* util.cpp in Sources */,
 				4AC23C1D1BA208570094083D /* lxu_tableau.cpp in Sources */,
 				4AC23C0B1BA208570094083D /* cwrap.cpp in Sources */,
 				4AC23C1B1BA208570094083D /* lxu_simd.cpp in Sources */,
+				4A6EF6D71CF208B400D50C88 /* lxu_chanmod.cpp in Sources */,
 				4AC23C141BA208570094083D /* lxu_message.cpp in Sources */,
 				4AC23C1A1BA208570094083D /* lxu_select.cpp in Sources */,
 				4AC23C131BA208570094083D /* lxu_math.cpp in Sources */,
@@ -491,12 +523,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A58188B1E3122EA00551492 /* lxu_matrix.cpp in Sources */,
+				4A58188C1E3122EA00551492 /* lxu_octree.cpp in Sources */,
 				4AA1DDE8198C5193008C6D2E /* aaOcean_init.cpp in Sources */,
 				4AA1DDEC198C524B008C6D2E /* aaOcean_texture.cpp in Sources */,
+				4A58188E1E3122EA00551492 /* lxu_vectorarray.cpp in Sources */,
 				4AFBD3C6191E6B5F00181ED4 /* aaOcean_deformer.cpp in Sources */,
+				4A516D591D689E0200558CF8 /* aaOceanClass.cpp in Sources */,
 				4AD9E0DF198D9AB30013A4C6 /* aaOcean_chanmod.cpp in Sources */,
 				4AFBD3C4191E6B5F00181ED4 /* aaOcean_command.cpp in Sources */,
-				4A08EA1D1964D33800C15AE7 /* aaOceanClass.cpp in Sources */,
+				4A58188D1E3122EA00551492 /* lxu_quaternion.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,7 +598,6 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -590,7 +625,6 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -618,7 +652,6 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -646,7 +679,6 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -672,7 +704,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -702,6 +734,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -739,7 +772,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/dependencies/lib/osx",
 					"$(PROJECT_DIR)/dependencies/lib",
-					/usr/local/Cellar/libiomp/20150401/lib,
+					/usr/local/Cellar/libiomp/20150701/lib,
 				);
 				PRODUCT_NAME = aaOceanModo;
 			};
@@ -764,7 +797,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/dependencies/lib/osx",
 					"$(PROJECT_DIR)/dependencies/lib",
-					/usr/local/Cellar/libiomp/20150401/lib,
+					/usr/local/Cellar/libiomp/20150701/lib,
 				);
 				PRODUCT_NAME = aaOceanModo;
 			};

@@ -430,7 +430,7 @@ void aaOceanBSDTexture::vtx_Evaluate (ILxUnknownID etor, int *idx, ILxUnknownID 
     
     CLxVector dpdu = CLxVector (tInp->dpdu).normal();
     CLxVector dpdv = CLxVector (tInp->dpdv).normal();
-    CLxVector norm = (dpdu ^ dpdv).normal();
+	CLxVector norm = dpdu.cross(dpdv).normal(); // (dpdu ^ dpdv).normal();
     
     CLxMatrix4 tangentMatrix = CLxMatrix4();
     

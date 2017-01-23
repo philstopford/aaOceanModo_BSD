@@ -1,0 +1,304 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
+<meta http-equiv="Content-Language" content="en-us">
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:Assigned_x005f_x0020_To msdt:dt="string"></mso:Assigned_x005f_x0020_To>
+<mso:Approval_x005f_x0020_Level msdt:dt="string"></mso:Approval_x005f_x0020_Level>
+<mso:Categories msdt:dt="string">Articles;Direct3D Articles</mso:Categories>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Introduction to Catmull-Rom Splines</title>
+<meta name="Microsoft Theme" content="xzone 011, default">
+<meta name="Microsoft Border" content="tb, default">
+</head>
+
+<body alink="#CC3333" background="Introduction%20to%20Catmull-Rom%20Splines_files/indtextb.jpg" bgcolor="#FFFFFF" link="#0033CC" text="#000000" vlink="#666633"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><center>
+<h1>
+<img src="Introduction%20to%20Catmull-Rom%20Splines_files/index.gif" alt="Introduction to Catmull-Rom Splines" border="0" height="65" width="600">
+</h1>
+<p>
+<nobr><a href="http://www.mvps.org/directx/" target="" style="text-decoration: none;">Home</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/indexes/direct3d_articles.htm" target="" style="text-decoration: none;">Up</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/search.htm" target="" style="text-decoration: none;">Search</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/news/index.htm" target="" style="text-decoration: none;">X-Zone&nbsp;News</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/services.htm" target="" style="text-decoration: none;">Services</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/support/book_support.htm" target="" style="text-decoration: none;">Book&nbsp;Support</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/links.htm" target="" style="text-decoration: none;">Links</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/fdbk.htm" target="" style="text-decoration: none;">Feedback</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/smalltalk/index.htm" target="" style="text-decoration: none;">Smalltalk&nbsp;MT</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/scrapyard/index.html" target="" style="text-decoration: none;">The&nbsp;Scrapyard</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/faq/faq.htm" target="" style="text-decoration: none;">FAQ</a></nobr>&nbsp;|&nbsp;<nobr><a href="http://www.mvps.org/directx/indexes/index.htm" target="" style="text-decoration: none;">Technical&nbsp;Articles</a></nobr>
+</p>
+<!--msthemeseparator--><p align="center"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/indhorsa.gif" height="10" width="600"></p></center>
+<p>&nbsp;</p>
+
+<!--mstheme--></font></td></tr><!--msnavigation--></tbody></table><!--msnavigation--><table dir="ltr" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><!--msnavigation--><td valign="top"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><!--webbot bot="Include" U-Include="../arthead.htm" TAG="BODY" startspan -->
+
+</font><div align="center"><font face="Trebuchet MS, Arial, Helvetica">
+  </font><center><font face="Trebuchet MS, Arial, Helvetica">
+  <!--mstheme--></font><table border="0" cellpadding="2">
+    <tbody><tr>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+        </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><b><font color="#993333" size="4">Written by Robert
+        Dunlop<br>
+        Microsoft DirectX MVP</font></b><!--mstheme--></font></p></td>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><font color="#000080" face="Fixedsys"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/mvpani.gif" align="middle" border="0" height="89" width="108"><a name="thetop"></a></font><!--mstheme--></font></td>
+    </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+  </font></center><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+<!--msthemeseparator--><p align="center"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/indhorsa.gif" height="10" width="600"></p>
+<!--webbot bot="Include" endspan i-checksum="32711" --><p align="center">
+<a href="#demo">Demo w/ Source Code for this article</a></p>
+<!--msthemeseparator--><p align="center"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/indhorsa.gif" height="10" width="600"></p><h2>Introduction</h2>
+<p>Splines are a mathematical means of representing a curve, by specifying a 
+series of points at intervals along the curve and defining a function that 
+allows additional points within an interval to be calculated.&nbsp; There are 
+various functions available to approximate a curve, but in this article we will 
+focus on a variety of spline known as the Catmull-Rom spline.</p>
+<h2>Catmull-Rom Splines</h2>
+<p>The points that define a spline are known as "Control Points".&nbsp; One of 
+the features of the Catmull-Rom spline is that the specified curve will pass 
+through all of the control points - this is not true of all types of splines.&nbsp;
+</p>
+</font><div align="left"><font face="Trebuchet MS, Arial, Helvetica">
+  <!--mstheme--></font><table style="border-collapse: collapse" id="AutoNumber1" border="0" cellpadding="4" cellspacing="4">
+    <tbody><tr>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/spline1.gif" border="0" height="167" width="280"><br>
+      <i><b><font color="#CC6633" size="2">Figure 1</font></b></i><!--mstheme--></font></p></td>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">To calculate a point on the curve, two points on either side of the 
+      desired point are required, as shown on the left.&nbsp; The point is 
+      specified by a value <b><i>t </i></b>that signifies the portion of the 
+      distance between the two nearest control points.<!--mstheme--></font></td>
+    </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+<p><font face="Fixedsys"><a name="equ1"></a></font>Given the control points <b><i>P<sub>0</sub>, P<sub>1</sub>, P<sub>2</sub>, </i></b>and <b><i>P<sub>3</sub>, </i></b>and 
+the value <b><i>t</i></b>, the location of the point can be calculated as 
+(assuming uniform spacing of control points):</p>
+</font><div align="left"><font face="Trebuchet MS, Arial, Helvetica">
+  <!--mstheme--></font><table style="border-collapse: collapse" id="AutoNumber2" border="0" cellspacing="1" height="88">
+    <tbody><tr>
+      <td rowspan="4" height="81"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">&nbsp;q(t) = 0.5 * (1.0f,t,t<sup>2</sup>,t<sup>3</sup>)&nbsp; 
+      *</font><!--mstheme--></font></td>
+      <td height="22"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">[&nbsp; 0</font><!--mstheme--></font></p></td>
+      <td height="22"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">2</font><!--mstheme--></font></p></td>
+      <td height="22"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">0</font><!--mstheme--></font></p></td>
+      <td height="22"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="right"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">0 ]</font><!--mstheme--></font></p></td>
+      <td height="22"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">&nbsp;<!--mstheme--></font></td>
+      <td height="22"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="left"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">[P</font><sub><b><i>0</i></b></sub><font face="Fixedsys">]</font><!--mstheme--></font></p></td>
+    </tr>
+    <tr>
+      <td height="17"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">[ -1</font><!--mstheme--></font></p></td>
+      <td height="17"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">0</font><!--mstheme--></font></p></td>
+      <td height="17"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">1</font><!--mstheme--></font></p></td>
+      <td height="17"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="right"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">0 ]</font><!--mstheme--></font></p></td>
+      <td rowspan="2" height="35"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">*</font><!--mstheme--></font></p></td>
+      <td height="17"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="left"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">[P</font><sub><b><i>1</i></b></sub><font face="Fixedsys">]</font><!--mstheme--></font></p></td>
+    </tr>
+    <tr>
+      <td height="15"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">[&nbsp; 2</font><!--mstheme--></font></p></td>
+      <td height="15"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">-5</font><!--mstheme--></font></p></td>
+      <td height="15"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">4</font><!--mstheme--></font></p></td>
+      <td "=""><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font></font><p height="15" align="right"><font face="Trebuchet MS, Arial, Helvetica"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">-1 ]</font></font><!--mstheme--></font></p></td>
+      <td height="15"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="left"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">[P</font><sub><b><i>2</i></b></sub><font face="Fixedsys">]</font><!--mstheme--></font></p></td>
+    </tr>
+    <tr>
+      <td "=""><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font></font><p height="8" align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">[ -1</font></font><!--mstheme--></font></p></td>
+      <td height="8"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">3</font><!--mstheme--></font></p></td>
+      <td height="8"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">-3</font><!--mstheme--></font></p></td>
+      <td height="8"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="right"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">1 ]</font><!--mstheme--></font></p></td>
+      <td height="8"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><!--mstheme--></font></td>
+      <td height="8"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="left"><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">[P</font><sub><b><i>3</i></b></sub><font face="Fixedsys">]</font><!--mstheme--></font></p></td>
+    </tr>
+    <tr>
+      <td colspan="7" height="11"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font color="#CC6633" size="2"><i><b>Equation 1</b></i></font><!--mstheme--></font></p></td>
+      </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+<p><a name="equ2"></a>To put that another way:</p>
+</font><div align="left"><font face="Trebuchet MS, Arial, Helvetica">
+  <!--mstheme--></font><table style="border-collapse: collapse" id="AutoNumber3" border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">q(t) = 0.5 *(&nbsp;&nbsp; </font><!--mstheme--></font></td>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">(<font face="Fixedsys">2 * P</font><sub><b><i>1</i></b></sub><font face="Fixedsys">) 
+      +</font><!--mstheme--></font></td>
+    </tr>
+    <tr>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">&nbsp;<!--mstheme--></font></td>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">(-P</font><b><i><sub>0 </sub></i></b>
+      <font face="Fixedsys">+ P</font><sub><b><i>2</i></b></sub><font face="Fixedsys">) 
+      * t +<br>
+      (2*P</font><b><i><sub>0 </sub></i></b><font face="Fixedsys">- 5*P</font><sub><b><i>1</i></b></sub><font face="Fixedsys"> 
+      + 4*P</font><b><i><sub>2 </sub></i></b><font face="Fixedsys">- P</font><sub><b><i>3</i></b></sub><font face="Fixedsys">) 
+      * t<sup>2</sup> +<br>
+      (-P</font><b><i><sub>0 </sub></i></b><font face="Fixedsys">+ 3*P</font><sub><b><i>1</i></b></sub><font face="Fixedsys">- 3*P</font><b><i><sub>2 </sub></i>
+      </b><font face="Fixedsys">+ P</font><sub><b><i>3</i></b></sub><font face="Fixedsys">) 
+      * t<sup>3</sup>)</font><!--mstheme--></font></td>
+    </tr>
+    <tr>
+      <td colspan="2"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><font color="#CC6633" size="2"><i><b>Equation 2</b></i></font><!--mstheme--></font></p></td>
+      </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+<p>This formula gives Catmull-Rom spline the following characteristics:</p>
+
+</font><div align="left"><font face="Trebuchet MS, Arial, Helvetica">
+  <!--mstheme--></font><table style="border-collapse: collapse" id="AutoNumber4" border="0" cellpadding="4" cellspacing="4" width="100%">
+    <tbody><tr>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      <!--mstheme--></font><!--msthemelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <!--msthemelist--><tbody><tr><td valign="baseline" width="42"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/indbul1a.gif" alt="bullet" height="15" hspace="13" width="15"></td><td valign="top" width="100%"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">The spline passes through all of the control points. <i>(see Fig. 1)</i><!--mstheme--></font><!--msthemelist--></td></tr>
+        <!--msthemelist--><tr><td valign="baseline" width="42"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/indbul1a.gif" alt="bullet" height="15" hspace="13" width="15"></td><td valign="top" width="100%"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">The spline is C<sup>1</sup> continuous, meaning that there are no 
+        discontinuities in the tangent direction and magnitude. <i>(See Fig. 2)</i><!--mstheme--></font><!--msthemelist--></td></tr>
+        <!--msthemelist--><tr><td valign="baseline" width="42"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/indbul1a.gif" alt="bullet" height="15" hspace="13" width="15"></td><td valign="top" width="100%"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">The spline is not C<sup>2</sup> continuous.&nbsp; The second 
+        derivative is linearly interpolated within each segment, causing the 
+        curvature to vary linearly over the length of the segment.<!--mstheme--></font><!--msthemelist--></td></tr>
+        <!--msthemelist--><tr><td valign="baseline" width="42"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/indbul1a.gif" alt="bullet" height="15" hspace="13" width="15"></td><td valign="top" width="100%"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">Points on a segment may lie outside of the domain of <b><i>P1 -&gt; P2</i></b>.
+        <i>(See Fig. 2)</i><!--mstheme--></font><!--msthemelist--></td></tr>
+      <!--msthemelist--></tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      <!--mstheme--></font></td>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/spline2a.gif" border="0" height="173" width="261"><br>
+      <i><b><font color="#CC6633" size="2">Figure 2</font></b></i><!--mstheme--></font></p></td>
+    </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+<p>While a spline segment is defined using four control points, a spline may 
+have any number of additional control points.&nbsp; This results in a continuous 
+chain of segments, each defined by the two control points that form the 
+endpoints of the segments, plus an additional control point on either side of 
+the endpoints.&nbsp; Thus for a given segment with endpoints <i><b>P<sub>n</sub></b></i> 
+and <i><b>P<sub>n+1</sub></b></i>, the segment would be calculated using <b>[</b><i><b>P<sub>n-1</sub>, 
+P<sub>n</sub>, P<sub>n+1</sub>, P<sub>n+2</sub></b></i><b>]</b>.</p>
+
+<p>Because a segment requires control points to the outside of the segment 
+endpoints, the segments at the extreme ends of the spline cannot be calculated.&nbsp; 
+Thus, for a spline with control points 1 through N, the minimum segment that can 
+be formulated is <b><i>P<sub>1</sub></i>&lt;-&gt;<i>P<sub>2</sub></i></b>, 
+and the maximum segment is <b><i>P<sub>N-</sub></i><sub><i>3</i></sub>&lt;-&gt;<i>P<sub>N-</sub></i></b><sub><b><i>2</i></b></sub>.&nbsp;&nbsp; 
+Thus, to define <i><b>S</b></i> segments, <i><b>S+3</b></i> control points are 
+required.</p>
+
+<h2>Support of Catmull-Rom Splines in DirectX</h2>
+<p>The D3DX math libraries provide functions for calculating a point on a 
+Catmull-Rom segment, using 2D, 3D, or 4D vectors.&nbsp; These functions are:</p>
+</font><div align="center"><font face="Trebuchet MS, Arial, Helvetica">
+  </font><center><font face="Trebuchet MS, Arial, Helvetica">
+  <!--mstheme--></font><table style="border-collapse: collapse" id="AutoNumber5" bgcolor="#CCCCCC" border="0" cellpadding="4" cellspacing="4">
+    <tbody><tr>
+      <td width="100%"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">D3DXVec2CatmullRom(D3DXVECTOR2* 
+      pOut,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR2* pV1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR2* pV2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR2* pV3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR2* pV4,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      FLOAT s)</font><p><font face="Fixedsys">D3DXVec3CatmullRom(D3DXVECTOR3* 
+      pOut,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR3* pV1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR3* pV2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR3* pV3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR3* pV4,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      FLOAT s)</font></p>
+      </font><p><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys">D3DXVec4CatmullRom(D3DXVECTOR4* pOut,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR4* pV1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR4* pV2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR4* pV3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      CONST D3DXVECTOR4* pV4,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      FLOAT s)</font><!--mstheme--></font></p></td>
+    </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"></font></center><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+<p>Each of these functions accepts four control points and a positional weight 
+from 0.0 to 1.0, and returns an interpolated vector .&nbsp; The returned value 
+will fall in the range of *pV2 (when s==0.0) to *pV3 (when s==1.0).</p>
+<h2>Sample: Path Interpolation using Catmull-Rom Splines</h2>
+</font><div align="left"><font face="Trebuchet MS, Arial, Helvetica">
+  <!--mstheme--></font><table style="border-collapse: collapse" id="AutoNumber6" border="0" cellpadding="4" cellspacing="4" width="100%">
+    <tbody><tr>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">The downloadable demo available below demonstrates the use 
+      of a Catmull-Rom spline for path interpolation of a vehicle traveling down 
+      an infinite highway.&nbsp; Use the up/down arrow keys to control rate of 
+      travel.&nbsp; You can toggle between Catmull-Rom based interpolation and 
+      linear interpolation using the buttons on the right side, to see the 
+      difference that spline interpolation makes in providing a smooth animation 
+      path.</font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><b><i>Source code, pre-compiled executable and 
+      media included.</i></b><!--mstheme--></font></p></td>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/index1.jpg" border="0" height="187" width="245"><!--mstheme--></font></p></td>
+    </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+<!--msthemeseparator--><p align="center"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/indhorsa.gif" height="10" width="600"></p>
+</font><div align="center"><font face="Trebuchet MS, Arial, Helvetica">
+  </font><center><font face="Trebuchet MS, Arial, Helvetica"><!--mstheme--></font><table style="border-collapse: collapse" id="AutoNumber1" border="0" cellpadding="4" cellspacing="4">
+    <tbody><tr>
+      <td width="50%"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><a href="http://www.mvps.org/directx/articles/catmull/lightmap.zip" name="demo">
+      <img src="Introduction%20to%20Catmull-Rom%20Splines_files/j0196400.gif" border="0" height="117" width="107"></a><!--mstheme--></font></p></td>
+      <td width="50%"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+      <p align="center"><a href="http://www.mvps.org/directx/articles/catmull/lightmap.zip">Download Demo<br>
+      lightmap.zip<br>
+      347KB</a></p></font><p align="center"><font face="Trebuchet MS, Arial, Helvetica">Requires DirectX 8.0 Runtimes or Later<!--mstheme--></font></p></td>
+    </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"></font></center><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+
+<!--mstheme--></font><!--msnavigation--></td></tr><!--msnavigation--></tbody></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"></font><center><font face="Trebuchet MS, Arial, Helvetica"><!--msthemeseparator--><p align="center"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/indhorsa.gif" height="10" width="600"></p><!--mstheme--></font><table border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+    <p align="center"><b><font size="2">This site, created by DirectX MVP Robert 
+    Dunlop and aided by the work of other volunteers, provides a free on-line 
+    resource for DirectX programmers. </font></b></p>
+    </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><b><font size="2">Special thanks to
+    <a href="http://www.mvps.org/" target="_blank">WWW.MVPS.ORG</a>, for 
+    providing a permanent home for this site.</font></b><!--mstheme--></font></p></td>
+    <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+    <h5>
+    <a target="_blank" title="Click for information on Microsoft MVP program" href="http://support.microsoft.com/support/mvp/">
+    <img src="Introduction%20to%20Catmull-Rom%20Splines_files/mvplogo.gif" border="0" height="131" width="147"></a></h5>
+    <!--mstheme--></font></td>
+  </tr>
+</tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><!--msthemeseparator--><p align="center"><img src="Introduction%20to%20Catmull-Rom%20Splines_files/indhorsa.gif" height="10" width="600"></p>
+<p><small>Visitors Since 1/1/2000: </small>
+<img src="Introduction%20to%20Catmull-Rom%20Splines_files/a.html" alt="Hit Counter"><small><br>
+Last updated: 07/26/05.
+</small></p>
+</font></center><font face="Trebuchet MS, Arial, Helvetica">
+<p>&nbsp;</p>
+
+<!--mstheme--></font></td></tr><!--msnavigation--></tbody></table>
+
+</body></html>

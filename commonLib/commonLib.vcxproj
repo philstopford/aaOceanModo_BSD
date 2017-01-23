@@ -120,7 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\phil\Documents\Visual Studio 2015\Projects\modo\LXSDK_85499_901\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\development\modo\LXSDK_117244\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,28 +133,37 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\clean.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\cwrap.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_attrdesc.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_attributes.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_command.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_deform.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_format.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_geometry.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_log.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_math.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_message.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_modifier.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_parser.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_prefvalue.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_queries.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_scene.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_select.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_simd.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_surface.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_tableau.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_vector.cpp" />
-    <ClCompile Include="..\..\LXSDK_85499_901\common\util.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\clean.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\cwrap.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_attrdesc.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_attributes.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_chanmod.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_command.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_deform.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_format.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_geometry.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_log.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_math.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_matrix.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_message.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_meta.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_modifier.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_octree.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_package.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_parser.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_prefvalue.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_quaternion.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_queries.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_scene.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_schematic.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_select.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_shade.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_simd.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_surface.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_tableau.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_vector.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_vectorarray.cpp" />
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\util.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

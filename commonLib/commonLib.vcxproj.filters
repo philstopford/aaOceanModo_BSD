@@ -18,70 +18,97 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_geometry.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\clean.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_log.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\cwrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_math.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_attrdesc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_message.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_attributes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_modifier.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_chanmod.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_parser.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_command.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_prefvalue.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_deform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_queries.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_format.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_scene.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_geometry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_select.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_simd.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_surface.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_matrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_tableau.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_message.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_vector.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_meta.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\util.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_modifier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\clean.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_octree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\cwrap.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_package.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_attrdesc.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_attributes.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_prefvalue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_command.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_quaternion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_deform.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_queries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\LXSDK_85499_901\common\lxu_format.cpp">
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_schematic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_select.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_shade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_simd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_surface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_tableau.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\lxu_vectorarray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\modo\LXSDK_117244\common\util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
